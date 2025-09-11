@@ -1,0 +1,105 @@
+@use 'sass:color';
+@use './global.scss';
+
+/* 
+* Reset Styles
+*/
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: global.$font-family;
+  font-size: global.$font-size-base;
+  line-height: 1.5;
+  color: global.$text-color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: global.$background-color;
+  overflow-x: hidden;
+  user-select: none; // Prevent text selection in desktop app
+  font-size: global.$font-size-base;
+  margin: 0;
+  padding: global.$spacing-lg;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: global.$spacing-md;
+}
+
+h1 {
+  color: global.$primary-color;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+p {
+  margin-bottom: global.$spacing-sm;
+}
+
+button, input {
+  font: inherit;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: global.$secondary-color;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* 
+* Component Styles
+*/
+.btn {
+  @include global.button-base;
+  min-width: 80px;
+  margin: 0 global.$spacing-xs;
+  
+  &.btn-small {
+    padding: 4px 8px;
+    min-width: 40px;
+    font-size: 0.9em;
+  }
+  
+  &.btn-block {
+    display: block;
+    width: 100%;
+    margin: global.$spacing-sm 0;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-group {
+  @include global.flex-container(row, wrap, center, center);
+  margin: global.$spacing-sm 0;
+  
+  .btn {
+    margin: global.$spacing-xs;
+  }
+}

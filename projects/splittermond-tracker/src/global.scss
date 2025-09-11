@@ -1,0 +1,55 @@
+@use 'sass:color';
+
+// Colors
+$primary-color: #D95C14;
+$secondary-color: #D95C14;
+$background-color: #f5f5f5;
+$container-bg: white;
+$text-color: #333;
+$text-muted: #666;
+$border-color: #eee;
+$border-light: #ddd;
+$button-hover: #B34710;
+$button-active: #8C360C;
+
+// Sizing
+$spacing-xs: 5px;
+$spacing-sm: 10px;
+$spacing-md: 15px;
+$spacing-lg: 20px;
+$border-radius: 8px;
+
+// Fonts
+$font-family: 'Roboto', Arial, sans-serif;
+$font-size-base: 16px;
+$font-size-small: 0.85em;
+$font-size-xsmall: 0.8em;
+
+@mixin flex-container($direction: row, $wrap: nowrap, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin button-base {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: $button-hover;
+  }
+  
+  &:active {
+    background-color: $button-active;
+  }
+}

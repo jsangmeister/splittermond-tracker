@@ -1,0 +1,104 @@
+@use 'sass:color';
+@use '../../../global.scss';
+
+:host {
+    display: flex;
+    gap: global.$spacing-sm;
+    flex-direction: column;
+}
+
+.points-container {
+    @include global.flex-container(row, wrap);
+    gap: global.$spacing-xs;
+    width: 270px;
+}
+
+.margin-right {
+    margin-right: 10px;
+}
+
+.controls {
+  @include global.flex-container(row, wrap, flex-start, center);
+}
+
+.input-group {
+  @include global.flex-container(row, nowrap, flex-start, center);
+  
+  .point-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid global.$border-light;
+    border-radius: 4px;
+    width: 120px;
+    font-size: 14px;
+    margin-right: global.$spacing-xs;
+    
+    &:focus {
+        border-color: global.$primary-color;
+        box-shadow: 0 0 0 2px rgba(global.$primary-color, 0.1);
+    }
+
+    &.hidden {
+        display: none;
+    }
+  }
+  
+  .btn-small {
+    min-width: 40px;
+    padding: 8px 12px;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+/* 
+* Point States Styles
+*/
+.point-checkbox {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 1px solid global.$border-light;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    background-color: white;
+    position: relative;
+    
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        @include global.flex-container(row, nowrap, center, center);
+        font-weight: bold;
+        font-size: 14px;
+        color: black;
+    }
+    
+    &.channeled::before {
+        content: "/";
+        font-size: 16px;
+    }
+    
+    &.exhausted::before {
+        content: "X";
+    }
+    
+    &.consumed::before {
+        content: "⊗";
+    }
+}
+
+.btn {
+    padding: 6px;
+    min-width: auto;
+
+    img {
+        width: 20px;
+        height: 20px;
+    }
+}

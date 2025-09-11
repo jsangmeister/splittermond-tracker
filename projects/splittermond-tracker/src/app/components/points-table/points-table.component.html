@@ -1,0 +1,21 @@
+@let perRow = mode() === "lp" ? char().lp : min(10, char()[`max_${mode()}`]);
+@let width = `${perRow * 25 + ((perRow - (perRow % 5)) / 5) * 10 - 5}px`;
+<div class="points-container" [style.width]="width">
+    @let total = char()[`max_${mode()}`];
+    @for (_ of [].constructor(total); let i = $index; track i) {
+        <input type="checkbox" class="point-checkbox" [class]="getClass(i)" [class.margin-right]="i % perRow % 5 === 4">
+    }
+</div>
+      
+<div class="controls">
+    <div class="input-group">
+        <input type="text" class="point-input" #input [value]="mode() === 'splinters' ? 1 : ''" [class.hidden]="mode() === 'splinters'">
+        <button class="btn damage" (click)="minus(input.value)" (contextmenu)="minus_channeled()">
+            <img src="assets/{{ mode() }}_minus.png" />
+        </button>
+        <button class="btn heal" (click)="plus(input.value)" (contextmenu)="plus_channeled()">
+            <img src="assets/{{ mode() }}_plus.png" />
+        </button>
+        <!-- <button class="btn btn-small" (click)="revert()">Revert</button> -->
+    </div>
+</div>

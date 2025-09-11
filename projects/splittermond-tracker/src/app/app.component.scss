@@ -1,0 +1,58 @@
+@use 'sass:color';
+@use '../global.scss';
+
+.container {
+  @include global.flex-container(column);
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: global.$container-bg;
+  padding: global.$spacing-lg;
+  border-radius: global.$border-radius;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.character-info {
+  margin-bottom: global.$spacing-md;
+  padding-bottom: global.$spacing-md;
+  border-bottom: 1px solid global.$border-color;
+}
+
+.character-name {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: global.$secondary-color;
+}
+
+.character-details {
+  margin-top: global.$spacing-xs;
+  font-size: global.$font-size-small;
+  color: global.$text-muted;
+}
+
+.tracker {
+  margin-bottom: global.$spacing-lg;
+  padding: global.$spacing-md;
+  border-radius: global.$spacing-xs;
+  background-color: color.adjust(global.$background-color, $lightness: -2%);
+}
+
+.tracker-title {
+  font-weight: bold;
+  margin-bottom: global.$spacing-sm;
+  display: block;
+  color: global.$primary-color;
+  border-bottom: 1px solid global.$border-light;
+  padding-bottom: global.$spacing-xs;
+}
+
+.tracker-info {
+  font-size: global.$font-size-small;
+  color: global.$text-muted;
+  margin-bottom: global.$spacing-sm;
+}
+
+.splinters-table {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: global.$spacing-sm;
+}
