@@ -82,9 +82,15 @@ export class PointsTableComponent {
   private parse(value: string): Partial<Record<UsageType, number>> {
     if (value) {
       if (this.mode() === 'lp') {
-        const res = /^([be])?(\d+)$/.exec(value.toLowerCase());
+        const res = /^([bek])?(\d+)$/.exec(value.toLowerCase());
         if (res) {
-          return { [res[1] ? 'exhausted' : 'consumed']: res[2] };
+          return {
+            [res[1]
+              ? res[1] === 'k'
+                ? 'channeled'
+                : 'exhausted'
+              : 'consumed']: res[2],
+          };
         }
       } else {
         const res = /^(?:(k)?(\d+))?(?:v(\d+))?$/.exec(value.toLowerCase());
