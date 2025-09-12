@@ -9,7 +9,7 @@
       
 <div class="controls">
     <div class="input-group">
-        <input type="text" class="point-input" #input [value]="mode() === 'splinters' ? 1 : ''" [class.hidden]="mode() === 'splinters'">
+        <input type="text" class="point-input" #input [value]="mode() === 'splinters' ? 1 : ''" [class.hidden]="mode() === 'splinters'" (input)="error.set('')">
         <button class="btn damage" (click)="minus(input.value)" (contextmenu)="minus_channeled()">
             <img src="assets/{{ mode() }}_minus.png" />
         </button>
@@ -19,3 +19,6 @@
         <!-- <button class="btn btn-small" (click)="revert()">Revert</button> -->
     </div>
 </div>
+@if (error()) {
+    <div class="error">{{ error() }}</div>
+}

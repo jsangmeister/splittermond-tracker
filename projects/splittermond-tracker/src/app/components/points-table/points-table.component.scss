@@ -51,6 +51,16 @@
   }
 }
 
+.error {
+    border-width: 2px;
+    border-color: red;
+    border-radius: 5px;
+    padding: 4px 8px;
+    background-color: lightcoral;
+    color: red;
+    width: fit-content;
+}
+
 /* 
 * Point States Styles
 */

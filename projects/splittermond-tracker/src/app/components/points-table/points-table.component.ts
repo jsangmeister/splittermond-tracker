@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, effect, inject, input } from "@angular/core";
+import { Component, computed, effect, inject, input, signal } from "@angular/core";
 import { Char, UsageType } from "src/app/models/char";
 import { CharacterService } from "src/app/services/character-service";
 
@@ -13,6 +13,8 @@ export class PointsTableComponent {
     public mode = input.required<"focus" | "lp" | "splinters">();
 
     public char = input.required<Char>();
+
+    public error = signal<string>("");
 
     private charService = inject(CharacterService);
 
@@ -31,7 +33,6 @@ export class PointsTableComponent {
         }
         return "normal";
     }
-
 
     public minus(value: string) {
         this.change(value);
@@ -74,7 +75,7 @@ export class PointsTableComponent {
             Object.assign(this.char(), update);
             this.charService.saveCharacterUsage(this.char());
         } catch (e: any) {
-            alert(e.message);
+            this.error.set(e.message);
         }
     }
 
