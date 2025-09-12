@@ -4,7 +4,8 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electron', {
-  loadCharacter: () => ipcRenderer.invoke('load-character'),
+  loadCharacter: (force: boolean) =>
+    ipcRenderer.invoke('load-character', force),
   confirm: (message: string) => ipcRenderer.invoke('confirm', message),
   showCredits: () => ipcRenderer.invoke('show-credits'),
   setWindowSize: (width: number, height: number) =>

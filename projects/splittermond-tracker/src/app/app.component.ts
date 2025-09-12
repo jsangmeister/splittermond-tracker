@@ -24,7 +24,6 @@ export class AppComponent {
 
   public constructor() {
     this.char = new Char();
-    void this.loadCharacter();
   }
 
   public async reset(): Promise<void> {
@@ -49,13 +48,18 @@ export class AppComponent {
     await this.charService.saveCharacterUsage(this.char);
   }
 
-  private async loadCharacter(): Promise<void> {
-    const xmlContent = await window.electron.loadCharacter();
+  public async open(): Promise<void> {
+    await this.loadCharacter(true);
+  }
+
+  private async loadCharacter(force = false): Promise<void> {
+    const xmlContent = await window.electron.loadCharacter(force);
     if (!xmlContent) {
       return;
     }
     const parser = new xml2js.Parser({ explicitArray: false });
     const result = await parser.parseStringPromise(xmlContent);
+    this.char = new Char();
     this.char.loadCharacterData(result);
     const usageData = await this.charService.loadCharacterUsage(this.char.name);
     if (usageData) {
