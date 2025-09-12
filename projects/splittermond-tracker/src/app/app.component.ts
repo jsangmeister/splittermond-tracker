@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Char, USAGE_FIELDS, UsageData } from './models/char';
+import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
 import { PointsTableComponent } from './components/points-table/points-table.component';
@@ -35,11 +35,18 @@ export class AppComponent {
     ) {
       return;
     }
-    const update: UsageData = {};
-    for (const field of USAGE_FIELDS) {
-      update[field] = 0;
-    }
-    this.char.setUsageData(update);
+    this.char.resetUsageData();
+    await this.charService.saveCharacterUsage(this.char);
+  }
+
+  public async longRest(): Promise<void> {
+    this.char.longRest();
+    await this.charService.saveCharacterUsage(this.char);
+  }
+
+  public async shortRest(): Promise<void> {
+    this.char.shortRest();
+    await this.charService.saveCharacterUsage(this.char);
   }
 
   private async loadCharacter(): Promise<void> {

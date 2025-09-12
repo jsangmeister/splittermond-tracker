@@ -13,14 +13,20 @@
 
   <div class="tracker">
     <div class="tracker-title">
-      Lebenspunkte ({{ char.free_lp }}/{{ char.max_lp }})
+      <div>Lebenspunkte ({{ char.free_lp }}/{{ char.max_lp }})</div>
+      <button class="btn btn-icon" (click)="longRest()">
+        <img src="assets/sleep.png" />
+      </button>
     </div>
     <points-table [char]="char" mode="lp" />
   </div>
 
   <div class="tracker">
     <div class="tracker-title">
-      Fokuspunkte ({{ char.free_focus }}/{{ char.max_focus }})
+      <div>Fokuspunkte ({{ char.free_focus }}/{{ char.max_focus }})</div>
+      <button class="btn btn-icon" (click)="shortRest()">
+        <img src="assets/rest.png" />
+      </button>
     </div>
     <points-table [char]="char" mode="focus" />
   </div>

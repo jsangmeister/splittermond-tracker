@@ -42,10 +42,12 @@
 .tracker-title {
   font-weight: bold;
   margin-bottom: global.$spacing-sm;
-  display: block;
+  display: flex;
   color: global.$primary-color;
   border-bottom: 1px solid global.$border-light;
   padding-bottom: global.$spacing-xs;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .tracker-info {

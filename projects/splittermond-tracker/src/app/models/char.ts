@@ -44,6 +44,8 @@ export class Char {
   public additional_splinters = 0;
   public additional_lp = 0;
   public additional_focus = 0;
+  public additional_lp_regeneration = 0;
+  public additional_focus_regeneration = 0;
 
   // Usage tracking
   public channeled_focus = 0;
@@ -135,6 +137,10 @@ export class Char {
     );
   }
 
+  public get lp_regeneration(): number {
+    return this.constitution * (2 + this.additional_lp_regeneration);
+  }
+
   public get max_focus(): number {
     return 2 * (this.mystic + this.willpower) + this.additional_focus;
   }
@@ -146,6 +152,10 @@ export class Char {
       this.exhausted_focus -
       this.consumed_focus
     );
+  }
+
+  public get focus_regeneration(): number {
+    return this.willpower * (2 + this.additional_focus_regeneration);
   }
 
   public get max_splinters(): number {
@@ -365,7 +375,6 @@ export class Char {
     return this._windmagic + this.mystic + this.mind;
   }
 
-  // Method to load character data
   public loadCharacterData(xml: any): void {
     if (!xml) return;
     const characterData = xml.splimochar;
@@ -399,6 +408,10 @@ export class Char {
           this.additional_focus = 5 * parseInt(power.$.count);
         } else if (power.$.ref === 'sturdy') {
           this.additional_lp = parseInt(power.$.count);
+        } else if (power.$.ref === 'focusregen') {
+          this.additional_focus_regeneration = parseInt(power.$.count);
+        } else if (power.$.ref === 'liferegen') {
+          this.additional_lp_regeneration = parseInt(power.$.count);
         }
       }
     }
@@ -427,7 +440,7 @@ export class Char {
   public setUsageData(data: UsageData): void {
     for (const field of USAGE_FIELDS) {
       if (data[field] !== undefined) {
-        (this as any)[field] = data[field];
+        this[field] = data[field];
       }
     }
   }
@@ -436,8 +449,31 @@ export class Char {
   public getUsageData(): UsageData {
     const data: Record<string, number> = {};
     for (const field of USAGE_FIELDS) {
-      data[field] = (this as any)[field];
+      data[field] = this[field];
     }
     return data as UsageData;
+  }
+
+  public resetUsageData(): void {
+    for (const field of USAGE_FIELDS) {
+      this[field] = 0;
+    }
+  }
+
+  public shortRest(): void {
+    for (const type of ['lp', 'focus'] as const) {
+      this[`exhausted_${type}`] = 0;
+    }
+  }
+
+  public longRest(): void {
+    for (const type of ['lp', 'focus'] as const) {
+      this[`exhausted_${type}`] = this[`channeled_${type}`] = 0;
+      console.log(type, this[`consumed_${type}`], this[`${type}_regeneration`]);
+      this[`consumed_${type}`] -= Math.min(
+        this[`consumed_${type}`],
+        this[`${type}_regeneration`],
+      );
+    }
   }
 }
