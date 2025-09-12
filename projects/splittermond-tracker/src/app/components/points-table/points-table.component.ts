@@ -107,7 +107,7 @@ export class PointsTableComponent {
         if (res) {
           const consumed = parseInt('0' + res[3]);
           let other = parseInt('0' + res[2]);
-          if (other > 0 && other < consumed) {
+          if (res[2] && other < consumed) {
             throw new Error(
               'Invalid format: consumed cannot be larger than the first value',
             );
