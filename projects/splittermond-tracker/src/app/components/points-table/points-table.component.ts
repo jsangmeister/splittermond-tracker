@@ -27,7 +27,7 @@ export class PointsTableComponent {
 
   private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
-  public getClass(i: number): string {
+  public getClass(i: number): UsageType | null {
     let curr = this.char()[`consumed_${this.mode()}`];
     if (i < curr) {
       return 'consumed';
@@ -40,7 +40,7 @@ export class PointsTableComponent {
     if (i < curr) {
       return 'channeled';
     }
-    return 'normal';
+    return null;
   }
 
   public async minus(): Promise<void> {

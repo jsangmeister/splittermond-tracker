@@ -5,8 +5,10 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electron', {
   loadCharacter: () => ipcRenderer.invoke('load-character'),
+  confirm: (message: string) => ipcRenderer.invoke('confirm', message),
   storage: {
     get: (key: string) => ipcRenderer.invoke('storage-get', key),
-    set: (key: string, data: unknown) => ipcRenderer.invoke('storage-set', key, data),
-  }
+    set: (key: string, data: unknown) =>
+      ipcRenderer.invoke('storage-set', key, data),
+  },
 });

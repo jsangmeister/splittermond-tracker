@@ -1,18 +1,27 @@
 <div class="container">
-    <div class="character-info">
-      <div class="character-name" id="character-name">{{ char.name }}</div>
-    </div>
-
-    <div>Splitterpunkte:</div>
-    <points-table class="splinters-table" [char]="char" mode="splinters" />
-
-    <div class="tracker">
-      <div class="tracker-title">Lebenspunkte ({{ char.free_lp }}/{{ char.max_lp }})</div>
-      <points-table [char]="char" mode="lp" />
-    </div>
-
-    <div class="tracker">
-      <div class="tracker-title">Fokuspunkte ({{ char.free_focus }}/{{ char.max_focus }})</div>
-      <points-table [char]="char" mode="focus" />
+  <div class="character-info">
+    <div class="character-name" id="character-name">{{ char.name }}</div>
+    <div class="actions">
+      <button class="btn btn-icon" (click)="reset()">
+        <img src="assets/reset.png" />
+      </button>
     </div>
   </div>
+
+  <div>Splitterpunkte:</div>
+  <points-table class="splinters-table" [char]="char" mode="splinters" />
+
+  <div class="tracker">
+    <div class="tracker-title">
+      Lebenspunkte ({{ char.free_lp }}/{{ char.max_lp }})
+    </div>
+    <points-table [char]="char" mode="lp" />
+  </div>
+
+  <div class="tracker">
+    <div class="tracker-title">
+      Fokuspunkte ({{ char.free_focus }}/{{ char.max_focus }})
+    </div>
+    <points-table [char]="char" mode="focus" />
+  </div>
+</div>

@@ -8,7 +8,7 @@ const RACE_SIZES: Record<string, number> = {
   varg: 6,
 };
 
-const USAGE_FIELDS = [
+export const USAGE_FIELDS = [
   'channeled_focus',
   'exhausted_focus',
   'consumed_focus',

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Char } from './models/char';
+import { Char, USAGE_FIELDS, UsageData } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
 import { PointsTableComponent } from './components/points-table/points-table.component';
@@ -27,7 +27,22 @@ export class AppComponent {
     void this.loadCharacter();
   }
 
-  public async loadCharacter(): Promise<void> {
+  public async reset(): Promise<void> {
+    if (
+      !(await window.electron.confirm(
+        'Bist du sicher, dass du alle verbrauchten Punkte zurücksetzen willst?',
+      ))
+    ) {
+      return;
+    }
+    const update: UsageData = {};
+    for (const field of USAGE_FIELDS) {
+      update[field] = 0;
+    }
+    this.char.setUsageData(update);
+  }
+
+  private async loadCharacter(): Promise<void> {
     const xmlContent = await window.electron.loadCharacter();
     if (!xmlContent) {
       return;

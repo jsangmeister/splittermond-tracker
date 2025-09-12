@@ -56,6 +56,16 @@ void app.whenReady().then(() => {
   ipcMain.handle('storage-set', (_, key: string, data: unknown) => {
     store.set(key, data);
   });
+
+  ipcMain.handle('confirm', async (_, message: string) => {
+    const res = await dialog.showMessageBox({
+      message,
+      type: 'question',
+      buttons: ['Ja', 'Nein'],
+      defaultId: 1,
+    });
+    return res.response === 0;
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

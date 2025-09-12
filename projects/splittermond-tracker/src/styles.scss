@@ -19,7 +19,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+    
 body {
   background-color: global.$background-color;
   overflow-x: hidden;
@@ -74,13 +74,20 @@ a {
 */
 .btn {
   @include global.button-base;
-  min-width: 80px;
   margin: 0 global.$spacing-xs;
-  
+
   &.btn-small {
     padding: 4px 8px;
-    min-width: 40px;
     font-size: 0.9em;
+  }
+
+  &.btn-icon {
+    padding: 6px;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
   
   &.btn-block {
