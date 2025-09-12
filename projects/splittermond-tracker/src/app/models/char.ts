@@ -26,37 +26,37 @@ export type UsageData = Partial<Record<(typeof USAGE_FIELDS)[number], number>>;
 
 export class Char {
   // Character basic info
-  name = '';
-  race = '';
-  level = 1;
+  public name = '';
+  public race = '';
+  public level = 1;
 
   // Attributes
-  charisma = 0;
-  agility = 0;
-  intuition = 0;
-  constitution = 0;
-  mystic = 0;
-  strength = 0;
-  mind = 0;
-  willpower = 0;
+  public charisma = 0;
+  public agility = 0;
+  public intuition = 0;
+  public constitution = 0;
+  public mystic = 0;
+  public strength = 0;
+  public mind = 0;
+  public willpower = 0;
 
   // Additional values
-  additional_splinters = 0;
-  additional_lp = 0;
-  additional_focus = 0;
+  public additional_splinters = 0;
+  public additional_lp = 0;
+  public additional_focus = 0;
 
   // Usage tracking
-  channeled_focus = 0;
-  exhausted_focus = 0;
-  consumed_focus = 0;
+  public channeled_focus = 0;
+  public exhausted_focus = 0;
+  public consumed_focus = 0;
 
-  channeled_lp = 0;
-  exhausted_lp = 0;
-  consumed_lp = 0;
+  public channeled_lp = 0;
+  public exhausted_lp = 0;
+  public consumed_lp = 0;
 
-  channeled_splinters = 0;
-  exhausted_splinters = 0;
-  consumed_splinters = 0;
+  public channeled_splinters = 0;
+  public exhausted_splinters = 0;
+  public consumed_splinters = 0;
 
   // Skills - general
   private _acrobatics = 0;
@@ -108,38 +108,38 @@ export class Char {
   private _watermagic = 0;
   private _windmagic = 0;
 
-  get size_class(): number {
+  public get size_class(): number {
     return RACE_SIZES[this.race] || 5; // Default to human size if race not found
   }
 
   // BASE VALUES
-  get speed(): number {
+  public get speed(): number {
     return this.size_class + this.agility;
   }
 
-  get initiative(): number {
+  public get initiative(): number {
     return 10 - this.intuition;
   }
 
-  get lp(): number {
+  public get lp(): number {
     return this.size_class + this.constitution + this.additional_lp;
   }
 
-  get max_lp(): number {
+  public get max_lp(): number {
     return this.lp * 5;
   }
 
-  get free_lp(): number {
+  public get free_lp(): number {
     return (
       this.max_lp - this.channeled_lp - this.exhausted_lp - this.consumed_lp
     );
   }
 
-  get max_focus(): number {
+  public get max_focus(): number {
     return 2 * (this.mystic + this.willpower) + this.additional_focus;
   }
 
-  get free_focus(): number {
+  public get free_focus(): number {
     return (
       this.max_focus -
       this.channeled_focus -
@@ -148,11 +148,11 @@ export class Char {
     );
   }
 
-  get max_splinters(): number {
+  public get max_splinters(): number {
     return 3 + this.additional_splinters + this.level - 1;
   }
 
-  get free_splinters(): number {
+  public get free_splinters(): number {
     return (
       this.max_splinters -
       this.channeled_splinters -
@@ -161,7 +161,7 @@ export class Char {
     );
   }
 
-  get defense(): number {
+  public get defense(): number {
     return (
       12 +
       this.agility +
@@ -171,202 +171,202 @@ export class Char {
     );
   }
 
-  get mental_resistance(): number {
+  public get mental_resistance(): number {
     return 12 + this.mind + this.willpower + 2 * (this.level - 1);
   }
 
-  get physical_resistance(): number {
+  public get physical_resistance(): number {
     return 12 + this.constitution + this.willpower + 2 * (this.level - 1);
   }
 
   // SKILLS - GENERAL
-  get acrobatics(): number {
+  public get acrobatics(): number {
     return this._acrobatics + this.agility + this.strength;
   }
 
-  get alchemy(): number {
+  public get alchemy(): number {
     return this._alchemy + this.mystic + this.mind;
   }
 
-  get leadership(): number {
+  public get leadership(): number {
     return this._leadership + this.charisma + this.willpower;
   }
 
-  get arcanelore(): number {
+  public get arcanelore(): number {
     return this._arcanelore + this.mystic + this.mind;
   }
 
-  get athletics(): number {
+  public get athletics(): number {
     return this._athletics + this.agility + this.strength;
   }
 
-  get performance(): number {
+  public get performance(): number {
     return this._performance + this.charisma + this.willpower;
   }
 
-  get diplomacy(): number {
+  public get diplomacy(): number {
     return this._diplomacy + this.charisma + this.mind;
   }
 
-  get clscraft(): number {
+  public get clscraft(): number {
     return this._clscraft + this.intuition + this.mind;
   }
 
-  get empathy(): number {
+  public get empathy(): number {
     return this._empathy + this.intuition + this.mind;
   }
 
-  get determination(): number {
+  public get determination(): number {
     return this._determination + this.charisma + this.willpower;
   }
 
-  get dexterity(): number {
+  public get dexterity(): number {
     return this._dexterity + this.charisma + this.agility;
   }
 
-  get history(): number {
+  public get history(): number {
     return this._history + this.mystic + this.mind;
   }
 
-  get craftmanship(): number {
+  public get craftmanship(): number {
     return this._craftmanship + this.constitution + this.mind;
   }
 
-  get heal(): number {
+  public get heal(): number {
     return this._heal + this.intuition + this.mind;
   }
 
-  get stealth(): number {
+  public get stealth(): number {
     return this._stealth + this.agility + this.intuition + 5 - this.size_class;
   }
 
-  get hunting(): number {
+  public get hunting(): number {
     return this._hunting + this.constitution + this.mind;
   }
 
-  get countrylore(): number {
+  public get countrylore(): number {
     return this._countrylore + this.intuition + this.mind;
   }
 
-  get nature(): number {
+  public get nature(): number {
     return this._nature + this.intuition + this.mind;
   }
 
-  get eloquence(): number {
+  public get eloquence(): number {
     return this._eloquence + this.charisma + this.willpower;
   }
 
-  get locksntraps(): number {
+  public get locksntraps(): number {
     return this._locksntraps + this.intuition + this.agility;
   }
 
-  get swim(): number {
+  public get swim(): number {
     return this._swim + this.constitution + this.strength;
   }
 
-  get seafaring(): number {
+  public get seafaring(): number {
     return this._seafaring + this.agility + this.constitution;
   }
 
-  get streetlore(): number {
+  public get streetlore(): number {
     return this._streetlore + this.charisma + this.intuition;
   }
 
-  get animals(): number {
+  public get animals(): number {
     return this._animals + this.charisma + this.agility;
   }
 
-  get survival(): number {
+  public get survival(): number {
     return this._survival + this.intuition + this.constitution;
   }
 
-  get perception(): number {
+  public get perception(): number {
     return this._perception + this.intuition + this.willpower;
   }
 
-  get endurance(): number {
+  public get endurance(): number {
     return this._endurance + this.constitution + this.willpower;
   }
 
   // SKILLS - MAGIC
-  get antimagic(): number {
+  public get antimagic(): number {
     return this._antimagic + this.mystic + this.willpower;
   }
 
-  get controlmagic(): number {
+  public get controlmagic(): number {
     return this._controlmagic + this.mystic + this.willpower;
   }
 
-  get motionmagic(): number {
+  public get motionmagic(): number {
     return this._motionmagic + this.mystic + this.agility;
   }
 
-  get insightmagic(): number {
+  public get insightmagic(): number {
     return this._insightmagic + this.mystic + this.mind;
   }
 
-  get stonemagic(): number {
+  public get stonemagic(): number {
     return this._stonemagic + this.mystic + this.constitution;
   }
 
-  get firemagic(): number {
+  public get firemagic(): number {
     return this._firemagic + this.mystic + this.charisma;
   }
 
-  get healmagic(): number {
+  public get healmagic(): number {
     return this._healmagic + this.mystic + this.charisma;
   }
 
-  get illusionmagic(): number {
+  public get illusionmagic(): number {
     return this._illusionmagic + this.mystic + this.charisma;
   }
 
-  get combatmagic(): number {
+  public get combatmagic(): number {
     return this._combatmagic + this.mystic + this.strength;
   }
 
-  get lightmagic(): number {
+  public get lightmagic(): number {
     return this._lightmagic + this.mystic + this.charisma;
   }
 
-  get naturemagic(): number {
+  public get naturemagic(): number {
     return this._naturemagic + this.mystic + this.charisma;
   }
 
-  get shadowmagic(): number {
+  public get shadowmagic(): number {
     return this._shadowmagic + this.mystic + this.intuition;
   }
 
-  get fatemagic(): number {
+  public get fatemagic(): number {
     return this._fatemagic + this.mystic + this.charisma;
   }
 
-  get protectionmagic(): number {
+  public get protectionmagic(): number {
     return this._protectionmagic + this.mystic + this.charisma;
   }
 
-  get enhancemagic(): number {
+  public get enhancemagic(): number {
     return this._enhancemagic + this.mystic + this.strength;
   }
 
-  get deathmagic(): number {
+  public get deathmagic(): number {
     return this._deathmagic + this.mystic + this.mind;
   }
 
-  get transformationmagic(): number {
+  public get transformationmagic(): number {
     return this._transformationmagic + this.mystic + this.constitution;
   }
 
-  get watermagic(): number {
+  public get watermagic(): number {
     return this._watermagic + this.mystic + this.intuition;
   }
 
-  get windmagic(): number {
+  public get windmagic(): number {
     return this._windmagic + this.mystic + this.mind;
   }
 
   // Method to load character data
-  loadCharacterData(xml: any): void {
+  public loadCharacterData(xml: any): void {
     if (!xml) return;
     const characterData = xml.splimochar;
 
@@ -424,7 +424,7 @@ export class Char {
     }
   }
 
-  setUsageData(data: UsageData): void {
+  public setUsageData(data: UsageData): void {
     for (const field of USAGE_FIELDS) {
       if (data[field] !== undefined) {
         (this as any)[field] = data[field];
@@ -433,7 +433,7 @@ export class Char {
   }
 
   // Get usage data for saving
-  getUsageData(): UsageData {
+  public getUsageData(): UsageData {
     const data: Record<string, number> = {};
     for (const field of USAGE_FIELDS) {
       data[field] = (this as any)[field];

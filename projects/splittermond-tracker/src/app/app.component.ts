@@ -27,7 +27,7 @@ export class AppComponent {
     void this.loadCharacter();
   }
 
-  public async loadCharacter() {
+  public async loadCharacter(): Promise<void> {
     const xmlContent = await window.electron.loadCharacter();
     if (!xmlContent) {
       return;

@@ -18,7 +18,7 @@ export class PointsTableComponent {
 
   private charService = inject(CharacterService);
 
-  public getClass(i: number) {
+  public getClass(i: number): string {
     let curr = this.char()[`consumed_${this.mode()}`];
     if (i < curr) {
       return 'consumed';
@@ -34,31 +34,31 @@ export class PointsTableComponent {
     return 'normal';
   }
 
-  public async minus(value: string) {
+  public async minus(value: string): Promise<void> {
     await this.change(value);
   }
 
-  public async plus(value: string) {
+  public async plus(value: string): Promise<void> {
     await this.change(value, -1);
   }
 
-  public async minus_channeled() {
+  public async minus_channeled(): Promise<void> {
     if (this.mode() === 'splinters') {
       await this.change('k1');
     }
   }
 
-  public async plus_channeled() {
+  public async plus_channeled(): Promise<void> {
     if (this.mode() === 'splinters') {
       await this.change('k1', -1);
     }
   }
 
-  public min(a: number, b: number) {
+  public min(a: number, b: number): number {
     return Math.min(a, b);
   }
 
-  private async change(value: string, factor = 1) {
+  private async change(value: string, factor = 1): Promise<void> {
     try {
       const obj = this.parse(value);
       const update: Partial<Char> = {};

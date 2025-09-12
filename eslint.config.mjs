@@ -30,6 +30,8 @@ export default defineConfig({
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/restrict-plus-operands": [
       "error",
       {
