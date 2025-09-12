@@ -43,12 +43,12 @@ export class PointsTableComponent {
     return 'normal';
   }
 
-  public async minus(value: string): Promise<void> {
-    await this.change(value);
+  public async minus(): Promise<void> {
+    await this.change(this.input().nativeElement.value);
   }
 
-  public async plus(value: string): Promise<void> {
-    await this.change(value, -1);
+  public async plus(): Promise<void> {
+    await this.change(this.input().nativeElement.value, -1);
   }
 
   public async minus_channeled(): Promise<void> {
