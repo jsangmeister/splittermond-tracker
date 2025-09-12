@@ -106,11 +106,15 @@ export class PointsTableComponent {
         const res = /^(?:(k)?(\d+))?(?:v(\d+))?$/.exec(value.toLowerCase());
         if (res) {
           const consumed = parseInt('0' + res[3]);
-          const other = parseInt('0' + res[2]);
+          let other = parseInt('0' + res[2]);
           if (other > 0 && other < consumed) {
             throw new Error(
               'Invalid format: consumed cannot be larger than the first value',
             );
+          }
+          // Special case: allow "v4" as shortcut for "4v4"
+          if (other === 0 && consumed > 0) {
+            other = consumed;
           }
           return {
             [res[1] ? 'channeled' : 'exhausted']: other - consumed,
