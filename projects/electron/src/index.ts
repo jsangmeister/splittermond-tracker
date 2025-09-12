@@ -24,7 +24,9 @@ const createWindow = (): void => {
     : `http://localhost:4200`;
 
   mainWindow.loadURL(startURL);
-  mainWindow.webContents.openDevTools();
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 // This method will be called when Electron has finished
