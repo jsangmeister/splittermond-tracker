@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Char, UsageType } from 'src/app/models/char';
 import { CharacterService } from 'src/app/services/character-service';
 
@@ -17,6 +24,8 @@ export class PointsTableComponent {
   public error = signal<string>('');
 
   private charService = inject(CharacterService);
+
+  private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
   public getClass(i: number): string {
     let curr = this.char()[`consumed_${this.mode()}`];
@@ -74,6 +83,7 @@ export class PointsTableComponent {
       }
       Object.assign(this.char(), update);
       await this.charService.saveCharacterUsage(this.char());
+      this.input().nativeElement.value = '';
     } catch (e: any) {
       this.error.set(e.message);
     }
