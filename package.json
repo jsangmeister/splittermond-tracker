@@ -11,11 +11,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build-electron": "tsc --project projects/electron/tsconfig.json",
+    "watch-electron": "npm run build-electron -- --watch",
     "package": "npm run build-electron && npm run build && electron-forge package",
     "make": "npm run build-electron && npm run build && electron-forge make",
     "publish-app": "npm run build-electron && npm run build && electron-forge publish",
-    "start": "concurrently \"npm run build-electron\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200 && electron-forge start\"",
-    "serve": "concurrently \"npm run build-electron\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200\"",
+    "start": "concurrently \"npm run watch-electron\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200 && electron-forge start\"",
+    "serve": "concurrently \"npm run watch-electron\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development"
   },
