@@ -138,7 +138,10 @@ export class Char {
   }
 
   public get lp_regeneration(): number {
-    return this.constitution * (2 + this.additional_lp_regeneration);
+    return Math.max(
+      1,
+      this.constitution * (2 + this.additional_lp_regeneration),
+    );
   }
 
   public get max_focus(): number {
@@ -155,7 +158,10 @@ export class Char {
   }
 
   public get focus_regeneration(): number {
-    return this.willpower * (2 + this.additional_focus_regeneration);
+    return Math.max(
+      1,
+      this.willpower * (2 + this.additional_focus_regeneration),
+    );
   }
 
   public get max_splinters(): number {
