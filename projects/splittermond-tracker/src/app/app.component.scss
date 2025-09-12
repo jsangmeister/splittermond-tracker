@@ -61,3 +61,13 @@
   align-items: center;
   margin-bottom: global.$spacing-sm;
 }
+
+footer {
+  padding: 5px 10px;
+  width: 100%;
+  text-align: center;
+
+  a {
+    color: darkgray;
+  }
+}

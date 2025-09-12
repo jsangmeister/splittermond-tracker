@@ -62,4 +62,8 @@ export class AppComponent {
       this.char.setUsageData(usageData);
     }
   }
+
+  public showCredits(): void {
+    void window.electron.showCredits();
+  }
 }

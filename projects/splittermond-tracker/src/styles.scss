@@ -72,6 +72,7 @@ img {
 a {
   color: global.$secondary-color;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
