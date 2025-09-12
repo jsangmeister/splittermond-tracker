@@ -1,11 +1,11 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import { readFile, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import Store from 'electron-store';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null;
 
-const store = new Store<any>();
+const store = new Store();
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -23,7 +23,7 @@ const createWindow = (): void => {
     ? `file://${path.join(__dirname, 'splittermond-tracker', 'index.html')}`
     : `http://localhost:4200`;
 
-  mainWindow.loadURL(startURL);
+  void mainWindow.loadURL(startURL);
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
@@ -32,11 +32,11 @@ const createWindow = (): void => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+void app.whenReady().then(() => {
   createWindow();
 
   ipcMain.handle('load-character', async () => {
-    let path: string | undefined = store.get('last-character-path');
+    let path = store.get('last-character-path') as string | undefined;
     if (!path) {
       const { canceled, filePaths } = await dialog.showOpenDialog({});
       if (!canceled) {
@@ -45,17 +45,17 @@ app.whenReady().then(() => {
       }
     }
     if (path) {
-      return readFileSync(path, { encoding: 'utf-8' })
+      return readFileSync(path, { encoding: 'utf-8' });
     }
-  })
+  });
 
-  ipcMain.handle('storage-get', (_, key) => {
+  ipcMain.handle('storage-get', (_, key: string) => {
     return store.get(key);
-  })
+  });
 
-  ipcMain.handle('storage-set', (_, key, data) => {
-    return store.set(key, data);
-  })
+  ipcMain.handle('storage-set', (_, key: string, data: unknown) => {
+    store.set(key, data);
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

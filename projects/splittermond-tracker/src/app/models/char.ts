@@ -1,112 +1,112 @@
 // Splittermond character model
 
 const RACE_SIZES: Record<string, number> = {
-  "gnome": 3,
-  "dwarf": 4,
-  "alben": 5,
-  "human": 5,
-  "varg": 6,
+  gnome: 3,
+  dwarf: 4,
+  alben: 5,
+  human: 5,
+  varg: 6,
 };
 
 const USAGE_FIELDS = [
-  "channeled_focus",
-  "exhausted_focus",
-  "consumed_focus",
-  "channeled_lp",
-  "exhausted_lp",
-  "consumed_lp",
-  "channeled_splinters",
-  "exhausted_splinters",
-  "consumed_splinters",
+  'channeled_focus',
+  'exhausted_focus',
+  'consumed_focus',
+  'channeled_lp',
+  'exhausted_lp',
+  'consumed_lp',
+  'channeled_splinters',
+  'exhausted_splinters',
+  'consumed_splinters',
 ] as const;
 
-export type UsageType = "channeled" | "exhausted" | "consumed";
+export type UsageType = 'channeled' | 'exhausted' | 'consumed';
 
-export type UsageData = { [field in (typeof USAGE_FIELDS)[number]]: number };
+export type UsageData = Partial<Record<(typeof USAGE_FIELDS)[number], number>>;
 
 export class Char {
   // Character basic info
-  name: string = '';
-  race: string = '';
-  level: number = 1;
+  name = '';
+  race = '';
+  level = 1;
 
   // Attributes
-  charisma: number = 0;
-  agility: number = 0;
-  intuition: number = 0;
-  constitution: number = 0;
-  mystic: number = 0;
-  strength: number = 0;
-  mind: number = 0;
-  willpower: number = 0;
+  charisma = 0;
+  agility = 0;
+  intuition = 0;
+  constitution = 0;
+  mystic = 0;
+  strength = 0;
+  mind = 0;
+  willpower = 0;
 
   // Additional values
-  additional_splinters: number = 0;
-  additional_lp: number = 0;
-  additional_focus: number = 0;
+  additional_splinters = 0;
+  additional_lp = 0;
+  additional_focus = 0;
 
   // Usage tracking
-  channeled_focus: number = 0;
-  exhausted_focus: number = 0;
-  consumed_focus: number = 0;
+  channeled_focus = 0;
+  exhausted_focus = 0;
+  consumed_focus = 0;
 
-  channeled_lp: number = 0;
-  exhausted_lp: number = 0;
-  consumed_lp: number = 0;
+  channeled_lp = 0;
+  exhausted_lp = 0;
+  consumed_lp = 0;
 
-  channeled_splinters: number = 0;
-  exhausted_splinters: number = 0;
-  consumed_splinters: number = 0;
+  channeled_splinters = 0;
+  exhausted_splinters = 0;
+  consumed_splinters = 0;
 
   // Skills - general
-  private _acrobatics: number = 0;
-  private _alchemy: number = 0;
-  private _leadership: number = 0;
-  private _arcanelore: number = 0;
-  private _athletics: number = 0;
-  private _performance: number = 0;
-  private _diplomacy: number = 0;
-  private _clscraft: number = 0;
-  private _empathy: number = 0;
-  private _determination: number = 0;
-  private _dexterity: number = 0;
-  private _history: number = 0;
-  private _craftmanship: number = 0;
-  private _heal: number = 0;
-  private _stealth: number = 0;
-  private _hunting: number = 0;
-  private _countrylore: number = 0;
-  private _nature: number = 0;
-  private _eloquence: number = 0;
-  private _locksntraps: number = 0;
-  private _swim: number = 0;
-  private _seafaring: number = 0;
-  private _streetlore: number = 0;
-  private _animals: number = 0;
-  private _survival: number = 0;
-  private _perception: number = 0;
-  private _endurance: number = 0;
+  private _acrobatics = 0;
+  private _alchemy = 0;
+  private _leadership = 0;
+  private _arcanelore = 0;
+  private _athletics = 0;
+  private _performance = 0;
+  private _diplomacy = 0;
+  private _clscraft = 0;
+  private _empathy = 0;
+  private _determination = 0;
+  private _dexterity = 0;
+  private _history = 0;
+  private _craftmanship = 0;
+  private _heal = 0;
+  private _stealth = 0;
+  private _hunting = 0;
+  private _countrylore = 0;
+  private _nature = 0;
+  private _eloquence = 0;
+  private _locksntraps = 0;
+  private _swim = 0;
+  private _seafaring = 0;
+  private _streetlore = 0;
+  private _animals = 0;
+  private _survival = 0;
+  private _perception = 0;
+  private _endurance = 0;
 
   // Skills - magic
-  private _antimagic: number = 0;
-  private _controlmagic: number = 0;
-  private _motionmagic: number = 0;
-  private _insightmagic: number = 0;
-  private _stonemagic: number = 0;
-  private _firemagic: number = 0;
-  private _healmagic: number = 0;
-  private _illusionmagic: number = 0;
-  private _combatmagic: number = 0;
-  private _lightmagic: number = 0;
-  private _naturemagic: number = 0;
-  private _shadowmagic: number = 0;
-  private _fatemagic: number = 0;
-  private _protectionmagic: number = 0;
-  private _enhancemagic: number = 0;
-  private _deathmagic: number = 0;
-  private _transformationmagic: number = 0;
-  private _watermagic: number = 0;
-  private _windmagic: number = 0;
+  private _antimagic = 0;
+  private _controlmagic = 0;
+  private _motionmagic = 0;
+  private _insightmagic = 0;
+  private _stonemagic = 0;
+  private _firemagic = 0;
+  private _healmagic = 0;
+  private _illusionmagic = 0;
+  private _combatmagic = 0;
+  private _lightmagic = 0;
+  private _naturemagic = 0;
+  private _shadowmagic = 0;
+  private _fatemagic = 0;
+  private _protectionmagic = 0;
+  private _enhancemagic = 0;
+  private _deathmagic = 0;
+  private _transformationmagic = 0;
+  private _watermagic = 0;
+  private _windmagic = 0;
 
   get size_class(): number {
     return RACE_SIZES[this.race] || 5; // Default to human size if race not found
@@ -130,7 +130,9 @@ export class Char {
   }
 
   get free_lp(): number {
-    return this.max_lp - this.channeled_lp - this.exhausted_lp - this.consumed_lp;
+    return (
+      this.max_lp - this.channeled_lp - this.exhausted_lp - this.consumed_lp
+    );
   }
 
   get max_focus(): number {
@@ -138,7 +140,12 @@ export class Char {
   }
 
   get free_focus(): number {
-    return this.max_focus - this.channeled_focus - this.exhausted_focus - this.consumed_focus;
+    return (
+      this.max_focus -
+      this.channeled_focus -
+      this.exhausted_focus -
+      this.consumed_focus
+    );
   }
 
   get max_splinters(): number {
@@ -146,11 +153,22 @@ export class Char {
   }
 
   get free_splinters(): number {
-    return this.max_splinters - this.channeled_splinters - this.exhausted_splinters - this.consumed_splinters;
+    return (
+      this.max_splinters -
+      this.channeled_splinters -
+      this.exhausted_splinters -
+      this.consumed_splinters
+    );
   }
 
   get defense(): number {
-    return 12 + this.agility + this.strength + 2 * (5 - this.size_class) + 2 * (this.level - 1);
+    return (
+      12 +
+      this.agility +
+      this.strength +
+      2 * (5 - this.size_class) +
+      2 * (this.level - 1)
+    );
   }
 
   get mental_resistance(): number {
@@ -353,9 +371,9 @@ export class Char {
     const characterData = xml.splimochar;
 
     // Set basic properties
-    this.race = characterData.$.race || '';
+    this.race = characterData.$.race ?? '';
     const ep = parseInt(characterData.$.expinv ?? '0');
-    
+
     // Calculate level based on experience points
     if (ep < 100) {
       this.level = 1;
@@ -375,11 +393,11 @@ export class Char {
     // Set powerrefs (special abilities)
     if (characterData.powerrefs) {
       for (const power of characterData.powerrefs.powerref) {
-        if (power.$.ref === "addsplinter") {
+        if (power.$.ref === 'addsplinter') {
           this.additional_splinters = 2 * parseInt(power.$.count);
-        } else if (power.$.ref === "focuspool") {
+        } else if (power.$.ref === 'focuspool') {
           this.additional_focus = 5 * parseInt(power.$.count);
-        } else if (power.$.ref === "sturdy") {
+        } else if (power.$.ref === 'sturdy') {
           this.additional_lp = parseInt(power.$.count);
         }
       }
@@ -422,4 +440,4 @@ export class Char {
     }
     return data as UsageData;
   }
-} 
+}
