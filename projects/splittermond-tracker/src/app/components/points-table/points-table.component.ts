@@ -43,23 +43,23 @@ export class PointsTableComponent {
     return null;
   }
 
-  public async minus(): Promise<void> {
-    await this.change(this.input().nativeElement.value);
+  public minus(): void {
+    this.change(this.input().nativeElement.value);
   }
 
-  public async plus(): Promise<void> {
-    await this.change(this.input().nativeElement.value, -1);
+  public plus(): void {
+    this.change(this.input().nativeElement.value, -1);
   }
 
-  public async minus_channeled(): Promise<void> {
+  public minus_channeled(): void {
     if (this.mode() === 'splinters') {
-      await this.change('k1');
+      this.change('k1');
     }
   }
 
-  public async plus_channeled(): Promise<void> {
+  public plus_channeled(): void {
     if (this.mode() === 'splinters') {
-      await this.change('k1', -1);
+      this.change('k1', -1);
     }
   }
 
@@ -67,7 +67,7 @@ export class PointsTableComponent {
     return Math.min(a, b);
   }
 
-  private async change(value: string, factor = 1): Promise<void> {
+  private change(value: string, factor = 1): void {
     try {
       const obj = this.parse(value);
       const update: Partial<Char> = {};
@@ -82,8 +82,9 @@ export class PointsTableComponent {
         throw new Error(`Not enough ${this.mode()} remaining`);
       }
       Object.assign(this.char(), update);
-      await this.charService.saveCharacterUsage(this.char());
-      this.input().nativeElement.value = '';
+      if (this.mode() !== 'splinters') {
+        this.input().nativeElement.value = '';
+      }
     } catch (e: any) {
       this.error.set(e.message);
     }

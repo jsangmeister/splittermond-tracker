@@ -11,6 +11,12 @@ declare global {
   }
 }
 
+enum LoadCharacterMode {
+  Default = 0,
+  AlwaysAsk = 1,
+  NeverAsk = 2,
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,12 +24,12 @@ declare global {
   imports: [CommonModule, PointsTableComponent],
 })
 export class AppComponent {
-  public char: Char;
+  public char = new Char();
 
   private charService = inject(CharacterService);
 
   public constructor() {
-    this.char = new Char();
+    void this.loadCharacter(LoadCharacterMode.NeverAsk);
   }
 
   public async reset(): Promise<void> {
@@ -35,36 +41,33 @@ export class AppComponent {
       return;
     }
     this.char.resetUsageData();
-    await this.charService.saveCharacterUsage(this.char);
   }
 
-  public async longRest(): Promise<void> {
+  public longRest(): void {
     this.char.longRest();
-    await this.charService.saveCharacterUsage(this.char);
   }
 
-  public async shortRest(): Promise<void> {
+  public shortRest(): void {
     this.char.shortRest();
-    await this.charService.saveCharacterUsage(this.char);
   }
 
   public async open(): Promise<void> {
-    await this.loadCharacter(true);
+    await this.loadCharacter(LoadCharacterMode.AlwaysAsk);
   }
 
-  private async loadCharacter(force = false): Promise<void> {
-    const xmlContent = await window.electron.loadCharacter(force);
+  private async loadCharacter(mode = LoadCharacterMode.Default): Promise<void> {
+    const xmlContent = await window.electron.loadCharacter(mode);
     if (!xmlContent) {
       return;
     }
     const parser = new xml2js.Parser({ explicitArray: false });
     const result = await parser.parseStringPromise(xmlContent);
-    this.char = new Char();
-    this.char.loadCharacterData(result);
-    const usageData = await this.charService.loadCharacterUsage(this.char.name);
-    if (usageData) {
-      this.char.setUsageData(usageData);
+    const char = await this.charService.createChar(result);
+    if (!char) {
+      console.error('Char could not be created');
+      return;
     }
+    this.char = char;
     const maxPerRow = Math.max(this.char.lp, Math.min(this.char.max_focus, 10));
     const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 105;
     const height = Math.ceil(this.char.max_focus / 10) * 25 + 627;

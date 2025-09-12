@@ -32,6 +32,7 @@ export default defineConfig({
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error',
+    '@typescript-eslint/no-this-alias': 'off',
     '@typescript-eslint/restrict-plus-operands': [
       'error',
       {

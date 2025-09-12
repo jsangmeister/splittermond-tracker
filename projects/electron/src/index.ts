@@ -35,11 +35,17 @@ const createWindow = (): void => {
 void app.whenReady().then(() => {
   createWindow();
 
-  ipcMain.handle('load-character', async (_, force: boolean) => {
-    let path = force
-      ? undefined
-      : (store.get('last-character-path') as string | undefined);
-    if (!path) {
+  /**
+   * 0: default behaviour - open last char if exists, otherwise ask for char file
+   * 1: always ask for char file, ignore last opened char
+   * 2: never ask for char file, open only last char if possible
+   */
+  ipcMain.handle('load-character', async (_, mode: number) => {
+    let path =
+      mode === 1
+        ? undefined
+        : (store.get('last-character-path') as string | undefined);
+    if (!path && mode !== 2) {
       const { canceled, filePaths } = await dialog.showOpenDialog({});
       if (!canceled) {
         path = filePaths[0];
