@@ -2,19 +2,19 @@
 @use '../../../global.scss';
 
 :host {
-    display: flex;
-    gap: global.$spacing-sm;
-    flex-direction: column;
+  display: flex;
+  gap: global.$spacing-sm;
+  flex-direction: column;
 }
 
 .points-container {
-    @include global.flex-container(row, wrap);
-    gap: global.$spacing-xs;
-    width: 270px;
+  @include global.flex-container(row, wrap);
+  gap: global.$spacing-xs;
+  width: 270px;
 }
 
 .margin-right {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .controls {
@@ -23,7 +23,7 @@
 
 .input-group {
   @include global.flex-container(row, nowrap, flex-start, center);
-  
+
   .point-input {
     flex: 1;
     padding: 8px;
@@ -32,17 +32,17 @@
     width: 120px;
     font-size: 14px;
     margin-right: global.$spacing-xs;
-    
+
     &:focus {
-        border-color: global.$primary-color;
-        box-shadow: 0 0 0 2px rgba(global.$primary-color, 0.1);
+      border-color: global.$primary-color;
+      box-shadow: 0 0 0 2px rgba(global.$primary-color, 0.1);
     }
 
     &.hidden {
-        display: none;
+      display: none;
     }
   }
-  
+
   .btn-small {
     min-width: 40px;
     padding: 8px 12px;
@@ -52,53 +52,53 @@
 }
 
 .error {
-    border-width: 2px;
-    border-color: red;
-    border-radius: 5px;
-    padding: 4px 8px;
-    background-color: lightcoral;
-    color: red;
-    width: fit-content;
+  border-width: 2px;
+  border-color: red;
+  border-radius: 5px;
+  padding: 4px 8px;
+  background-color: lightcoral;
+  color: red;
+  width: fit-content;
 }
 
 /* 
 * Point States Styles
 */
 .point-checkbox {
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    border: 1px solid global.$border-light;
-    border-radius: 3px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    pointer-events: none;
-    background-color: white;
-    position: relative;
-    
-    &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        @include global.flex-container(row, nowrap, center, center);
-        font-weight: bold;
-        font-size: 14px;
-        color: black;
-    }
-    
-    &.channeled::before {
-        content: "/";
-        font-size: 16px;
-    }
-    
-    &.exhausted::before {
-        content: "X";
-    }
-    
-    &.consumed::before {
-        content: "⊗";
-    }
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border: 1px solid global.$border-light;
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  background-color: white;
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include global.flex-container(row, nowrap, center, center);
+    font-weight: bold;
+    font-size: 14px;
+    color: black;
+  }
+
+  &.channeled::before {
+    content: '/';
+    font-size: 16px;
+  }
+
+  &.exhausted::before {
+    content: 'X';
+  }
+
+  &.consumed::before {
+    content: '⊗';
+  }
 }

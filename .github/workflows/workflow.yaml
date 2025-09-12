@@ -3,10 +3,10 @@ name: Build & Release on Tag
 on:
   push:
     tags:
-      - '*'   # run whenever any tag is pushed
+      - '*' # run whenever any tag is pushed
 
 permissions:
-  contents: write  # needed to create releases and upload assets
+  contents: write # needed to create releases and upload assets
 
 jobs:
   build:

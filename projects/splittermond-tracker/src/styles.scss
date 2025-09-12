@@ -4,13 +4,16 @@
 /* 
 * Reset Styles
 */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-family: global.$font-family;
   font-size: global.$font-size-base;
@@ -19,7 +22,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-    
+
 body {
   background-color: global.$background-color;
   overflow-x: hidden;
@@ -29,7 +32,12 @@ body {
   padding: global.$spacing-lg;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: bold;
   line-height: 1.2;
   margin-bottom: global.$spacing-md;
@@ -45,7 +53,8 @@ p {
   margin-bottom: global.$spacing-sm;
 }
 
-button, input {
+button,
+input {
   font: inherit;
   outline: none;
 }
@@ -63,7 +72,7 @@ img {
 a {
   color: global.$secondary-color;
   text-decoration: none;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -89,13 +98,13 @@ a {
       height: 20px;
     }
   }
-  
+
   &.btn-block {
     display: block;
     width: 100%;
     margin: global.$spacing-sm 0;
   }
-  
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -105,7 +114,7 @@ a {
 .btn-group {
   @include global.flex-container(row, wrap, center, center);
   margin: global.$spacing-sm 0;
-  
+
   .btn {
     margin: global.$spacing-xs;
   }

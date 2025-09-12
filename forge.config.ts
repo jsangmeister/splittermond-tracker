@@ -9,11 +9,7 @@ const config: ForgeConfig = {
     asar: true,
   },
   rebuildConfig: {},
-  makers: [
-    new MakerDeb({}),
-    new MakerAppImage({}),
-    new MakerSquirrel({}),
-  ],
+  makers: [new MakerDeb({}), new MakerAppImage({}), new MakerSquirrel({})],
   plugins: [new AutoUnpackNativesPlugin({})],
   publishers: [],
 };

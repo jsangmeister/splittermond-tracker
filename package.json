@@ -21,7 +21,7 @@
     "watch": "ng build --watch --configuration development",
     "prepare": "husky",
     "lint": "eslint --fix",
-    "format": "prettier --write **/*.*"
+    "format": "prettier --write **/*.{js,mjs,ts,html,scss,json,yaml}"
   },
   "private": true,
   "dependencies": {
@@ -71,7 +71,7 @@
     "singleQuote": true
   },
   "lint-staged": {
-    "*.{ts,js,mjs,json,html}": [
+    "*.{js,mjs,ts,html,scss,json,yaml}": [
       "npm run lint --",
       "prettier --write"
     ]

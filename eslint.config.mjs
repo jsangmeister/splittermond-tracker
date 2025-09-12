@@ -1,10 +1,10 @@
-import eslint from "@eslint/js";
-import { defineConfig } from "eslint/config";
-import tseslint from "typescript-eslint";
-import unusedImports from "eslint-plugin-unused-imports";
+import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default defineConfig({
-  files: ["projects/**/*.ts"],
+  files: ['projects/**/*.ts'],
   languageOptions: {
     parserOptions: {
       projectService: true,
@@ -14,38 +14,38 @@ export default defineConfig({
   plugins: {
     eslint,
     tseslint,
-    "unused-imports": unusedImports,
+    'unused-imports': unusedImports,
   },
   extends: [
-    "eslint/recommended",
-    "tseslint/strictTypeChecked",
-    "tseslint/stylisticTypeChecked",
+    'eslint/recommended',
+    'tseslint/strictTypeChecked',
+    'tseslint/stylisticTypeChecked',
   ],
   rules: {
-    "no-prototype-builtins": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unsafe-assignment": "off",
-    "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-unsafe-argument": "off",
-    "@typescript-eslint/no-unsafe-return": "off",
-    "@typescript-eslint/explicit-function-return-type": "error",
-    "@typescript-eslint/explicit-member-accessibility": "error",
-    "@typescript-eslint/restrict-plus-operands": [
-      "error",
+    'no-prototype-builtins': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/explicit-member-accessibility': 'error',
+    '@typescript-eslint/restrict-plus-operands': [
+      'error',
       {
         allowAny: true,
       },
     ],
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "warn",
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
       {
-        vars: "all",
-        varsIgnorePattern: "^_",
-        args: "after-used",
-        argsIgnorePattern: "^_",
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
       },
     ],
   },

@@ -18,9 +18,7 @@
             "polyfills": ["zone.js"],
             "tsConfig": "projects/splittermond-tracker/tsconfig.app.json",
             "allowedCommonJsDependencies": ["xml2js"],
-            "assets": [
-              "projects/splittermond-tracker/src/assets"
-            ],
+            "assets": ["projects/splittermond-tracker/src/assets"],
             "styles": [
               "@angular/material/prebuilt-themes/purple-green.css",
               "projects/splittermond-tracker/src/styles.scss"
