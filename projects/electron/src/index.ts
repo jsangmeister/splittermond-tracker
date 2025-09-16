@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { updateElectronApp } from 'update-electron-app';
+import { isSquirrelStartup } from 'electron-squirrel-startup';
 import { readFileSync } from 'fs';
 import Store from 'electron-store';
 import path from 'path';
@@ -8,6 +9,9 @@ let mainWindow: BrowserWindow | null;
 
 const store = new Store();
 
+if (isSquirrelStartup) {
+  app.quit();
+}
 updateElectronApp();
 
 const createWindow = (): void => {
