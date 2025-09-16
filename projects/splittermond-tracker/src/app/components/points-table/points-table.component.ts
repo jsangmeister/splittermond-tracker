@@ -1,14 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  inject,
-  input,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, ElementRef, input, signal, viewChild } from '@angular/core';
 import { Char, UsageType } from 'src/app/models/char';
-import { CharacterService } from 'src/app/services/character-service';
 
 @Component({
   selector: 'points-table',
@@ -17,13 +9,13 @@ import { CharacterService } from 'src/app/services/character-service';
   imports: [CommonModule],
 })
 export class PointsTableComponent {
+  public readonly Math = Math;
+
   public mode = input.required<'focus' | 'lp' | 'splinters'>();
 
   public char = input.required<Char>();
 
   public error = signal<string>('');
-
-  private charService = inject(CharacterService);
 
   private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
@@ -61,10 +53,6 @@ export class PointsTableComponent {
     if (this.mode() === 'splinters') {
       this.change('k1', -1);
     }
-  }
-
-  public min(a: number, b: number): number {
-    return Math.min(a, b);
   }
 
   private change(value: string, factor = 1): void {

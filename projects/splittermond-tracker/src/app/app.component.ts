@@ -68,7 +68,10 @@ export class AppComponent {
       return;
     }
     this.char = char;
-    const maxPerRow = Math.max(this.char.lp, Math.min(this.char.max_focus, 10));
+    const maxPerRow = Math.max(
+      this.char.lp + 1,
+      Math.min(this.char.max_focus, 10),
+    );
     const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 105;
     const height = Math.ceil(this.char.max_focus / 10) * 25 + 627;
     window.electron.setWindowSize(width, height);

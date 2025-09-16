@@ -1,12 +1,23 @@
-@let perRow = mode() === 'lp' ? char().lp : min(10, char()[`max_${mode()}`]);
-@let width = `${perRow * 25 + ((perRow - (perRow % 5)) / 5) * 10 - 5}px`;
+@let perRow =
+  mode() === 'lp' ? char().lp : Math.min(10, char()[`max_${mode()}`]);
+@let width =
+  `${perRow * 25 + ((perRow - (perRow % 5)) / 5) * 10 - 5 + (this.mode() === 'lp' ? 25 : 0)}px`;
 <div class="points-container" [style.width]="width">
   @let total = char()[`max_${mode()}`];
   @for (_ of [].constructor(total); let i = $index; track i) {
+    @let cls = getClass(i);
+    @if (mode() === 'lp' && i % perRow === 0) {
+      <span
+        class="dmg-mod"
+        [class.active]="i > 0 && cls && !getClass(i + perRow)"
+      >
+        {{ -Math.floor(Math.pow(2, i / perRow - 1)) }}
+      </span>
+    }
     <input
       type="checkbox"
       class="point-checkbox"
-      [class]="getClass(i)"
+      [class]="cls"
       [class.margin-right]="(i % perRow) % 5 === 4"
     />
   }

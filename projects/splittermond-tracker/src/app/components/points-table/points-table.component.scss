@@ -10,7 +10,6 @@
 .points-container {
   @include global.flex-container(row, wrap);
   gap: global.$spacing-xs;
-  width: 270px;
 }
 
 .margin-right {
@@ -100,5 +99,17 @@
 
   &.consumed::before {
     content: '⊗';
+  }
+}
+
+.dmg-mod {
+  width: 14px;
+  color: darkgrey;
+  text-align: right;
+  margin-right: 5px;
+
+  &.active {
+    color: red;
+    font-weight: bold;
   }
 }
