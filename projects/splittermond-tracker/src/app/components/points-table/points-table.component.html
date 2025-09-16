@@ -34,6 +34,7 @@
       (input)="error.set('')"
       (keydown.enter)="minus()"
       (keydown.shift.enter)="plus()"
+      (keydown.control.enter)="convert_channeled()"
     />
     <button
       class="btn btn-icon damage"
@@ -49,7 +50,9 @@
     >
       <img src="assets/{{ mode() }}_plus.png" />
     </button>
-    <!-- <button class="btn btn-small" (click)="revert()">Revert</button> -->
+    @if (mode() === 'focus') {
+      <button class="btn btn-icon" (click)="convert_channeled()">k->e</button>
+    }
   </div>
 </div>
 @if (error()) {

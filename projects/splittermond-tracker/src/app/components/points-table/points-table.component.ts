@@ -55,6 +55,20 @@ export class PointsTableComponent {
     }
   }
 
+  public convert_channeled(): void {
+    if (this.mode() === 'focus') {
+      let value = parseInt(this.input().nativeElement.value);
+      if (isNaN(value)) {
+        this.error.set('Invalid input.');
+        return;
+      }
+      value = Math.min(value, this.char()[`channeled_${this.mode()}`]);
+      this.char()[`channeled_${this.mode()}`] -= value;
+      this.char()[`exhausted_${this.mode()}`] += value;
+      this.input().nativeElement.value = '';
+    }
+  }
+
   private change(value: string, factor = 1): void {
     try {
       const obj = this.parse(value);
