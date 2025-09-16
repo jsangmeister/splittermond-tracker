@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }}-artifacts
-          path: out/make/**/*.{deb,AppImage,exe}
+          path: out/make/**/*.{AppImage,exe}
           if-no-files-found: error
           retention-days: 7
 

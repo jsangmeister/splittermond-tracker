@@ -7,6 +7,10 @@
     "name": "Joshua Sangmeister",
     "email": "joshua.sangmeister@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsangmeister/splittermond-tracker.git"
+  },
   "license": "GNU",
   "main": "dist/index.js",
   "scripts": {
@@ -40,6 +44,7 @@
     "stream": "^0.0.3",
     "timers": "^0.1.1",
     "tslib": "^2.3.0",
+    "update-electron-app": "^3.1.1",
     "xml2js": "^0.6.2",
     "zone.js": "~0.15.0"
   },
@@ -48,7 +53,6 @@
     "@angular/cli": "^19.2.9",
     "@angular/compiler-cli": "^19.2.8",
     "@electron-forge/cli": "^7.8.0",
-    "@electron-forge/maker-deb": "^7.8.0",
     "@electron-forge/maker-squirrel": "^7.9.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.8.0",
     "@eslint/js": "^9.35.0",

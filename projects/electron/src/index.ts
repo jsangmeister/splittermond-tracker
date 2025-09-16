@@ -1,4 +1,5 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { updateElectronApp } from 'update-electron-app';
 import { readFileSync } from 'fs';
 import Store from 'electron-store';
 import path from 'path';
@@ -6,6 +7,8 @@ import path from 'path';
 let mainWindow: BrowserWindow | null;
 
 const store = new Store();
+
+updateElectronApp();
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -18,7 +21,6 @@ const createWindow = (): void => {
     autoHideMenuBar: true,
   });
 
-  // This should be the name of your angular project instead of `splittermond-tracker`
   const startURL = app.isPackaged
     ? `file://${path.join(__dirname, 'splittermond-tracker', 'index.html')}`
     : `http://localhost:4200`;
@@ -111,6 +113,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
