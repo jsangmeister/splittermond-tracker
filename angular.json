@@ -11,9 +11,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/splittermond-tracker",
+            "outputPath": {
+              "base": "dist/splittermond-tracker",
+              "browser": ""
+            },
             "index": "projects/splittermond-tracker/src/index.html",
             "polyfills": ["zone.js"],
             "tsConfig": "projects/splittermond-tracker/tsconfig.app.json",
@@ -24,7 +27,7 @@
               "projects/splittermond-tracker/src/styles.scss"
             ],
             "scripts": [],
-            "main": "projects/splittermond-tracker/src/main.ts"
+            "browser": "projects/splittermond-tracker/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -47,7 +50,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "splittermond-tracker:build:production"

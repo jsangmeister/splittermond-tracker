@@ -2,7 +2,7 @@
   "name": "splittermond-tracker",
   "productName": "splittermond-tracker",
   "description": "Tracks your Splittermond character stats",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": {
     "name": "Joshua Sangmeister",
     "email": "joshua.sangmeister@gmail.com"
@@ -16,13 +16,12 @@
   "scripts": {
     "build-electron": "tsc --project projects/electron/tsconfig.json",
     "watch-electron": "npm run build-electron -- --watch",
-    "package": "npm run build-electron && npm run build && electron-forge package",
-    "make": "npm run build-electron && npm run build && electron-forge make",
-    "publish-app": "npm run build-electron && npm run build && electron-forge publish",
-    "start": "concurrently \"npm run watch-electron\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200 && electron-forge start\"",
-    "serve": "concurrently \"npm run watch-electron\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200\"",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "build-angular": "ng build",
+    "watch-angular": "npm run build-angular -- --watch --configuration development",
+    "build": "npm run build-electron && npm run build-angular",
+    "postinstall": "electron-builder install-app-deps",
+    "make": "npm run build && electron-builder -wl",
+    "start": "concurrently -k \"npm run watch-electron -- --preserveWatchOutput\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200 && electron .\"",
     "prepare": "husky",
     "lint": "eslint --fix",
     "format": "prettier --write **/*.{js,mjs,ts,html,scss,json,yaml}"
@@ -39,34 +38,30 @@
     "@angular/platform-browser": "^19.2.8",
     "@angular/platform-browser-dynamic": "^19.2.8",
     "@angular/router": "^19.2.8",
-    "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^8.2.0",
+    "electron-updater": "^6.6.2",
+    "events": "^3.3.0",
     "rxjs": "~7.8.2",
     "stream": "^0.0.3",
     "timers": "^0.1.1",
     "tslib": "^2.3.0",
-    "update-electron-app": "^3.1.1",
     "xml2js": "^0.6.2",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.9",
+    "@angular/build": "^19.2.9",
     "@angular/cli": "^19.2.9",
     "@angular/compiler-cli": "^19.2.8",
-    "@electron-forge/cli": "^7.8.0",
-    "@electron-forge/maker-squirrel": "^7.9.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.8.0",
     "@eslint/js": "^9.35.0",
-    "@reforged/maker-appimage": "^5.0.0",
     "@types/xml2js": "^0.4.14",
     "concurrently": "^9.1.2",
     "electron": "^35.2.1",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.35.0",
     "eslint-plugin-unused-imports": "^4.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
     "prettier": "^3.6.2",
-    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.43.0",
@@ -80,5 +75,21 @@
       "npm run lint --",
       "prettier --write"
     ]
+  },
+  "build": {
+    "appId": "com.github.jsangmeister.splittermondtracker",
+    "asarUnpack": [
+      "dist",
+      "projects"
+    ],
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
