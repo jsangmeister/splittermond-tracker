@@ -10,8 +10,12 @@ permissions:
 
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-latest
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -32,7 +36,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: ${{ runner.os }}-artifacts
           path: |
             build/latest*.yml
             build/*.exe

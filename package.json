@@ -20,7 +20,7 @@
     "watch-angular": "npm run build-angular -- --watch --configuration development",
     "build": "npm run build-electron && npm run build-angular",
     "postinstall": "electron-builder install-app-deps",
-    "make": "npm run build && electron-builder -wl",
+    "make": "npm run build && electron-builder",
     "start": "concurrently -k \"npm run watch-electron -- --preserveWatchOutput\" \"ng serve splittermond-tracker\" \"wait-on http://localhost:4200 && electron .\"",
     "prepare": "husky",
     "lint": "eslint --fix",
