@@ -75,6 +75,17 @@
   margin-bottom: global.$spacing-sm;
 }
 
+history {
+  margin-bottom: global.$spacing-lg;
+}
+
+textarea {
+  display: block;
+  resize: none;
+  width: -webkit-fill-available;
+  padding: 2px 5px;
+}
+
 footer {
   padding: 5px 10px;
   width: 100%;

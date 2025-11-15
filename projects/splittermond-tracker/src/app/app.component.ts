@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
@@ -27,6 +27,8 @@ enum LoadCharacterMode {
 })
 export class AppComponent {
   public char = new Char();
+
+  public noteHeight = signal('100px');
 
   private charService = inject(CharacterService);
   private historyService = inject(HistoryService);
@@ -81,9 +83,11 @@ export class AppComponent {
       this.char.lp + 1,
       Math.min(this.char.max_focus, 10),
     );
+    const focusRows = Math.ceil(this.char.max_focus / 10);
     const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 405;
-    const height = Math.ceil(this.char.max_focus / 10) * 25 + 627;
+    const height = focusRows * 25 + 627;
     window.electron.setWindowSize(width, height);
+    this.noteHeight.set(focusRows * 25 + 121 + 'px');
   }
 
   public showCredits(): void {

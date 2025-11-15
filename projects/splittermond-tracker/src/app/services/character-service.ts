@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ChangeData, Char, USAGE_FIELDS, UsageData } from '../models/char';
 import { Observable, Subject } from 'rxjs';
 
+type UsageDataWithNote = UsageData & { note?: string };
+
 /**
  * Service to handle character-related operations like parsing XML character sheets
  * and saving/loading character state.
@@ -84,6 +86,7 @@ export class CharacterService {
           char[field] = data[field];
         }
       }
+      char.note = data.note ?? '';
     }
 
     char.onChange$.subscribe(this._onChange$);
@@ -103,8 +106,10 @@ export class CharacterService {
    * Save the current state of a character.
    */
   private async saveCharacterUsage(char: Char): Promise<void> {
+    const data: UsageDataWithNote = char.getUsageData();
+    data.note = char.note;
     try {
-      await this.store.set(`character:${char.name}`, char.getUsageData());
+      await this.store.set(`character:${char.name}`, data);
     } catch (error) {
       console.error('Error saving character state:', error);
       throw new Error(
@@ -116,7 +121,9 @@ export class CharacterService {
   /**
    * Load the saved state of a character.
    */
-  private loadCharacterUsage(name: string): Promise<UsageData | undefined> {
+  private loadCharacterUsage(
+    name: string,
+  ): Promise<UsageDataWithNote | undefined> {
     try {
       return this.store.get(`character:${name}`);
     } catch (error) {

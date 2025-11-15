@@ -88,6 +88,8 @@ export class Char {
   public exhausted_splinters = 0;
   public consumed_splinters = 0;
 
+  public note = '';
+
   // Skills - general
   private _acrobatics = 0;
   private _alchemy = 0;

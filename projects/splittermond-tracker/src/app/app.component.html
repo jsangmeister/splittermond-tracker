@@ -51,6 +51,12 @@
       </div>
     </div>
     <history />
+    <textarea
+      #note
+      [style.height]="noteHeight()"
+      (change)="char.note = note.value"
+      >{{ char.note }}</textarea
+    >
   </div>
 </div>
 <footer>
