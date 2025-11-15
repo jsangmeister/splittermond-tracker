@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Char, USAGE_FIELDS, UsageData } from '../models/char';
+import { ChangeData, Char, USAGE_FIELDS, UsageData } from '../models/char';
+import { Observable, Subject } from 'rxjs';
 
 /**
  * Service to handle character-related operations like parsing XML character sheets
@@ -10,6 +11,9 @@ import { Char, USAGE_FIELDS, UsageData } from '../models/char';
 })
 export class CharacterService {
   private store = window.electron.storage;
+
+  private _onChange$ = new Subject<ChangeData>();
+  public onChange$: Observable<ChangeData> = this._onChange$;
 
   public async createChar(xml: any): Promise<Char | undefined> {
     if (!xml) return;
@@ -81,6 +85,8 @@ export class CharacterService {
         }
       }
     }
+
+    char.onChange$.subscribe(this._onChange$);
 
     const _this = this;
     const proxy = new Proxy(char, {

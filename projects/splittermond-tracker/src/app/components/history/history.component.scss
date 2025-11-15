@@ -1,0 +1,21 @@
+@use 'sass:color';
+@use '../../../global.scss';
+
+:host {
+  display: block;
+  width: 400px;
+  height: 308px;
+  background-color: global.$background-color;
+  border-radius: global.$spacing-xs;
+  padding: global.$spacing-xs global.$spacing-sm;
+  border: 1px solid global.$border-light;
+  overflow-y: scroll;
+}
+
+.current {
+  font-weight: bold;
+}
+
+.future {
+  color: global.$text-muted;
+}

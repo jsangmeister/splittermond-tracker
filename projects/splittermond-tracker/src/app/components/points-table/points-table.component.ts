@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, input, signal, viewChild } from '@angular/core';
-import { Char, UsageType } from 'src/app/models/char';
+import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
 
 @Component({
   selector: 'points-table',
@@ -63,16 +63,21 @@ export class PointsTableComponent {
         return;
       }
       value = Math.min(value, this.char()[`channeled_${this.mode()}`]);
-      this.char()[`channeled_${this.mode()}`] -= value;
-      this.char()[`exhausted_${this.mode()}`] += value;
+      this.char().update(
+        {
+          [`channeled_${this.mode()}`]: -value,
+          [`exhausted_${this.mode()}`]: value,
+        },
+        Action.CONVERT_CHANNELED,
+      );
       this.input().nativeElement.value = '';
     }
   }
 
-  private change(value: string, factor = 1): void {
+  private change(input: string, factor: 1 | -1 = 1): void {
     try {
-      const obj = this.parse(value);
-      const update: Partial<Char> = {};
+      const obj = this.parse(input);
+      const update: UsageData = {};
       let total = 0;
       for (const [type, amount] of Object.entries(obj)) {
         const field = `${type as UsageType}_${this.mode()}` as const;
@@ -83,7 +88,8 @@ export class PointsTableComponent {
       if (total > this.char()[`free_${this.mode()}`]) {
         throw new Error(`Not enough ${this.mode()} remaining`);
       }
-      Object.assign(this.char(), update);
+      const action = `${factor === 1 ? 'SPEND' : 'RESTORE'}_${this.mode().toUpperCase()}`;
+      this.char().update(update, Action[action as keyof typeof Action], input);
       if (this.mode() !== 'splinters') {
         this.input().nativeElement.value = '';
       }

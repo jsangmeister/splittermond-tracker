@@ -2,16 +2,26 @@
 @use '../global.scss';
 
 .container {
-  @include global.flex-container(column);
-  max-width: 800px;
+  @include global.flex-container(row);
+  width: fit-content;
   margin: 0 auto;
   background-color: global.$container-bg;
   padding: global.$spacing-lg;
   border-radius: global.$border-radius;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .character-container {
+    @include global.flex-container(column);
+    padding-right: global.$spacing-md;
+    border-right: 1px solid global.$border-color;
+  }
+
+  .side-container {
+    padding-left: global.$spacing-md;
+  }
 }
 
-.character-info {
+.top-row {
   margin-bottom: global.$spacing-md;
   padding-bottom: global.$spacing-md;
   border-bottom: 1px solid global.$border-color;
@@ -33,10 +43,13 @@
 }
 
 .tracker {
-  margin-bottom: global.$spacing-lg;
   padding: global.$spacing-md;
   border-radius: global.$spacing-xs;
-  background-color: color.adjust(global.$background-color, $lightness: -2%);
+  background-color: global.$background-color;
+
+  &:not(:last-child) {
+    margin-bottom: global.$spacing-lg;
+  }
 }
 
 .tracker-title {

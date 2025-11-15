@@ -84,7 +84,10 @@ a {
 */
 .btn {
   @include global.button-base;
-  margin: 0 global.$spacing-xs;
+
+  &:not(:first-child) {
+    margin-left: global.$spacing-sm;
+  }
 
   &.btn-small {
     padding: 4px 8px;

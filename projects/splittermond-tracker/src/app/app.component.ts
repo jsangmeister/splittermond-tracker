@@ -4,6 +4,8 @@ import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
 import { PointsTableComponent } from './components/points-table/points-table.component';
+import { HistoryComponent } from './components/history/history.component';
+import { HistoryService } from './services/history.service';
 
 declare global {
   interface Window {
@@ -21,23 +23,22 @@ enum LoadCharacterMode {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [CommonModule, PointsTableComponent],
+  imports: [CommonModule, PointsTableComponent, HistoryComponent],
 })
 export class AppComponent {
   public char = new Char();
 
   private charService = inject(CharacterService);
+  private historyService = inject(HistoryService);
 
   public constructor() {
     void this.loadCharacter(LoadCharacterMode.NeverAsk);
   }
 
   public async reset(): Promise<void> {
-    if (
-      !(await window.electron.confirm(
-        'Bist du sicher, dass du alle verbrauchten Punkte zurücksetzen willst?',
-      ))
-    ) {
+    const prompt =
+      'Bist du sicher, dass du alle verbrauchten Punkte zurücksetzen willst?';
+    if (!(await window.electron.confirm(prompt))) {
       return;
     }
     this.char.resetUsageData();
@@ -49,6 +50,14 @@ export class AppComponent {
 
   public shortRest(): void {
     this.char.shortRest();
+  }
+
+  public undo(): void {
+    this.historyService.undo();
+  }
+
+  public redo(): void {
+    this.historyService.redo();
   }
 
   public async open(): Promise<void> {
@@ -72,7 +81,7 @@ export class AppComponent {
       this.char.lp + 1,
       Math.min(this.char.max_focus, 10),
     );
-    const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 105;
+    const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 405;
     const height = Math.ceil(this.char.max_focus / 10) * 25 + 627;
     window.electron.setWindowSize(width, height);
   }

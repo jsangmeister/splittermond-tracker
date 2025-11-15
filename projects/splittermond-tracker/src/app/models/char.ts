@@ -1,4 +1,4 @@
-// Splittermond character model
+import { Observable, Subject } from 'rxjs';
 
 const RACE_SIZES: Record<string, number> = {
   gnome: 3,
@@ -22,9 +22,37 @@ export const USAGE_FIELDS = [
 
 export type UsageType = 'channeled' | 'exhausted' | 'consumed';
 
-export type UsageData = Partial<Record<(typeof USAGE_FIELDS)[number], number>>;
+export type FullUsageData = Record<(typeof USAGE_FIELDS)[number], number>;
+
+export type UsageData = Partial<FullUsageData>;
+
+export enum Action {
+  SPEND_LP = 1,
+  RESTORE_LP,
+  SPEND_FOCUS,
+  RESTORE_FOCUS,
+  SPEND_SPLINTERS,
+  RESTORE_SPLINTERS,
+  CONVERT_CHANNELED,
+  SHORT_REST,
+  LONG_REST,
+  RESET,
+  HISTORY,
+}
+
+export interface ChangeData {
+  char: Char;
+  before: FullUsageData;
+  after: UsageData;
+  action: Action;
+  info?: string;
+}
 
 export class Char {
+  // Observables
+  private _onChange$ = new Subject<ChangeData>();
+  public onChange$: Observable<ChangeData> = this._onChange$;
+
   // Character basic info
   public name = '';
   public race = '';
@@ -381,35 +409,53 @@ export class Char {
     return this._windmagic + this.mystic + this.mind;
   }
 
+  public update(update: UsageData, action: Action, info?: string): void {
+    const before = this.getUsageData();
+    Object.assign(this, update);
+    if (action !== Action.HISTORY) {
+      this._onChange$.next({
+        char: this,
+        before,
+        after: update,
+        action,
+        info,
+      });
+    }
+  }
+
   // Get usage data for saving
-  public getUsageData(): UsageData {
-    const data: Record<string, number> = {};
+  public getUsageData(): FullUsageData {
+    const data: UsageData = {};
     for (const field of USAGE_FIELDS) {
       data[field] = this[field];
     }
-    return data as UsageData;
+    return data as FullUsageData;
   }
 
   public resetUsageData(): void {
+    const update: UsageData = {};
     for (const field of USAGE_FIELDS) {
-      this[field] = 0;
+      update[field] = 0;
     }
+    this.update(update, Action.RESET);
   }
 
   public shortRest(): void {
+    const update: UsageData = {};
     for (const type of ['lp', 'focus'] as const) {
-      this[`exhausted_${type}`] = 0;
+      update[`exhausted_${type}`] = 0;
     }
+    this.update(update, Action.SHORT_REST);
   }
 
   public longRest(): void {
+    const update: UsageData = {};
     for (const type of ['lp', 'focus'] as const) {
-      this[`exhausted_${type}`] = this[`channeled_${type}`] = 0;
-      console.log(type, this[`consumed_${type}`], this[`${type}_regeneration`]);
-      this[`consumed_${type}`] -= Math.min(
-        this[`consumed_${type}`],
-        this[`${type}_regeneration`],
-      );
+      update[`exhausted_${type}`] = update[`channeled_${type}`] = 0;
+      update[`consumed_${type}`] =
+        this[`consumed_${type}`] -
+        Math.min(this[`consumed_${type}`], this[`${type}_regeneration`]);
     }
+    this.update(update, Action.LONG_REST);
   }
 }
