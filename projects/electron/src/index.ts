@@ -1,12 +1,11 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { readFileSync } from 'fs';
-import Store from 'electron-store';
 import path from 'path';
+import os from 'os';
 import { autoUpdater } from 'electron-updater';
+import { store, StoreKey } from './store';
 
 let mainWindow: BrowserWindow | null;
-
-const store = new Store();
 
 if (app.isPackaged) {
   void autoUpdater.checkForUpdatesAndNotify();
@@ -45,19 +44,29 @@ void app.whenReady().then(() => {
    * 2: never ask for char file, open only last char if possible
    */
   ipcMain.handle('load-character', async (_, mode: number) => {
-    let path =
-      mode === 1
-        ? undefined
-        : (store.get('last-character-path') as string | undefined);
-    if (!path && mode !== 2) {
-      const { canceled, filePaths } = await dialog.showOpenDialog({});
+    let filePath =
+      mode === 1 ? undefined : store.get(StoreKey.LAST_CHARACTER_PATH);
+    if (!filePath && mode !== 2) {
+      const defaultPath =
+        process.platform === 'win32'
+          ? os.homedir()
+          : path.join(
+              os.homedir(),
+              'rpgframework',
+              'player',
+              'myself',
+              'splittermond',
+            );
+      const { canceled, filePaths } = await dialog.showOpenDialog({
+        defaultPath,
+      });
       if (!canceled) {
-        path = filePaths[0];
-        store.set('last-character-path', path);
+        filePath = filePaths[0];
+        store.set(StoreKey.LAST_CHARACTER_PATH, filePath);
       }
     }
-    if (path) {
-      return readFileSync(path, { encoding: 'utf-8' });
+    if (filePath) {
+      return readFileSync(filePath, { encoding: 'utf-8' });
     }
   });
 
