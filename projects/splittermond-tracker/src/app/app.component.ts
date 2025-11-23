@@ -85,7 +85,7 @@ export class AppComponent {
     );
     const focusRows = Math.ceil(this.char.max_focus / 10);
     const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 405;
-    const height = focusRows * 25 + 627;
+    const height = focusRows * 25 + 635;
     window.electron.setWindowSize(width, height);
     this.noteHeight.set(focusRows * 25 + 121 + 'px');
   }
