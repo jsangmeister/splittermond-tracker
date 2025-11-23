@@ -1,15 +1,42 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, input, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'points-table',
   templateUrl: './points-table.component.html',
   styleUrls: ['./points-table.component.scss'],
-  imports: [CommonModule],
+  imports: [CommonModule, MatTooltipModule],
 })
 export class PointsTableComponent {
   public readonly Math = Math;
+
+  public readonly MINUS_TOOLTIP = computed(() =>
+    this.mode() === 'splinters'
+      ? 'Splitterpunkt ausgeben (Rechtsklick: kanalisiert)'
+      : this.mode() == 'focus'
+        ? 'Fokus ausgeben'
+        : 'Schaden nehmen',
+  );
+
+  public readonly PLUS_TOOLTIP = computed(() =>
+    this.mode() === 'splinters'
+      ? 'Splitterpunkt wiederherstellen (Rechtsklick: kanalisiert)'
+      : (this.mode() == 'focus'
+          ? 'Fokus wiederherstellen'
+          : 'Lebenspunkte heilen') + ' (Shift+Enter)',
+  );
+
+  public readonly CONVERT_CHANNELED_TOOLTIP =
+    'Kanalisierte Fokuspunkte erschöpfen (Strg+Enter)';
 
   public mode = input.required<'focus' | 'lp' | 'splinters'>();
 

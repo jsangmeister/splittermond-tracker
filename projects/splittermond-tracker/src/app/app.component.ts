@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
@@ -23,15 +24,42 @@ enum LoadCharacterMode {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [CommonModule, PointsTableComponent, HistoryComponent],
+  imports: [
+    CommonModule,
+    PointsTableComponent,
+    HistoryComponent,
+    MatTooltipModule,
+  ],
 })
 export class AppComponent {
-  public char = new Char();
-
-  public noteHeight = signal('100px');
-
   private charService = inject(CharacterService);
   private historyService = inject(HistoryService);
+
+  public SHORT_REST_TOOLTIP = computed(
+    () => `
+Verschnaufpause (min. 30min): regeneriert alle erschöpften Fokus- und Lebenspunkte
+  `,
+  );
+
+  public LONG_REST_TOOLTIP = computed(
+    () => `
+Ruhepause (min. 6h):
+- beendet alle kanalisierten Zauber
+- regeneriert alle erschöpften Fokus- und Lebenspunkte 
+- regeneriert ${this.char().lp_regeneration} (KON * ${2 + this.char().additional_lp_regeneration}) verzehrte Lebenspunkte
+- regeneriert ${this.char().focus_regeneration} (WIL * ${2 + this.char().additional_focus_regeneration}) verzehrte Fokuspunkte
+  `,
+  );
+
+  public char = signal(new Char());
+
+  public disableUndo = computed(() => this.historyService.current() <= 0);
+
+  public disableRedo = computed(
+    () => this.historyService.current() >= this.historyService.history().length,
+  );
+
+  public noteHeight = signal('100px');
 
   public constructor() {
     void this.loadCharacter(LoadCharacterMode.NeverAsk);
@@ -43,15 +71,15 @@ export class AppComponent {
     if (!(await window.electron.confirm(prompt))) {
       return;
     }
-    this.char.resetUsageData();
+    this.char().resetUsageData();
   }
 
   public longRest(): void {
-    this.char.longRest();
+    this.char().longRest();
   }
 
   public shortRest(): void {
-    this.char.shortRest();
+    this.char().shortRest();
   }
 
   public undo(): void {
@@ -78,12 +106,9 @@ export class AppComponent {
       console.error('Char could not be created');
       return;
     }
-    this.char = char;
-    const maxPerRow = Math.max(
-      this.char.lp + 1,
-      Math.min(this.char.max_focus, 10),
-    );
-    const focusRows = Math.ceil(this.char.max_focus / 10);
+    this.char.set(char);
+    const maxPerRow = Math.max(char.lp + 1, Math.min(char.max_focus, 10));
+    const focusRows = Math.ceil(char.max_focus / 10);
     const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 405;
     const height = focusRows * 25 + 635;
     window.electron.setWindowSize(width, height);

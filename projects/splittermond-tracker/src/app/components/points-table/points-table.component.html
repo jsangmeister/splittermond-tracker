@@ -40,6 +40,7 @@
       class="btn btn-icon damage"
       (click)="minus()"
       (contextmenu)="minus_channeled()"
+      [matTooltip]="MINUS_TOOLTIP()"
     >
       <img src="assets/{{ mode() }}_minus.png" />
     </button>
@@ -47,11 +48,18 @@
       class="btn btn-icon heal"
       (click)="plus()"
       (contextmenu)="plus_channeled()"
+      [matTooltip]="PLUS_TOOLTIP()"
     >
       <img src="assets/{{ mode() }}_plus.png" />
     </button>
     @if (mode() === 'focus') {
-      <button class="btn btn-icon" (click)="convert_channeled()">k->e</button>
+      <button
+        class="btn btn-icon"
+        (click)="convert_channeled()"
+        [matTooltip]="CONVERT_CHANNELED_TOOLTIP"
+      >
+        k->e
+      </button>
     }
   </div>
 </div>
