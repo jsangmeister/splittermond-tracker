@@ -15,12 +15,15 @@ export class HistoryComponent {
 
   public constructor() {
     effect(() => {
-      const c = this.historyService.current();
-      if (c === this.historyService.history().length) {
-        this.elementRef.nativeElement.scrollBy(0, Infinity);
-      } else {
-        this.elementRef.nativeElement.scroll(0, (c - 5) * 20);
-      }
+      const currentPos = this.historyService.current();
+      const historyLength = this.historyService.history().length;
+      setTimeout(() => {
+        if (currentPos === historyLength) {
+          this.elementRef.nativeElement.scrollBy(0, Infinity);
+        } else {
+          this.elementRef.nativeElement.scroll(0, (currentPos - 5) * 20);
+        }
+      }, 0);
     });
   }
 }

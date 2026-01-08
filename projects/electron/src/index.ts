@@ -1,7 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { readFileSync } from 'fs';
 import path from 'path';
-import os from 'os';
 import { autoUpdater } from 'electron-updater';
 import { store, StoreKey } from './store';
 
