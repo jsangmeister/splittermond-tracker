@@ -10,6 +10,8 @@ let mainWindow: BrowserWindow | null;
 if (app.isPackaged) {
   void autoUpdater.checkForUpdatesAndNotify();
 }
+// force file dialog version to support defaultPath on Linux
+app.commandLine.appendSwitch('xdg-portal-required-version', '4');
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -49,20 +51,31 @@ void app.whenReady().then(() => {
     if (!filePath && mode !== 2) {
       const defaultPath =
         process.platform === 'win32'
-          ? os.homedir()
+          ? app.getPath('home')
           : path.join(
-              os.homedir(),
+              app.getPath('home'),
               'rpgframework',
               'player',
               'myself',
               'splittermond',
             );
-      const { canceled, filePaths } = await dialog.showOpenDialog({
-        defaultPath,
-      });
-      if (!canceled) {
-        filePath = filePaths[0];
-        store.set(StoreKey.LAST_CHARACTER_PATH, filePath);
+      while (true) {
+        const { canceled, filePaths } = await dialog.showOpenDialog({
+          defaultPath,
+          filters: [{ name: 'Genesis-Charakterdatei', extensions: ['xml'] }],
+        });
+        if (!canceled) {
+          if (path.basename(filePaths[0]) === 'index.xml') {
+            await dialog.showMessageBox({
+              message:
+                'Bitte wähle die Charakterdatei und nicht die index.xml-Datei aus.',
+            });
+            continue;
+          }
+          filePath = filePaths[0];
+          store.set(StoreKey.LAST_CHARACTER_PATH, filePath);
+        }
+        break;
       }
     }
     if (filePath) {

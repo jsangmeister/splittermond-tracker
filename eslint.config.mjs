@@ -33,6 +33,10 @@ export default defineConfig({
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error',
     '@typescript-eslint/no-this-alias': 'off',
+    '@typescript-eslint/no-unnecessary-condition': [
+      'error',
+      { allowConstantLoopConditions: true },
+    ],
     '@typescript-eslint/restrict-plus-operands': [
       'error',
       {
