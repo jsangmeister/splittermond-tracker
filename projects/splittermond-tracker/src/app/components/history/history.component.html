@@ -1,8 +1,8 @@
-@for (entry of historyService.history(); track entry.time) {
+@for (entry of history(); track entry.time) {
   <div
     class="entry"
-    [class.future]="$index >= historyService.current()"
-    [class.current]="$index === historyService.current() - 1"
+    [class.future]="$index >= current()"
+    [class.current]="$index === current() - 1"
   >
     <span>[{{ entry.time | date: 'HH:mm:ss' }}] {{ entry.message }}</span>
   </div>

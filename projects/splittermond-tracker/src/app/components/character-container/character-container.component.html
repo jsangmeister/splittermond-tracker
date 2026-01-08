@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="character-container">
+    <div class="top-row">
+      <div class="character-name" id="character-name">{{ char().name }}</div>
+      <div class="actions">
+        <!-- <button
+          class="btn btn-icon"
+          (click)="open()"
+          matTooltip="Character öffnen"
+        >
+          <img src="assets/folder.png" />
+        </button> -->
+      </div>
+    </div>
+
+    <div>Splitterpunkte:</div>
+    <points-table class="splinters-table" [char]="char()" mode="splinters" />
+
+    <div class="tracker">
+      <div class="tracker-title">
+        <div>Lebenspunkte ({{ char().free_lp }}/{{ char().max_lp }})</div>
+        <button
+          class="btn btn-icon"
+          (click)="longRest()"
+          [matTooltip]="LONG_REST_TOOLTIP()"
+          matTooltipPosition="above"
+        >
+          <img src="assets/sleep.png" />
+        </button>
+      </div>
+      <points-table [char]="char()" mode="lp" />
+    </div>
+
+    <div class="tracker">
+      <div class="tracker-title">
+        <div>Fokuspunkte ({{ char().free_focus }}/{{ char().max_focus }})</div>
+        <button
+          class="btn btn-icon"
+          (click)="shortRest()"
+          [matTooltip]="SHORT_REST_TOOLTIP()"
+          matTooltipPosition="above"
+        >
+          <img src="assets/rest.png" />
+        </button>
+      </div>
+      <points-table [char]="char()" mode="focus" />
+    </div>
+  </div>
+  <div class="side-container">
+    <div class="top-row">
+      <div class="actions-left">
+        <button
+          class="btn btn-text-icon"
+          (click)="historyComponent().undo()"
+          [disabled]="!historyComponent().undoPossible()"
+          matTooltip="Letzte Änderung rückgängig machen"
+          [matTooltipDisabled]="!historyComponent().undoPossible()"
+        >
+          <!-- <img src="assets/reset.png" /> -->
+          &lt;-
+        </button>
+        <button
+          class="btn btn-text-icon"
+          (click)="historyComponent().redo()"
+          [disabled]="!historyComponent().redoPossible()"
+          matTooltip="Letzte rückgängig gemachte Änderung wiederholen"
+          [matTooltipDisabled]="!historyComponent().redoPossible()"
+        >
+          -&gt;
+          <!-- <img src="assets/reset.png" /> -->
+        </button>
+      </div>
+      <div class="action-right">
+        <button
+          class="btn btn-icon"
+          (click)="reset()"
+          matTooltip="Alle Daten des Characters zurücksetzen"
+        >
+          <img src="assets/reset.png" />
+        </button>
+      </div>
+    </div>
+    <history [char]="char()" />
+    <textarea
+      #note
+      [style.height.px]="noteHeight()"
+      (change)="char().note = note.value"
+      >{{ char().note }}</textarea
+    >
+  </div>
+</div>
