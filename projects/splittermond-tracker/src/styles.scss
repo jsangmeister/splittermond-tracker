@@ -139,3 +139,11 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+.multiline-tooltip {
+  white-space: pre-line;
+}
+
+.wide-tooltip .mat-mdc-tooltip-surface {
+  max-width: 300px;
+}

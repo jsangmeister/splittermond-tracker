@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+  MatTooltipDefaultOptions,
+  MatTooltipModule,
+} from '@angular/material/tooltip';
 import {
   Component,
   effect,
@@ -30,6 +34,14 @@ enum LoadCharacterMode {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [CommonModule, MatTooltipModule, CharacterContainerComponent],
+  providers: [
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+      useValue: {
+        tooltipClass: 'multiline-tooltip',
+      } as MatTooltipDefaultOptions,
+    },
+  ],
 })
 export class AppComponent implements OnInit {
   private charService = inject(CharacterService);

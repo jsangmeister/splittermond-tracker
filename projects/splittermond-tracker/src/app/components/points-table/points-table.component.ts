@@ -23,7 +23,7 @@ export class PointsTableComponent {
 
   public readonly MINUS_TOOLTIP = computed(() =>
     this.mode() === 'splinters'
-      ? 'Splitterpunkt ausgeben (Rechtsklick: kanalisiert)'
+      ? 'Splitterpunkt ausgeben\n(Rechtsklick: kanalisiert)'
       : this.mode() == 'focus'
         ? 'Fokus ausgeben'
         : 'Schaden nehmen',
@@ -31,14 +31,14 @@ export class PointsTableComponent {
 
   public readonly PLUS_TOOLTIP = computed(() =>
     this.mode() === 'splinters'
-      ? 'Splitterpunkt wiederherstellen (Rechtsklick: kanalisiert)'
+      ? 'Splitterpunkt wiederherstellen\n(Rechtsklick: kanalisiert)'
       : (this.mode() == 'focus'
           ? 'Fokus wiederherstellen'
-          : 'Lebenspunkte heilen') + ' (Shift+Enter)',
+          : 'Lebenspunkte heilen') + '\n(Shift+Enter)',
   );
 
   public readonly CONVERT_CHANNELED_TOOLTIP =
-    'Kanalisierte Fokuspunkte erschöpfen (Strg+Enter)';
+    'Kanalisierte Fokuspunkte\nerschöpfen (Strg+Enter)';
 
   public mode = input.required<'focus' | 'lp' | 'splinters'>();
 
