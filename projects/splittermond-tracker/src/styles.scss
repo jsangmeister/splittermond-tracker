@@ -25,11 +25,12 @@ body {
 
 body {
   background-color: global.$background-color;
-  overflow-x: hidden;
+  overflow: hidden;
   user-select: none; // Prevent text selection in desktop app
   font-size: global.$font-size-base;
   margin: 0;
   padding: global.$spacing-lg;
+  padding-bottom: 0;
 }
 
 h1,
@@ -101,6 +102,12 @@ a {
       width: 20px;
       height: 20px;
     }
+  }
+
+  &.btn-text-icon {
+    padding: 0;
+    width: 32px;
+    height: 32px;
   }
 
   &.btn-block {

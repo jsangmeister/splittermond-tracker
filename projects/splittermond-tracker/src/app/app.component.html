@@ -50,7 +50,7 @@
     <div class="top-row">
       <div class="actions-left">
         <button
-          class="btn btn-icon"
+          class="btn btn-text-icon"
           (click)="undo()"
           matTooltip="Letzte Änderung rückgängig machen"
         >
@@ -58,7 +58,7 @@
           &lt;-
         </button>
         <button
-          class="btn btn-icon"
+          class="btn btn-text-icon"
           (click)="redo()"
           [disabled]="disableUndo()"
           matTooltip="Letzte rückgängig gemachte Änderung wiederholen"
@@ -83,7 +83,7 @@
     <history />
     <textarea
       #note
-      [style.height]="noteHeight()"
+      [style.height.px]="noteHeight()"
       (change)="char().note = note.value"
       >{{ char().note }}</textarea
     >

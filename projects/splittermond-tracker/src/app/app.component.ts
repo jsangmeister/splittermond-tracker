@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, viewChildren } from '@angular/core';
 import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
@@ -31,9 +31,11 @@ enum LoadCharacterMode {
     MatTooltipModule,
   ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private charService = inject(CharacterService);
   private historyService = inject(HistoryService);
+
+  private pointsTables = viewChildren(PointsTableComponent);
 
   public SHORT_REST_TOOLTIP = computed(
     () => `
@@ -59,9 +61,9 @@ Ruhepause (min. 6h):
     () => this.historyService.current() >= this.historyService.history().length,
   );
 
-  public noteHeight = signal('100px');
+  public noteHeight = signal(100);
 
-  public constructor() {
+  public ngOnInit(): void {
     void this.loadCharacter(LoadCharacterMode.NeverAsk);
   }
 
@@ -96,23 +98,32 @@ Ruhepause (min. 6h):
 
   private async loadCharacter(mode = LoadCharacterMode.Default): Promise<void> {
     const xmlContent = await window.electron.loadCharacter(mode);
-    if (!xmlContent) {
-      return;
+    if (xmlContent) {
+      const parser = new xml2js.Parser({ explicitArray: false });
+      const result = await parser.parseStringPromise(xmlContent);
+      const char = await this.charService.createChar(result);
+      if (!char) {
+        console.error('Char could not be created');
+      } else {
+        this.char.set(char);
+      }
     }
-    const parser = new xml2js.Parser({ explicitArray: false });
-    const result = await parser.parseStringPromise(xmlContent);
-    const char = await this.charService.createChar(result);
-    if (!char) {
-      console.error('Char could not be created');
-      return;
-    }
-    this.char.set(char);
-    const maxPerRow = Math.max(char.lp + 1, Math.min(char.max_focus, 10));
-    const focusRows = Math.ceil(char.max_focus / 10);
-    const width = maxPerRow * 25 + Math.floor(maxPerRow / 5) * 10 + 405;
-    const height = focusRows * 25 + 635;
+    // calculate width
+    const leftColumnWidth = Math.max(
+      288, // width of focus input field + buttons
+      ...this.pointsTables().map((table) => table.width()),
+    );
+    // left column + middle margin + right column + 2 * outside margin + 2* body padding
+    const width = leftColumnWidth + 31 + 400 + 40 + 40;
+
+    // calculate height
+    const focusRows = Math.ceil(this.char().max_focus / 10);
+    // body top padding + title row + margin + splinters row + margin + lp row + margin + focus row + 2 * outside margin + credits
+    const height =
+      20 + 34 + 31 + 56 + 10 + 247 + 20 + 127 + (focusRows * 25 - 5) + 40 + 34;
+    console.log(`Setting window size to ${width}x${height}`);
     window.electron.setWindowSize(width, height);
-    this.noteHeight.set(focusRows * 25 + 121 + 'px');
+    this.noteHeight.set(focusRows * 25 + 121);
   }
 
   public showCredits(): void {

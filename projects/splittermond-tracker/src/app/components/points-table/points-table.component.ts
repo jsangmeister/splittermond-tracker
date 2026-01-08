@@ -10,6 +10,8 @@ import {
 import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+const CHECKBOX_WIDTH = 25; // Width of the checkbox in pixels, including margin
+
 @Component({
   selector: 'points-table',
   templateUrl: './points-table.component.html',
@@ -43,6 +45,20 @@ export class PointsTableComponent {
   public char = input.required<Char>();
 
   public error = signal<string>('');
+
+  public perRow = computed(() =>
+    this.mode() === 'lp'
+      ? this.char().lp
+      : Math.min(10, this.char()[`max_${this.mode()}`]),
+  );
+
+  public width = computed(
+    () =>
+      this.perRow() * CHECKBOX_WIDTH +
+      ((this.perRow() - (this.perRow() % 5)) / 5) * 10 -
+      5 +
+      (this.mode() === 'lp' ? CHECKBOX_WIDTH : 0),
+  );
 
   private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
