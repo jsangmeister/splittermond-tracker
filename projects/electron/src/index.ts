@@ -1,5 +1,5 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import path from 'path';
 import { autoUpdater } from 'electron-updater';
 import WinState from 'electron-win-state';
@@ -40,46 +40,43 @@ const createWindow = (): void => {
 void app.whenReady().then(() => {
   createWindow();
 
-  /**
-   * 0: default behaviour - open last char if exists, otherwise ask for char file
-   * 1: always ask for char file, ignore last opened char
-   * 2: never ask for char file, open only last char if possible
-   */
-  ipcMain.handle('load-character', async (_, mode: number) => {
-    let filePath =
-      mode === 1 ? undefined : store.get(StoreKey.LAST_CHARACTER_PATH);
-    if (!filePath && mode !== 2) {
-      const defaultPath =
-        process.platform === 'win32'
-          ? app.getPath('home')
-          : path.join(
-              app.getPath('home'),
-              'rpgframework',
-              'player',
-              'myself',
-              'splittermond',
-            );
-      while (true) {
+  ipcMain.handle('get-characters', async () => {
+    let basePath =
+      store.get(StoreKey.BASE_CHARACTER_PATH) ??
+      path.join(app.getPath('home'), 'rpgframework', 'player', 'myself');
+    while (true) {
+      const files = existsSync(basePath)
+        ? readdirSync(basePath, { withFileTypes: true, recursive: true })
+        : [];
+      const contents = [];
+      for (const file of files) {
+        if (
+          file.isFile() &&
+          file.name.endsWith('.xml') &&
+          file.name !== 'index.xml'
+        ) {
+          const fullPath = path.join(file.parentPath, file.name);
+          contents.push({
+            path: fullPath,
+            content: readFileSync(fullPath, { encoding: 'utf-8' }),
+          });
+        }
+      }
+      if (contents.length === 0) {
+        await dialog.showMessageBox({
+          message: `Im Verzeichnis "${basePath}" wurden keine Charakterdateien gefunden. Bitte wähle den Ordner aus, in dem sich deine Charakterdateien befinden.`,
+        });
         const { canceled, filePaths } = await dialog.showOpenDialog({
-          defaultPath,
-          filters: [{ name: 'Genesis-Charakterdatei', extensions: ['xml'] }],
+          defaultPath: app.getPath('home'),
+          properties: ['openDirectory'],
         });
         if (!canceled) {
-          if (path.basename(filePaths[0]) === 'index.xml') {
-            await dialog.showMessageBox({
-              message:
-                'Bitte wähle die Charakterdatei und nicht die index.xml-Datei aus.',
-            });
-            continue;
-          }
-          filePath = filePaths[0];
-          store.set(StoreKey.LAST_CHARACTER_PATH, filePath);
+          basePath = filePaths[0];
+          store.set(StoreKey.BASE_CHARACTER_PATH, basePath);
         }
-        break;
+      } else {
+        return contents;
       }
-    }
-    if (filePath) {
-      return readFileSync(filePath, { encoding: 'utf-8' });
     }
   });
 

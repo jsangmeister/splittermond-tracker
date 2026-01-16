@@ -57,6 +57,7 @@ export class Char {
   public name = '';
   public race = '';
   public level = 1;
+  public path = '';
 
   // Attributes
   public charisma = 0;

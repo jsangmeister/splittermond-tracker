@@ -1,9 +1,11 @@
 import Store from 'electron-store';
 
 export enum StoreKey {
+  BASE_CHARACTER_PATH = 'base-character-path',
   LAST_CHARACTER_PATH = 'last-character-path',
 }
 
-export type StoreType = Record<StoreKey, string> & Record<string, any>;
+export type StoreType = Record<StoreKey, string | undefined> &
+  Record<string, any>;
 
 export const store = new Store<StoreType>();

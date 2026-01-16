@@ -17,9 +17,10 @@ export class CharacterService {
   private _onChange$ = new Subject<ChangeData>();
   public onChange$: Observable<ChangeData> = this._onChange$;
 
-  public async createChar(xml: any): Promise<Char | undefined> {
+  public async createChar(xml: any, path: string): Promise<Char | undefined> {
     if (!xml) return;
     const char = new Char();
+    char.path = path;
     const characterData = xml.splimochar;
 
     // Set basic properties
@@ -125,7 +126,9 @@ export class CharacterService {
     name: string,
   ): Promise<UsageDataWithNote | undefined> {
     try {
-      return this.store.get(`character:${name}`);
+      return this.store.get(`character:${name}`) as Promise<
+        UsageDataWithNote | undefined
+      >;
     } catch (error) {
       console.error('Error loading character state:', error);
       throw new Error(

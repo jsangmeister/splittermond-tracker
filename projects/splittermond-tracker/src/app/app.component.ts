@@ -10,7 +10,7 @@ import {
 } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
@@ -18,14 +18,16 @@ import { CharacterContainerComponent } from './components/character-container/ch
 
 declare global {
   interface Window {
-    electron: any;
+    electron: {
+      getCharacters: () => Promise<{ path: string; content: string }[]>;
+      confirm: (message: string) => Promise<boolean>;
+      storage: {
+        get: (key: string) => Promise<unknown>;
+        set: (key: string, data: unknown) => Promise<void>;
+      };
+      showCredits: () => Promise<void>;
+    };
   }
-}
-
-enum LoadCharacterMode {
-  Default = 0,
-  AlwaysAsk = 1,
-  NeverAsk = 2,
 }
 
 @Component({
@@ -57,34 +59,63 @@ enum LoadCharacterMode {
 export class AppComponent implements OnInit {
   private charService = inject(CharacterService);
 
-  protected char = signal<Char | undefined>(undefined);
+  protected chars = signal<Char[]>([]);
 
-  private charComponent = viewChild(CharacterContainerComponent);
+  protected characters: Promise<Char[]> = window.electron
+    .getCharacters()
+    .then(async (res) =>
+      (
+        await Promise.all(
+          res.map(
+            async ({ path, content }) =>
+              await this.loadCharacter(content, path),
+          ),
+        )
+      ).filter((c) => c !== undefined),
+    );
 
-  public ngOnInit(): void {
-    void this.loadCharacter(LoadCharacterMode.NeverAsk);
+  private parser = new xml2js.Parser({ explicitArray: false });
+
+  public async ngOnInit(): Promise<void> {
+    const characters = await this.characters;
+    const lastCharacters = (await window.electron.storage.get(
+      'last-characters',
+    )) as string[] | undefined;
+    if (lastCharacters) {
+      this.chars.set(characters.filter((c) => lastCharacters.includes(c.path)));
+    }
   }
 
-  public close(): void {
-    this.char.set(undefined);
+  public async close(char: Char): Promise<void> {
+    this.chars.update((chars) => chars.filter((c) => c !== char));
+    await window.electron.storage.set(
+      'last-characters',
+      this.chars().map((c) => c.path),
+    );
   }
 
   public async open(): Promise<void> {
-    await this.loadCharacter(LoadCharacterMode.AlwaysAsk);
+    const characters = await this.characters;
+    const newChars = characters.filter((c) => !this.chars().includes(c));
+    if (newChars.length > 0) {
+      this.chars.update((chars) => chars.concat(newChars[0]));
+      await window.electron.storage.set(
+        'last-characters',
+        this.chars().map((c) => c.path),
+      );
+    }
   }
 
-  private async loadCharacter(mode = LoadCharacterMode.Default): Promise<void> {
-    const xmlContent = await window.electron.loadCharacter(mode);
-    if (xmlContent) {
-      const parser = new xml2js.Parser({ explicitArray: false });
-      const result = await parser.parseStringPromise(xmlContent);
-      const char = await this.charService.createChar(result);
-      if (!char) {
-        console.error('Char could not be created');
-      } else {
-        this.char.set(char);
-      }
+  private async loadCharacter(
+    xmlContent: string,
+    path: string,
+  ): Promise<Char | undefined> {
+    const result = await this.parser.parseStringPromise(xmlContent);
+    const char = await this.charService.createChar(result, path);
+    if (!char) {
+      console.error('Failed to create character from path:', path);
     }
+    return char;
   }
 
   public showCredits(): void {
