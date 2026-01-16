@@ -15,12 +15,12 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "esnext",
+    "module": "esnext",
     "useDefineForClassFields": false,
-    "lib": ["ES2022", "dom"]
+    "lib": ["esnext", "dom"]
   },
   "angularCompilerOptions": {
     "allowSyntheticDefaultImports": true,
