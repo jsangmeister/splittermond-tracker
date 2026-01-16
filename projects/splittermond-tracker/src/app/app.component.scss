@@ -25,9 +25,9 @@ mat-tab-group {
 
   ::ng-deep .mat-mdc-tab-header-pagination {
     border-bottom-style: solid;
-    border-bottom-width: var(--mat-tab-header-divider-height, 1px);
+    border-bottom-width: var(--mat-tab-divider-height, 1px);
     border-bottom-color: var(
-      --mat-tab-header-divider-color,
+      --mat-tab-divider-color,
       var(--mat-sys-surface-variant)
     );
   }
@@ -46,9 +46,9 @@ mat-tab-group {
   width: 45px;
   height: 49px;
   border-bottom-style: solid;
-  border-bottom-width: var(--mat-tab-header-divider-height, 1px);
+  border-bottom-width: var(--mat-tab-divider-height, 1px);
   border-bottom-color: var(
-    --mat-tab-header-divider-color,
+    --mat-tab-divider-color,
     var(--mat-sys-surface-variant)
   );
 
