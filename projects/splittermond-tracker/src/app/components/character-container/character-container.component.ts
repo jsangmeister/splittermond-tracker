@@ -45,37 +45,6 @@ Ruhepause (min. 6h):
 
   public char = input.required<Char>();
 
-  public height = computed(() => {
-    // body top padding + title row + margin + splinters row + margin + lp row + margin + focus row + 2 * outside margin + credits
-    const height =
-      20 +
-      34 +
-      31 +
-      56 +
-      10 +
-      247 +
-      20 +
-      127 +
-      (this.focusRows() * 25 - 5) +
-      40 +
-      34;
-    return height;
-  });
-
-  public width = computed(() => {
-    const leftColumnWidth = Math.max(
-      288, // width of focus input field + buttons
-      ...this.pointsTables().map((table) => table.width()),
-    );
-    // left column + middle margin + right column + 2 * outside margin + 2 * body padding
-    const width = leftColumnWidth + 31 + 400 + 40 + 40;
-    return width;
-  });
-
-  protected noteHeight = computed(() => this.focusRows() * 25 + 121);
-
-  private focusRows = computed(() => Math.ceil(this.char().max_focus / 10));
-
   protected async reset(): Promise<void> {
     const prompt =
       'Bist du sicher, dass du alle verbrauchten Punkte zurücksetzen willst?';

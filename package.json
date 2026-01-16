@@ -24,7 +24,8 @@
     "start": "concurrently -k \"npm run watch-electron -- --preserveWatchOutput\" \"ng serve splittermond-tracker\" \"sleep 5 && electron .\"",
     "prepare": "husky",
     "lint": "eslint --fix",
-    "format": "prettier --write **/*.{js,mjs,ts,html,scss,json,yaml}"
+    "format": "prettier --write **/*.{js,mjs,ts,html,scss,json,yaml}",
+    "clear-data": "rm -rf ~/.config/splittermond-tracker/"
   },
   "private": true,
   "dependencies": {

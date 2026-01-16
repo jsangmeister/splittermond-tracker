@@ -1,6 +1,30 @@
-@if (char(); as char) {
-  <character-container [char]="char" />
-}
-<footer>
-  <a (click)="showCredits()">© Credits</a>
-</footer>
+<div class="main">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+    @if (char(); as char) {
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="tab-label">{{ char.name }}</div>
+          <button mat-icon-button class="tab-close-button" (click)="close()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </ng-template>
+        <character-container [char]="char" />
+      </mat-tab>
+    }
+  </mat-tab-group>
+  <div class="add-tab-button-container">
+    <button mat-icon-button class="add-tab-button" (click)="open()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  @if (!char()) {
+    <div class="no-char-text">
+      Kein Charakter ausgewählt. Klicke den "+"-Button, um einen zu öffnen!
+    </div>
+  }
+
+  <footer>
+    <a (click)="showCredits()">© Credits</a>
+  </footer>
+</div>

@@ -5,13 +5,13 @@ import {
   MatTooltipModule,
 } from '@angular/material/tooltip';
 import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-  signal,
-  viewChild,
-} from '@angular/core';
+  MAT_TABS_CONFIG,
+  MatTabsConfig,
+  MatTabsModule,
+} from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
@@ -33,13 +33,26 @@ enum LoadCharacterMode {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [CommonModule, MatTooltipModule, CharacterContainerComponent],
+  imports: [
+    CommonModule,
+    MatTooltipModule,
+    MatTabsModule,
+    MatIconModule,
+    MatButtonModule,
+    CharacterContainerComponent,
+  ],
   providers: [
     {
       provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
       useValue: {
         tooltipClass: 'multiline-tooltip',
       } as MatTooltipDefaultOptions,
+    },
+    {
+      provide: MAT_TABS_CONFIG,
+      useValue: {
+        animationDuration: '0ms',
+      } as MatTabsConfig,
     },
   ],
 })
@@ -50,19 +63,16 @@ export class AppComponent implements OnInit {
 
   private charComponent = viewChild(CharacterContainerComponent);
 
-  public constructor() {
-    effect(() => {
-      const width = this.charComponent()?.width();
-      const height = this.charComponent()?.height();
-      if (width && height) {
-        console.log(`Setting window size to ${width}x${height}`);
-        window.electron.setWindowSize(width, height);
-      }
-    });
-  }
-
   public ngOnInit(): void {
     void this.loadCharacter(LoadCharacterMode.NeverAsk);
+  }
+
+  public close(): void {
+    this.char.set(undefined);
+  }
+
+  public async open(): Promise<void> {
+    await this.loadCharacter(LoadCharacterMode.AlwaysAsk);
   }
 
   private async loadCharacter(mode = LoadCharacterMode.Default): Promise<void> {

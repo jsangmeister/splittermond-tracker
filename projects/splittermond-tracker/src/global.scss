@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use '@angular/material' as mat;
 
 // Colors
 $primary-color: #d95c14;
@@ -24,6 +25,35 @@ $font-family: 'Roboto', Arial, sans-serif;
 $font-size-base: 16px;
 $font-size-small: 0.85em;
 $font-size-xsmall: 0.8em;
+
+:root {
+  @include mat.theme(
+    (
+      color: mat.$orange-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
+  @include mat.tabs-overrides(
+    (
+      active-indicator-color: $primary-color,
+      active-focus-indicator-color: $primary-color,
+      active-hover-indicator-color: $primary-color,
+      active-label-text-color: $text-color,
+      active-focus-label-text-color: $text-color,
+      active-hover-label-text-color: $text-color,
+      inactive-label-text-color: $text-color,
+      inactive-focus-label-text-color: $text-color,
+      inactive-hover-label-text-color: $text-color,
+    )
+  );
+  @include mat.icon-button-overrides(
+    (
+      icon-color: $text-color,
+      focus-state-layer-opacity: 0,
+    )
+  );
+}
 
 @mixin flex-container(
   $direction: row,

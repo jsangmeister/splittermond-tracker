@@ -22,10 +22,7 @@
             "tsConfig": "projects/splittermond-tracker/tsconfig.app.json",
             "allowedCommonJsDependencies": ["xml2js"],
             "assets": ["projects/splittermond-tracker/src/assets"],
-            "styles": [
-              "@angular/material/prebuilt-themes/cyan-orange.css",
-              "projects/splittermond-tracker/src/styles.scss"
-            ],
+            "styles": ["projects/splittermond-tracker/src/styles.scss"],
             "scripts": [],
             "browser": "projects/splittermond-tracker/src/main.ts"
           },

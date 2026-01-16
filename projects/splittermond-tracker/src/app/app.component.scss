@@ -1,3 +1,78 @@
+@use '../global.scss';
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-tab-group {
+  flex-grow: 1;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  ::ng-deep mat-tab-header {
+    margin-right: 45px;
+    height: 49px;
+  }
+
+  ::ng-deep .mat-mdc-tab-header-pagination {
+    border-bottom-style: solid;
+    border-bottom-width: var(--mat-tab-header-divider-height, 1px);
+    border-bottom-color: var(
+      --mat-tab-header-divider-color,
+      var(--mat-sys-surface-variant)
+    );
+  }
+
+  ::ng-deep .mat-mdc-tab-body-wrapper {
+    height: 100%;
+  }
+}
+
+.add-tab-button-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 1px;
+  right: 1px;
+  width: 45px;
+  height: 49px;
+  border-bottom-style: solid;
+  border-bottom-width: var(--mat-tab-header-divider-height, 1px);
+  border-bottom-color: var(
+    --mat-tab-header-divider-color,
+    var(--mat-sys-surface-variant)
+  );
+
+  .add-tab-button {
+    padding-top: 7px; // fix unexplainable icon offset
+  }
+}
+
+.tab-label {
+  margin-right: 25px;
+}
+
+.tab-close-button {
+  position: absolute;
+  right: -20px;
+}
+
+.no-char-text {
+  position: absolute;
+  top: 80px;
+  width: 100%;
+  text-align: center;
+}
+
 footer {
   padding: 5px 10px;
   width: 100%;
