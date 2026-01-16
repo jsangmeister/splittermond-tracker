@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { autoUpdater } from 'electron-updater';
+import WinState from 'electron-win-state';
 import { store, StoreKey } from './store';
 
 let mainWindow: BrowserWindow | null;
@@ -14,9 +15,9 @@ app.commandLine.appendSwitch('xdg-portal-required-version', '4');
 
 const createWindow = (): void => {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
-    height: 800,
-    width: 1200,
+  mainWindow = WinState.createBrowserWindow({
+    width: 1400,
+    height: 1000,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
