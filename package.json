@@ -2,7 +2,7 @@
   "name": "splittermond-tracker",
   "productName": "splittermond-tracker",
   "description": "Tracks your Splittermond character stats",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "author": {
     "name": "Joshua Sangmeister",
     "email": "joshua.sangmeister@gmail.com"
@@ -86,7 +86,7 @@
       "output": "build"
     },
     "win": {
-      "target": "nsis"
+      "target": "portable"
     },
     "linux": {
       "target": "AppImage"
