@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -16,7 +15,7 @@ const CHECKBOX_WIDTH = 25; // Width of the checkbox in pixels, including margin
   selector: 'points-table',
   templateUrl: './points-table.component.html',
   styleUrls: ['./points-table.component.scss'],
-  imports: [CommonModule, MatTooltipModule],
+  imports: [MatTooltipModule],
 })
 export class PointsTableComponent {
   public readonly Math = Math;

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   Component,
@@ -13,12 +12,7 @@ import { Char } from '../../models/char';
 
 @Component({
   selector: 'character-container',
-  imports: [
-    CommonModule,
-    PointsTableComponent,
-    HistoryComponent,
-    MatTooltipModule,
-  ],
+  imports: [PointsTableComponent, HistoryComponent, MatTooltipModule],
   templateUrl: './character-container.component.html',
   styleUrl: './character-container.component.scss',
 })

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   MAT_TOOLTIP_DEFAULT_OPTIONS,
   MatTooltipDefaultOptions,
@@ -34,7 +33,6 @@ enum LoadCharacterMode {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [
-    CommonModule,
     MatTooltipModule,
     MatTabsModule,
     MatIconModule,
