@@ -34,8 +34,16 @@
       </div>
     </div>
 
-    <div>Splitterpunkte:</div>
-    <points-table class="splinters-table" [char]="char()" mode="splinters" />
+    <div class="tracker">
+      <div class="tracker-title">
+        <div>
+          Splitterpunkte ({{ char().free_splinters }}/{{
+            char().max_splinters
+          }})
+        </div>
+      </div>
+      <points-table class="splinters-table" [char]="char()" mode="splinters" />
+    </div>
 
     <div class="tracker">
       <div class="tracker-title">

@@ -37,6 +37,7 @@
       (click)="minus()"
       (contextmenu)="minus_channeled()"
       [matTooltip]="MINUS_TOOLTIP()"
+      [disabled]="mode() === 'splinters' && char().free_splinters === 0"
     >
       <img src="assets/{{ mode() }}_minus.png" />
     </button>
@@ -45,12 +46,15 @@
       (click)="plus()"
       (contextmenu)="plus_channeled()"
       [matTooltip]="PLUS_TOOLTIP()"
+      [disabled]="
+        mode() === 'splinters' && char().free_splinters === char().max_splinters
+      "
     >
       <img src="assets/{{ mode() }}_plus.png" />
     </button>
     @if (mode() === 'focus') {
       <button
-        class="btn btn-icon"
+        class="btn btn-icon convert-channeled"
         (click)="convert_channeled()"
         [matTooltip]="CONVERT_CHANNELED_TOOLTIP"
       >

@@ -11,6 +11,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 const CHECKBOX_WIDTH = 25; // Width of the checkbox in pixels, including margin
 
+const LABELS = {
+  focus: 'Fokus',
+  lp: 'Lebenspunkte',
+  splinters: 'Splitterpunkte',
+};
+
 @Component({
   selector: 'points-table',
   templateUrl: './points-table.component.html',
@@ -58,6 +64,8 @@ export class PointsTableComponent {
       5 +
       (this.mode() === 'lp' ? CHECKBOX_WIDTH : 0),
   );
+
+  private modeLabel = computed(() => LABELS[this.mode()]);
 
   private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
@@ -128,13 +136,14 @@ export class PointsTableComponent {
         update[field] = this.char()[field] + diff;
       }
       if (total > this.char()[`free_${this.mode()}`]) {
-        throw new Error(`Not enough ${this.mode()} remaining`);
+        throw new Error(`Nicht ausreichend ${this.modeLabel()} verfügbar.`);
       }
       const action = `${factor === 1 ? 'SPEND' : 'RESTORE'}_${this.mode().toUpperCase()}`;
       this.char().update(update, Action[action as keyof typeof Action], input);
       if (this.mode() !== 'splinters') {
         this.input().nativeElement.value = '';
       }
+      this.error.set('');
     } catch (e: any) {
       this.error.set(e.message);
     }
@@ -160,7 +169,7 @@ export class PointsTableComponent {
           let other = parseInt('0' + res[2]);
           if (res[2] && other < consumed) {
             throw new Error(
-              'Invalid format: consumed cannot be larger than the first value',
+              'Ungültiges Format: Verzehrter Fokus kann nicht größer als der Gesamtfokus sein',
             );
           }
           // Special case: allow "v4" as shortcut for "4v4"
@@ -174,6 +183,6 @@ export class PointsTableComponent {
         }
       }
     }
-    throw new Error(`Invalid input.`);
+    throw new Error(`Ungültige Eingabe.`);
   }
 }

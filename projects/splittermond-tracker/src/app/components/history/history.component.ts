@@ -75,14 +75,12 @@ export class HistoryComponent implements OnInit {
   public constructor() {
     effect(() => {
       const currentPos = this.current();
-      const historyLength = this.history().length;
-      setTimeout(() => {
-        if (currentPos === historyLength) {
-          this.elementRef.nativeElement.scrollBy(0, Infinity);
-        } else {
-          this.elementRef.nativeElement.scroll(0, (currentPos - 5) * 20);
-        }
-      }, 0);
+      if (currentPos > 0) {
+        setTimeout(() => {
+          const child = this.elementRef.nativeElement.children[currentPos - 1];
+          child.scrollIntoView(false);
+        }, 0);
+      }
     });
   }
 
