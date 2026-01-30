@@ -4,8 +4,11 @@ import path from 'path';
 import { autoUpdater } from 'electron-updater';
 import WinState from 'electron-win-state';
 import { store, StoreKey } from './store';
+import * as xml2js from 'xml2js';
 
 let mainWindow: BrowserWindow | null;
+
+const parser = new xml2js.Parser({ explicitArray: false });
 
 if (app.isPackaged) {
   void autoUpdater.checkForUpdatesAndNotify();
@@ -48,20 +51,40 @@ void app.whenReady().then(() => {
       const files = existsSync(basePath)
         ? readdirSync(basePath, { withFileTypes: true, recursive: true })
         : [];
-      const contents = [];
+      const charFiles = [];
       for (const file of files) {
-        if (
-          file.isFile() &&
-          file.name.endsWith('.xml') &&
-          file.name !== 'index.xml'
-        ) {
+        if (file.isFile() && file.name === 'index.xml') {
           const fullPath = path.join(file.parentPath, file.name);
-          contents.push({
-            path: fullPath,
-            content: readFileSync(fullPath, { encoding: 'utf-8' }),
-          });
+          const xmlContent = readFileSync(fullPath, { encoding: 'utf-8' });
+          const result = await parser.parseStringPromise(xmlContent);
+          try {
+            let entries = result.index.entry;
+            if (!Array.isArray(entries)) {
+              entries = [entries];
+            }
+            for (const entry of entries) {
+              const filename = entry.$.file;
+              if (filename.endsWith('.xml')) {
+                charFiles.push(path.join(file.parentPath, filename));
+              }
+            }
+          } catch (e) {
+            console.log(
+              `${fullPath} seems to have an invalid format. Skipping... (Reason: ${e.message})`,
+            );
+          }
         }
       }
+
+      const contents = [];
+      for (const charFile of charFiles) {
+        const xmlContent = readFileSync(charFile, { encoding: 'utf-8' });
+        contents.push({
+          path: charFile,
+          content: xmlContent,
+        });
+      }
+
       if (contents.length === 0) {
         await dialog.showMessageBox({
           message: `Im Verzeichnis "${basePath}" wurden keine Charakterdateien gefunden. Bitte wähle den Ordner aus, in dem sich deine Charakterdateien befinden.`,
