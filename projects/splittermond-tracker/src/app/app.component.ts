@@ -15,17 +15,17 @@ import { Char } from './models/char';
 import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
 import { CharacterContainerComponent } from './components/character-container/character-container.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CreditsDialogComponent } from './components/credits-dialog/credits-dialog.component';
 
 declare global {
   interface Window {
     electron: {
       getCharacters: () => Promise<{ path: string; content: string }[]>;
-      confirm: (message: string) => Promise<boolean>;
       storage: {
         get: (key: string) => Promise<unknown>;
         set: (key: string, data: unknown) => Promise<void>;
       };
-      showCredits: () => Promise<void>;
     };
   }
 }
@@ -74,7 +74,8 @@ export class AppComponent implements OnInit {
 
   protected selectedIndex = signal(0);
 
-  private charService = inject(CharacterService);
+  private readonly charService = inject(CharacterService);
+  private readonly dialog = inject(MatDialog);
 
   private parser = new xml2js.Parser({ explicitArray: false });
 
@@ -155,6 +156,6 @@ export class AppComponent implements OnInit {
   }
 
   public showCredits(): void {
-    void window.electron.showCredits();
+    this.dialog.open(CreditsDialogComponent);
   }
 }

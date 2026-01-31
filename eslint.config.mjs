@@ -24,6 +24,7 @@ export default defineConfig({
   rules: {
     'no-prototype-builtins': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-extraneous-class': 'off',
     '@typescript-eslint/no-misused-promises': [
       'error',
       { checksVoidReturn: { inheritedMethods: false } },

@@ -1,14 +1,9 @@
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-  Component,
-  computed,
-  input,
-  viewChild,
-  viewChildren,
-} from '@angular/core';
+import { Component, computed, inject, input, viewChild } from '@angular/core';
 import { PointsTableComponent } from '../points-table/points-table.component';
 import { HistoryComponent } from '../history/history.component';
 import { Char } from '../../models/char';
+import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'character-container',
@@ -19,7 +14,7 @@ import { Char } from '../../models/char';
 export class CharacterContainerComponent {
   protected historyComponent = viewChild.required(HistoryComponent);
 
-  private pointsTables = viewChildren(PointsTableComponent);
+  private confirmationService = inject(ConfirmationDialogService);
 
   protected SHORT_REST_TOOLTIP = computed(
     () => `
@@ -40,12 +35,12 @@ Ruhepause (min. 6h):
   public char = input.required<Char>();
 
   protected async reset(): Promise<void> {
-    const prompt =
+    const message =
       'Bist du sicher, dass du alle verbrauchten Punkte zurücksetzen willst?';
-    if (!(await window.electron.confirm(prompt))) {
-      return;
+    const result = await this.confirmationService.confirm(message);
+    if (result) {
+      this.char().resetUsageData();
     }
-    this.char().resetUsageData();
   }
 
   protected longRest(): void {

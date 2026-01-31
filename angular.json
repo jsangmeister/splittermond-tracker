@@ -66,13 +66,17 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "type": "component"
+      "type": "component",
+      "path": "projects/splittermond-tracker/src/app/components",
+      "skipTests": true
     },
     "@schematics/angular:directive": {
       "type": "directive"
     },
     "@schematics/angular:service": {
-      "type": "service"
+      "type": "service",
+      "path": "projects/splittermond-tracker/src/app/services",
+      "skipTests": true
     },
     "@schematics/angular:guard": {
       "typeSeparator": "."
