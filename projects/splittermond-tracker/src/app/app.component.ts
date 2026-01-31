@@ -140,7 +140,14 @@ export class AppComponent implements OnInit {
     path: string,
   ): Promise<Char | undefined> {
     const result = await this.parser.parseStringPromise(xmlContent);
-    const char = await this.charService.createChar(result, path);
+    let char = undefined;
+    try {
+      char = await this.charService.createChar(result, path);
+    } catch (e: any) {
+      console.error(
+        `Failed to parse character file at path: ${path} (Reason: ${e.message})`,
+      );
+    }
     if (!char) {
       console.error('Failed to create character from path:', path);
     }
