@@ -57,8 +57,6 @@ declare global {
   ],
 })
 export class AppComponent implements OnInit {
-  private charService = inject(CharacterService);
-
   protected chars = signal<Char[]>([]);
 
   protected characters: Promise<Char[]> = window.electron
@@ -74,6 +72,10 @@ export class AppComponent implements OnInit {
       ).filter((c) => c !== undefined),
     );
 
+  protected selectedIndex = signal(0);
+
+  private charService = inject(CharacterService);
+
   private parser = new xml2js.Parser({ explicitArray: false });
 
   public async ngOnInit(): Promise<void> {
@@ -84,6 +86,17 @@ export class AppComponent implements OnInit {
     if (lastCharacters) {
       this.chars.set(characters.filter((c) => lastCharacters.includes(c.path)));
     }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.key === 'Tab') {
+        event.preventDefault();
+        if (event.shiftKey) {
+          this.previousTab();
+        } else {
+          this.nextTab();
+        }
+      }
+    });
   }
 
   public async close(char: Char): Promise<void> {
@@ -103,6 +116,22 @@ export class AppComponent implements OnInit {
         'last-characters',
         this.chars().map((c) => c.path),
       );
+    }
+  }
+
+  public nextTab(): void {
+    this.changeTab(1);
+  }
+
+  public previousTab(): void {
+    this.changeTab(-1);
+  }
+  private changeTab(offset: number): void {
+    if (this.chars().length) {
+      const newIndex =
+        (this.selectedIndex() + offset + this.chars().length) %
+        this.chars().length;
+      this.selectedIndex.set(newIndex);
     }
   }
 

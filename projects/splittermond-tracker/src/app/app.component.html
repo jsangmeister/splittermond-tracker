@@ -1,5 +1,9 @@
 <div class="main">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="start"
+    [(selectedIndex)]="selectedIndex"
+  >
     @for (char of chars(); track char.path) {
       <mat-tab>
         <ng-template mat-tab-label>
