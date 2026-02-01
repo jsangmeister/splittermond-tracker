@@ -54,7 +54,7 @@ declare global {
     {
       provide: MAT_TABS_CONFIG,
       useValue: {
-        animationDuration: '0ms',
+        animationDuration: '100ms',
       } as MatTabsConfig,
     },
   ],
