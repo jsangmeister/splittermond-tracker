@@ -7,7 +7,9 @@ export default defineConfig({
   files: ['projects/**/*.ts'],
   languageOptions: {
     parserOptions: {
-      projectService: true,
+      projectService: {
+        allowDefaultProject: ['projects/shared/*.ts'],
+      },
       tsconfigRootDir: import.meta.dirname,
     },
   },

@@ -4,7 +4,7 @@
     mat-align-tabs="start"
     [(selectedIndex)]="selectedIndex"
   >
-    @for (char of chars(); track char.path) {
+    @for (char of charService.openedCharacters(); track char.path) {
       <mat-tab>
         <ng-template mat-tab-label>
           <div class="tab-label">{{ char.name }}</div>
@@ -26,7 +26,7 @@
     </button>
   </div>
 
-  @if (chars().length === 0) {
+  @if (charService.openedCharacters().length === 0) {
     <div class="no-char-text">
       Kein Charakter ausgewählt. Klicke den "+"-Button, um einen zu öffnen!
     </div>

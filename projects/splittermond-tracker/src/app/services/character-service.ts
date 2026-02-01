@@ -1,8 +1,24 @@
-import { Injectable } from '@angular/core';
+import {
+  computed,
+  effect,
+  Injectable,
+  linkedSignal,
+  resource,
+} from '@angular/core';
 import { ChangeData, Char, USAGE_FIELDS, UsageData } from '../models/char';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import * as xml2js from 'xml2js';
+import { StoreKey } from '../../../../shared/store-keys';
 
 type UsageDataWithNote = UsageData & { note?: string };
+
+const RACE_LABELS = {
+  dwarf: 'Zwerg',
+  alben: 'Alb',
+  human: 'Mensch',
+  gnome: 'Gnom',
+  varg: 'Varg',
+};
 
 /**
  * Service to handle character-related operations like parsing XML character sheets
@@ -12,31 +28,92 @@ type UsageDataWithNote = UsageData & { note?: string };
   providedIn: 'root',
 })
 export class CharacterService {
-  private store = window.electron.storage;
+  public readonly allCharacters = resource({
+    loader: () =>
+      window.electron
+        .getCharacters()
+        .then(async (res) =>
+          (
+            await Promise.all(
+              res.map(
+                async ({ path, content }) =>
+                  await this.loadCharacter(content, path),
+              ),
+            )
+          ).filter((c) => c !== undefined),
+        ),
+    defaultValue: [],
+  });
 
-  private _onChange$ = new Subject<ChangeData>();
-  public onChange$: Observable<ChangeData> = this._onChange$;
+  public readonly lastOpenedCharacters = resource({
+    loader: () =>
+      window.electron.storage
+        .get(StoreKey.LAST_CHARACTERS)
+        .then((data) => data ?? []),
+    defaultValue: [],
+  });
 
-  public async createChar(xml: any, path: string): Promise<Char | undefined> {
+  public readonly openedCharacters = linkedSignal(() =>
+    this.allCharacters
+      .value()
+      .filter((char) => this.lastOpenedCharacters.value().includes(char.path)),
+  );
+
+  public readonly notOpenedCharacters = computed(() =>
+    this.allCharacters
+      .value()
+      .filter((char) => !this.openedCharacters().includes(char)),
+  );
+
+  private readonly store = window.electron.storage;
+
+  private readonly parser = new xml2js.Parser({ explicitArray: false });
+
+  private readonly _onChange$ = new Subject<ChangeData>();
+
+  public constructor() {
+    effect(() => {
+      void window.electron.storage.set(
+        StoreKey.LAST_CHARACTERS,
+        this.openedCharacters().map((c) => c.path),
+      );
+    });
+  }
+
+  public closeCharacter(char: Char): void {
+    this.openedCharacters.update((chars) => chars.filter((c) => c !== char));
+  }
+
+  private async loadCharacter(
+    xmlContent: string,
+    path: string,
+  ): Promise<Char | undefined> {
+    const result = await this.parser.parseStringPromise(xmlContent);
+    let char = undefined;
+    try {
+      char = await this.createChar(result, path);
+    } catch (e: any) {
+      console.error(
+        `Failed to parse character file at path: ${path} (Reason: ${e.message})`,
+      );
+    }
+    if (!char) {
+      console.error('Failed to create character from path:', path);
+    }
+    return char;
+  }
+
+  private async createChar(xml: any, path: string): Promise<Char | undefined> {
     if (!xml) return;
     const char = new Char();
     char.path = path;
     const characterData = xml.splimochar;
 
     // Set basic properties
-    char.race = characterData.$.race ?? '';
-    const ep = parseInt(characterData.$.expinv ?? '0');
-
-    // Calculate level based on experience points
-    if (ep < 100) {
-      char.level = 1;
-    } else if (ep < 300) {
-      char.level = 2;
-    } else if (ep < 600) {
-      char.level = 3;
-    } else {
-      char.level = 4;
-    }
+    char.race = RACE_LABELS[characterData.$.race as keyof typeof RACE_LABELS];
+    char.spentExp = parseInt(characterData.$.expinv ?? '0');
+    const freeExp = parseInt(characterData.$.expfree ?? '0');
+    char.totalExp = char.spentExp + freeExp;
 
     // Set character name
     if (characterData.name) {

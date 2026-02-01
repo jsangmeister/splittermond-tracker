@@ -56,7 +56,8 @@ export class Char {
   // Character basic info
   public name = '';
   public race = '';
-  public level = 1;
+  public spentExp = 0;
+  public totalExp = 0;
   public path = '';
 
   // Attributes
@@ -143,6 +144,18 @@ export class Char {
 
   public get size_class(): number {
     return RACE_SIZES[this.race] || 5; // Default to human size if race not found
+  }
+
+  public get level(): number {
+    if (this.spentExp < 100) {
+      return 1;
+    } else if (this.spentExp < 300) {
+      return 2;
+    } else if (this.spentExp < 600) {
+      return 3;
+    } else {
+      return 4;
+    }
   }
 
   // BASE VALUES

@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Charakter öffnen</h2>
+<mat-dialog-content>
+  <mat-action-list>
+    <!-- <div mat-subheader>Charaktere</div> -->
+    @for (char of charService.notOpenedCharacters(); track char.path) {
+      <button mat-list-item (click)="dialogRef.close(char)">
+        <div matListItemTitle>{{ char.name }}</div>
+        <div matListItemLine>
+          {{ char.race }} | HG {{ char.level }} | {{ char.spentExp }}/{{
+            char.totalExp
+          }}
+          EP
+        </div>
+        <div matListItemLine class="rtl">{{ char.path }}</div>
+      </button>
+    }
+    <!-- <mat-divider></mat-divider>
+    <div mat-subheader>Notes</div>
+    @for (note of notes; track note) {
+        <mat-list-item>
+        <mat-icon matListItemIcon>note</mat-icon>
+        <div matListItemTitle>{{note.name}}</div>
+        <div matListItemLine>{{note.updated | date}}</div>
+        </mat-list-item>
+    } -->
+  </mat-action-list>
+</mat-dialog-content>

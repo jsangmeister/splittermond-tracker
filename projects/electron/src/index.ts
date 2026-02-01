@@ -3,7 +3,8 @@ import { readFileSync, existsSync, readdirSync } from 'fs';
 import path from 'path';
 import { autoUpdater } from 'electron-updater';
 import WinState from 'electron-win-state';
-import { store, StoreKey } from './store';
+import { store } from './store';
+import { StoreKey } from '../../shared/store-keys';
 import * as xml2js from 'xml2js';
 
 let mainWindow: BrowserWindow | null;
@@ -20,7 +21,11 @@ const createWindow = (): void => {
   // Create the browser window.
   mainWindow = WinState.createBrowserWindow({
     width: 1400,
-    height: 1000,
+    height: 1100,
+    winState: {
+      storeFrameOption: true,
+      dev: !app.isPackaged,
+    },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },

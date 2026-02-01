@@ -12,19 +12,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Char } from './models/char';
-import * as xml2js from 'xml2js';
 import { CharacterService } from './services/character-service';
 import { CharacterContainerComponent } from './components/character-container/character-container.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreditsDialogComponent } from './components/credits-dialog/credits-dialog.component';
+import { StoreKey, StoreValueTypes } from '../../../shared/store-keys';
+import { CharacterSelectionDialogComponent } from './components/character-selection-dialog/character-selection-dialog.component';
+import { firstValueFrom } from 'rxjs';
 
 declare global {
   interface Window {
     electron: {
-      getCharacters: () => Promise<{ path: string; content: string }[]>;
+      getCharacters(): Promise<{ path: string; content: string }[]>;
       storage: {
-        get: (key: string) => Promise<unknown>;
-        set: (key: string, data: unknown) => Promise<void>;
+        get<K extends StoreKey>(key: K): Promise<StoreValueTypes[K]>;
+        get(key: string): Promise<unknown>;
+        set(key: string, data: unknown): Promise<void>;
       };
     };
   }
@@ -57,37 +60,13 @@ declare global {
   ],
 })
 export class AppComponent implements OnInit {
-  protected chars = signal<Char[]>([]);
-
-  protected characters: Promise<Char[]> = window.electron
-    .getCharacters()
-    .then(async (res) =>
-      (
-        await Promise.all(
-          res.map(
-            async ({ path, content }) =>
-              await this.loadCharacter(content, path),
-          ),
-        )
-      ).filter((c) => c !== undefined),
-    );
-
   protected selectedIndex = signal(0);
 
-  private readonly charService = inject(CharacterService);
+  protected readonly charService = inject(CharacterService);
+
   private readonly dialog = inject(MatDialog);
 
-  private parser = new xml2js.Parser({ explicitArray: false });
-
-  public async ngOnInit(): Promise<void> {
-    const characters = await this.characters;
-    const lastCharacters = (await window.electron.storage.get(
-      'last-characters',
-    )) as string[] | undefined;
-    if (lastCharacters) {
-      this.chars.set(characters.filter((c) => lastCharacters.includes(c.path)));
-    }
-
+  public ngOnInit(): void {
     document.addEventListener('keydown', (event) => {
       if (event.ctrlKey && event.key === 'Tab') {
         event.preventDefault();
@@ -100,23 +79,16 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public async close(char: Char): Promise<void> {
-    this.chars.update((chars) => chars.filter((c) => c !== char));
-    await window.electron.storage.set(
-      'last-characters',
-      this.chars().map((c) => c.path),
-    );
+  public close(char: Char): void {
+    this.charService.closeCharacter(char);
   }
 
   public async open(): Promise<void> {
-    const characters = await this.characters;
-    const newChars = characters.filter((c) => !this.chars().includes(c));
-    if (newChars.length > 0) {
-      this.chars.update((chars) => chars.concat(newChars[0]));
-      await window.electron.storage.set(
-        'last-characters',
-        this.chars().map((c) => c.path),
-      );
+    const dialogRef = this.dialog.open(CharacterSelectionDialogComponent);
+    const char = await firstValueFrom(dialogRef.afterClosed());
+    if (char) {
+      this.charService.openedCharacters.update((chars) => chars.concat(char));
+      this.selectedIndex.set(this.charService.openedCharacters().length - 1);
     }
   }
 
@@ -127,32 +99,14 @@ export class AppComponent implements OnInit {
   public previousTab(): void {
     this.changeTab(-1);
   }
+
   private changeTab(offset: number): void {
-    if (this.chars().length) {
+    const openedCount = this.charService.openedCharacters().length;
+    if (openedCount) {
       const newIndex =
-        (this.selectedIndex() + offset + this.chars().length) %
-        this.chars().length;
+        (this.selectedIndex() + offset + openedCount) % openedCount;
       this.selectedIndex.set(newIndex);
     }
-  }
-
-  private async loadCharacter(
-    xmlContent: string,
-    path: string,
-  ): Promise<Char | undefined> {
-    const result = await this.parser.parseStringPromise(xmlContent);
-    let char = undefined;
-    try {
-      char = await this.charService.createChar(result, path);
-    } catch (e: any) {
-      console.error(
-        `Failed to parse character file at path: ${path} (Reason: ${e.message})`,
-      );
-    }
-    if (!char) {
-      console.error('Failed to create character from path:', path);
-    }
-    return char;
   }
 
   public showCredits(): void {
