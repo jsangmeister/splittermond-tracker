@@ -10,11 +10,11 @@ Simply download the correct file for your operating system from the [latest rele
 
 To execute the AppImage, you might have to make it executable first. Open a console in the folder of the AppImage and execute the following command:
 ```
-chmod +x splittermond-tracker-1.7.5.AppImage
+chmod +x splittermond-tracker-1.8.0.AppImage
 ```
 Afterwards, you can execute it via:
 ```
-./splittermond-tracker-1.7.5.AppImage
+./splittermond-tracker-1.8.0.AppImage
 ```
 
 ### A note on macOS
