@@ -2,13 +2,17 @@
 
 A helper tool to track your spent focus, life & splinter points and support the management of them.
 
-## Execution
+## Installation
 
-Simply download the correct file for your operating system from the [latest release](https://github.com/jsangmeister/splittermond-tracker/releases/latest) (`*.exe` for Windows and `*.AppImage` for linux) and execute it.
+Simply download the correct file for your operating system from the [latest release](https://github.com/jsangmeister/splittermond-tracker/releases/latest) and execute it. The links below are automatically updated with each version to make sure they point to the most recent release.
+
+### Windows
+
+Download [splittermond-tracker-1.10.0.exe](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.10.0/splittermond-tracker-1.10.0.exe) and double-click it. In the following security dialog, click on "More info" and then on "Run anyway". During the first start, the app may take some time until the window is shown.
 
 ### Linux
 
-To execute the AppImage, you might have to make it executable first. Open a console in the folder of the AppImage and execute the following command:
+Download [splittermond-tracker-1.10.0.AppImage](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.10.0/splittermond-tracker-1.10.0.AppImage) and make it executable by opening a console in the folder of the AppImage and execute the following command:
 ```
 chmod +x splittermond-tracker-1.10.0.AppImage
 ```
@@ -16,7 +20,12 @@ Afterwards, you can execute it via:
 ```
 ./splittermond-tracker-1.10.0.AppImage
 ```
+or by double-clicking it in a file explorer.
 
-### A note on macOS
+### macOS
 
-macOs is unfortunately not supported as Apple does not allow execution of unsigned programs. Acquiring the certificate to sign a program costs a yearly fee and the development requires a macOS device. Fuck Apple.
+Download [splittermond-tracker-1.10.0.dmg](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.10.0/splittermond-tracker-1.10.0.dmg) and double-click it. Confirm the following security dialog.
+
+## Updates
+
+The app updates automatically whenever a new version is available. Simply open it and wait a few moments until the new version is downloaded. You will receive a notification telling you to restart the application. Afterwards, you'll be using the the new version.
