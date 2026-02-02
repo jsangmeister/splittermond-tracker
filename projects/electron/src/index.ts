@@ -22,8 +22,9 @@ const createWindow = (): void => {
   mainWindow = WinState.createBrowserWindow({
     width: 1400,
     height: 1100,
+    frame: true,
+    show: false,
     winState: {
-      storeFrameOption: true,
       dev: !app.isPackaged,
     },
     webPreferences: {
@@ -31,9 +32,11 @@ const createWindow = (): void => {
     },
     autoHideMenuBar: true,
   });
+  mainWindow.maximize();
+  mainWindow.show();
 
   const startURL = app.isPackaged
-    ? `file://${path.join(__dirname, 'splittermond-tracker', 'index.html')}`
+    ? `file://${path.join(__dirname, '..', '..', 'splittermond-tracker', 'index.html')}`
     : `http://localhost:4200`;
 
   void mainWindow.loadURL(startURL);
