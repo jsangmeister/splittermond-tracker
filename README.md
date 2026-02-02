@@ -8,7 +8,7 @@ Simply download the correct file for your operating system from the [latest rele
 
 ### Windows
 
-Download [splittermond-tracker-1.10.0.exe](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.10.0/splittermond-tracker-1.10.0.exe) and double-click it. In the following security dialog, click on "More info" and then on "Run anyway". During the first start, the app may take some time until the window is shown.
+Download [splittermond-tracker-1.10.0.exe](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.10.0/splittermond-tracker-1.10.0.exe) and double-click it. In the following security dialog, click on "More info" and then on "Run anyway". The app will install itself permanently on the system. To run it, search for "Splittermond Tracker" in 
 
 ### Linux
 

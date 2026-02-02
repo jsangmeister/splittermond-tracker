@@ -84,7 +84,9 @@
     ]
   },
   "build": {
-    "appId": "com.github.jsangmeister.splittermondtracker",
+    "appId": "de.jsangmeister.splittermondtracker",
+    "productName": "Splittermond Tracker",
+    "artifactName": "splittermond-tracker-${version}.${ext}",
     "asarUnpack": [
       "dist",
       "projects"
@@ -93,13 +95,14 @@
       "output": "build"
     },
     "win": {
-      "target": "portable"
+      "target": "nsis"
     },
     "linux": {
       "target": "AppImage"
     },
     "mac": {
       "target": "dmg",
+      "category": "public.app-category.utilities",
       "identity": null,
       "hardenedRuntime": false
     }
