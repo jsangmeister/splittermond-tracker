@@ -73,7 +73,7 @@ void app.whenReady().then(() => {
                 charFiles.push(path.join(file.parentPath, filename));
               }
             }
-          } catch (e) {
+          } catch (e: any) {
             console.log(
               `${fullPath} seems to have an invalid format. Skipping... (Reason: ${e.message})`,
             );

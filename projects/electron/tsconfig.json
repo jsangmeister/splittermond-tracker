@@ -1,20 +1,26 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "allowJs": true,
-    "module": "nodenext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "baseUrl": ".",
+    "incremental": true,
+    "strict": true,
+    "rootDir": "..",
     "outDir": "../../dist",
-    "moduleResolution": "nodenext",
+    "target": "esnext",
+    "module": "nodenext",
+    "lib": ["ES2024"],
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+    "esModuleInterop": true,
     "resolveJsonModule": true,
-    "paths": {
-      "*": ["node_modules/*"]
-    },
-    "strictNullChecks": true
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "noErrorTruncation": true,
+    "noImplicitAny": true,
+    "declaration": true
   },
   "include": ["src/**/*", "../shared/**/*"]
 }

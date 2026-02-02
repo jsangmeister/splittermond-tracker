@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "splittermond-tracker",
   "productName": "splittermond-tracker",
   "description": "Tracks your Splittermond character stats",
@@ -12,7 +13,7 @@
     "url": "https://github.com/jsangmeister/splittermond-tracker.git"
   },
   "license": "GNU",
-  "main": "dist/index.js",
+  "main": "dist/electron/src/index.js",
   "scripts": {
     "build-electron": "tsc --project projects/electron/tsconfig.json",
     "watch-electron": "npm run build-electron -- --watch",
@@ -27,7 +28,6 @@
     "format": "prettier --write **/*.{js,mjs,ts,html,scss,json,yaml}",
     "clear-data": "rm -rf ~/.config/splittermond-tracker/"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^21.1.0",
     "@angular/cdk": "^21.1.0",
