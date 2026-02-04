@@ -5,6 +5,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electron', {
   getCharacters: () => ipcRenderer.invoke('get-characters'),
+  changeBaseFolder: () => ipcRenderer.invoke('change-base-folder'),
   storage: {
     get: (key: string) => ipcRenderer.invoke('storage-get', key),
     set: (key: string, data: unknown) =>

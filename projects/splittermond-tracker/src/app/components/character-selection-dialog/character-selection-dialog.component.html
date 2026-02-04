@@ -1,4 +1,13 @@
-<h2 mat-dialog-title>Charakter öffnen</h2>
+<div class="title-row">
+  <h2 mat-dialog-title>Charakter öffnen</h2>
+  <button
+    matIconButton
+    (click)="changeBaseFolder()"
+    matTooltip="Pfad zum Suchen der Characterdateien ändern"
+  >
+    <mat-icon>folder</mat-icon>
+  </button>
+</div>
 <mat-dialog-content>
   <mat-action-list>
     <!-- <div mat-subheader>Charaktere</div> -->
@@ -24,4 +33,7 @@
         </mat-list-item>
     } -->
   </mat-action-list>
+  @if (charService.notOpenedCharacters().length === 0) {
+    <div>Keine weiteren Charaktere verfügbar.</div>
+  }
 </mat-dialog-content>

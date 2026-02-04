@@ -6,6 +6,6 @@ import { MatDialogModule } from '@angular/material/dialog';
   selector: 'app-credits-dialog',
   imports: [MatDialogModule, MatButtonModule],
   templateUrl: './credits-dialog.component.html',
-  styleUrl: './credits-dialog.component.css',
+  styleUrl: './credits-dialog.component.scss',
 })
 export class CreditsDialogComponent {}

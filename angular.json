@@ -68,7 +68,8 @@
     "@schematics/angular:component": {
       "type": "component",
       "path": "projects/splittermond-tracker/src/app/components",
-      "skipTests": true
+      "skipTests": true,
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "type": "directive"

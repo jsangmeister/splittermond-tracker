@@ -80,6 +80,11 @@ export class CharacterService {
     });
   }
 
+  public reloadCharacters(): void {
+    this.lastOpenedCharacters.reload();
+    this.allCharacters.reload();
+  }
+
   public closeCharacter(char: Char): void {
     this.openedCharacters.update((chars) => chars.filter((c) => c !== char));
   }

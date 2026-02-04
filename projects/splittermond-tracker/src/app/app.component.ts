@@ -24,6 +24,7 @@ declare global {
   interface Window {
     electron: {
       getCharacters(): Promise<{ path: string; content: string }[]>;
+      changeBaseFolder(): Promise<void>;
       storage: {
         get<K extends StoreKey>(key: K): Promise<StoreValueTypes[K]>;
         get(key: string): Promise<unknown>;
