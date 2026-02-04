@@ -21,10 +21,6 @@
   @include global.flex-container(row, wrap, flex-start, center);
 }
 
-.btn.convert-channeled {
-  white-space: nowrap;
-}
-
 .input-group {
   @include global.flex-container(row, nowrap, flex-start, center);
 
@@ -83,27 +79,34 @@
 
   &::before {
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     @include global.flex-container(row, nowrap, center, center);
-    font-weight: bold;
-    font-size: 14px;
     color: black;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  &.exhausted::before,
+  &.consumed::before {
+    font-weight: normal;
+    font-size: 20px;
+    top: -2px;
   }
 
   &.channeled::before {
     content: '/';
-    font-size: 16px;
+    font-style: italic;
+    top: 2px;
   }
 
   &.exhausted::before {
-    content: 'X';
+    content: 'x';
   }
 
   &.consumed::before {
-    content: '⊗';
+    content: 'x';
+    text-decoration: line-through;
   }
 }
 

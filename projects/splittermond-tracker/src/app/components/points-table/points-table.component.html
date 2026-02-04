@@ -33,16 +33,20 @@
       (keydown.control.enter)="convert_channeled()"
     />
     <button
-      class="btn btn-icon damage"
+      matMiniFab
       (click)="minus()"
       (contextmenu)="minus_channeled()"
       [matTooltip]="MINUS_TOOLTIP()"
       [disabled]="mode() === 'splinters' && char().free_splinters === 0"
     >
-      <img src="assets/{{ mode() }}_minus.png" />
+      @if (mode() === 'splinters') {
+        <mat-icon>remove</mat-icon>
+      } @else {
+        <img src="assets/{{ mode() }}_minus.png" />
+      }
     </button>
     <button
-      class="btn btn-icon heal"
+      matMiniFab
       (click)="plus()"
       (contextmenu)="plus_channeled()"
       [matTooltip]="PLUS_TOOLTIP()"
@@ -50,15 +54,19 @@
         mode() === 'splinters' && char().free_splinters === char().max_splinters
       "
     >
-      <img src="assets/{{ mode() }}_plus.png" />
+      @if (mode() === 'splinters') {
+        <mat-icon>add</mat-icon>
+      } @else {
+        <img src="assets/{{ mode() }}_plus.png" />
+      }
     </button>
     @if (mode() === 'focus') {
       <button
-        class="btn btn-icon convert-channeled"
+        matMiniFab
         (click)="convert_channeled()"
         [matTooltip]="CONVERT_CHANNELED_TOOLTIP"
       >
-        k->e
+        <mat-icon fontSet="material-symbols">autostop</mat-icon>
       </button>
     }
   </div>

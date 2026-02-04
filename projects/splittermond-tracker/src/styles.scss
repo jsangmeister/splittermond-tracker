@@ -27,41 +27,15 @@ body {
   background-color: global.$background-color;
   overflow: hidden;
   user-select: none; // Prevent text selection in desktop app
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-size: global.$font-size-base;
   margin: 0;
   padding: global.$spacing-lg;
   padding-bottom: 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: bold;
-  line-height: 1.2;
-  margin-bottom: global.$spacing-md;
-}
-
-h1 {
-  color: global.$primary-color;
-  text-align: center;
-  font-size: 1.5em;
-}
-
 p {
   margin-bottom: global.$spacing-sm;
-}
-
-button,
-input {
-  font: inherit;
-  outline: none;
-}
-
-button {
-  cursor: pointer;
 }
 
 img {
@@ -80,72 +54,24 @@ a {
   }
 }
 
-/* 
-* Component Styles
-*/
-.btn {
-  @include global.button-base;
-
-  &:not(:first-child) {
-    margin-left: global.$spacing-sm;
-  }
-
-  &.btn-small {
-    padding: 4px 8px;
-    font-size: 0.9em;
-  }
-
-  &.btn-icon {
-    padding: 6px;
-    min-width: 32px;
-    min-height: 32px;
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  &.btn-text-icon {
-    padding: 0;
-    width: 32px;
-    height: 32px;
-  }
-
-  &.btn-block {
-    display: block;
-    width: 100%;
-    margin: global.$spacing-sm 0;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
-
-.btn-group {
-  @include global.flex-container(row, wrap, center, center);
-  margin: global.$spacing-sm 0;
-
-  .btn {
-    margin: global.$spacing-xs;
-  }
-}
-
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
-
 .multiline-tooltip {
   white-space: pre-line;
 }
 
 .wide-tooltip .mat-mdc-tooltip-surface {
   max-width: 300px;
+}
+
+button.mat-mdc-mini-fab {
+  width: 32px;
+  height: 32px;
+
+  &:not(:first-child) {
+    margin-left: global.$spacing-sm;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
 }

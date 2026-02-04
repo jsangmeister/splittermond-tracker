@@ -3,33 +3,31 @@
     <div class="top-row">
       <div class="actions-left">
         <button
-          class="btn btn-text-icon"
+          matMiniFab
           (click)="historyComponent().undo()"
           [disabled]="!historyComponent().undoPossible()"
           matTooltip="Letzte Änderung rückgängig machen"
           [matTooltipDisabled]="!historyComponent().undoPossible()"
         >
-          <!-- <img src="assets/reset.png" /> -->
-          &lt;-
+          <mat-icon fontSet="material-symbols">undo</mat-icon>
         </button>
         <button
-          class="btn btn-text-icon"
+          matMiniFab
           (click)="historyComponent().redo()"
           [disabled]="!historyComponent().redoPossible()"
           matTooltip="Letzte rückgängig gemachte Änderung wiederholen"
           [matTooltipDisabled]="!historyComponent().redoPossible()"
         >
-          -&gt;
-          <!-- <img src="assets/reset.png" /> -->
+          <mat-icon fontSet="material-symbols">redo</mat-icon>
         </button>
       </div>
       <div class="action-right">
         <button
-          class="btn btn-icon"
+          matMiniFab
           (click)="reset()"
           matTooltip="Alle Daten des Characters zurücksetzen"
         >
-          <img src="assets/reset.png" />
+          <mat-icon>replay</mat-icon>
         </button>
       </div>
     </div>
@@ -49,7 +47,7 @@
       <div class="tracker-title">
         <div>Lebenspunkte ({{ char().free_lp }}/{{ char().max_lp }})</div>
         <button
-          class="btn btn-icon"
+          matMiniFab
           (click)="longRest()"
           [matTooltip]="LONG_REST_TOOLTIP()"
           matTooltipClass="multiline-tooltip wide-tooltip"
@@ -65,7 +63,7 @@
       <div class="tracker-title">
         <div>Fokuspunkte ({{ char().free_focus }}/{{ char().max_focus }})</div>
         <button
-          class="btn btn-icon"
+          matMiniFab
           (click)="shortRest()"
           [matTooltip]="SHORT_REST_TOOLTIP()"
           matTooltipPosition="above"

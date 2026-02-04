@@ -4,10 +4,18 @@ import { PointsTableComponent } from '../points-table/points-table.component';
 import { HistoryComponent } from '../history/history.component';
 import { Char } from '../../models/char';
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'character-container',
-  imports: [PointsTableComponent, HistoryComponent, MatTooltipModule],
+  imports: [
+    PointsTableComponent,
+    HistoryComponent,
+    MatTooltipModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './character-container.component.html',
   styleUrl: './character-container.component.scss',
 })

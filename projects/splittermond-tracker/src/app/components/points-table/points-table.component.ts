@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 const CHECKBOX_WIDTH = 25; // Width of the checkbox in pixels, including margin
 
@@ -21,12 +23,16 @@ const LABELS = {
   selector: 'points-table',
   templateUrl: './points-table.component.html',
   styleUrls: ['./points-table.component.scss'],
-  imports: [MatTooltipModule],
+  imports: [MatTooltipModule, MatButtonModule, MatIcon],
 })
 export class PointsTableComponent {
-  public readonly Math = Math;
+  public mode = input.required<'focus' | 'lp' | 'splinters'>();
 
-  public readonly MINUS_TOOLTIP = computed(() =>
+  public char = input.required<Char>();
+
+  protected readonly Math = Math;
+
+  protected readonly MINUS_TOOLTIP = computed(() =>
     this.mode() === 'splinters'
       ? 'Splitterpunkt ausgeben\n(Rechtsklick: kanalisiert)'
       : this.mode() == 'focus'
@@ -34,7 +40,7 @@ export class PointsTableComponent {
         : 'Schaden nehmen',
   );
 
-  public readonly PLUS_TOOLTIP = computed(() =>
+  protected readonly PLUS_TOOLTIP = computed(() =>
     this.mode() === 'splinters'
       ? 'Splitterpunkt wiederherstellen\n(Rechtsklick: kanalisiert)'
       : (this.mode() == 'focus'
@@ -42,22 +48,18 @@ export class PointsTableComponent {
           : 'Lebenspunkte heilen') + '\n(Shift+Enter)',
   );
 
-  public readonly CONVERT_CHANNELED_TOOLTIP =
+  protected readonly CONVERT_CHANNELED_TOOLTIP =
     'Kanalisierte Fokuspunkte\nerschöpfen (Strg+Enter)';
 
-  public mode = input.required<'focus' | 'lp' | 'splinters'>();
+  protected error = signal<string>('');
 
-  public char = input.required<Char>();
-
-  public error = signal<string>('');
-
-  public perRow = computed(() =>
+  protected perRow = computed(() =>
     this.mode() === 'lp'
       ? this.char().lp
       : Math.min(10, this.char()[`max_${this.mode()}`]),
   );
 
-  public width = computed(
+  protected width = computed(
     () =>
       this.perRow() * CHECKBOX_WIDTH +
       ((this.perRow() - (this.perRow() % 5)) / 5) * 10 -
@@ -69,7 +71,7 @@ export class PointsTableComponent {
 
   private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
-  public getClass(i: number): UsageType | null {
+  protected getClass(i: number): UsageType | null {
     let curr = this.char()[`consumed_${this.mode()}`];
     if (i < curr) {
       return 'consumed';
@@ -85,27 +87,27 @@ export class PointsTableComponent {
     return null;
   }
 
-  public minus(): void {
+  protected minus(): void {
     this.change(this.input().nativeElement.value);
   }
 
-  public plus(): void {
+  protected plus(): void {
     this.change(this.input().nativeElement.value, -1);
   }
 
-  public minus_channeled(): void {
+  protected minus_channeled(): void {
     if (this.mode() === 'splinters') {
       this.change('k1');
     }
   }
 
-  public plus_channeled(): void {
+  protected plus_channeled(): void {
     if (this.mode() === 'splinters') {
       this.change('k1', -1);
     }
   }
 
-  public convert_channeled(): void {
+  protected convert_channeled(): void {
     if (this.mode() === 'focus') {
       let value = parseInt(this.input().nativeElement.value);
       if (isNaN(value)) {
