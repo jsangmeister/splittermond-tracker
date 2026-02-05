@@ -26,6 +26,7 @@ const createWindow = (): void => {
       preload: path.join(__dirname, 'preload.js'),
     },
     autoHideMenuBar: true,
+    icon: path.join(__dirname, '..', '..', '..', 'img', '512x512.png'),
   });
   mainWindow.maximize();
   mainWindow.show();
