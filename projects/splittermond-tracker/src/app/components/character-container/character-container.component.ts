@@ -1,11 +1,27 @@
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Component, computed, inject, input, viewChild } from '@angular/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { PointsTableComponent } from '../points-table/points-table.component';
 import { HistoryComponent } from '../history/history.component';
 import { Char } from '../../models/char';
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MarkdownModule } from 'ngx-markdown';
+
+enum TextMode {
+  Source = 'source',
+  Both = 'both',
+  Markdown = 'markdown',
+}
 
 @Component({
   selector: 'character-container',
@@ -15,12 +31,32 @@ import { MatButtonModule } from '@angular/material/button';
     MatTooltipModule,
     MatIconModule,
     MatButtonModule,
+    MatButtonToggleModule,
+    FormsModule,
+    MarkdownModule,
   ],
   templateUrl: './character-container.component.html',
   styleUrl: './character-container.component.scss',
 })
 export class CharacterContainerComponent {
   protected historyComponent = viewChild.required(HistoryComponent);
+
+  protected readonly TEXT_MODES = [
+    {
+      value: TextMode.Source,
+      icon: 'edit',
+    },
+    {
+      value: TextMode.Both,
+      icon: 'vertical_split',
+    },
+    {
+      value: TextMode.Markdown,
+      icon: 'visibility',
+    },
+  ];
+
+  protected textMode = signal(TextMode.Source);
 
   private confirmationService = inject(ConfirmationDialogService);
 

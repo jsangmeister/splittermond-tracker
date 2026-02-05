@@ -169,7 +169,7 @@ export class CharacterService {
           char[field] = data[field];
         }
       }
-      char.note = data.note ?? '';
+      char.note.set(data.note ?? '');
     }
 
     char.onChange$.subscribe(this._onChange$);
@@ -190,7 +190,7 @@ export class CharacterService {
    */
   private async saveCharacterUsage(char: Char): Promise<void> {
     const data: UsageDataWithNote = char.getUsageData();
-    data.note = char.note;
+    data.note = char.note();
     try {
       await this.store.set(`character:${char.name}`, data);
     } catch (error) {

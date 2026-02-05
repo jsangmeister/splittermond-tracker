@@ -75,3 +75,7 @@ button.mat-mdc-mini-fab {
     height: 20px;
   }
 }
+
+textarea:focus {
+  outline: none;
+}

@@ -45,6 +45,8 @@
     "electron-updater": "^6.7.3",
     "electron-win-state": "^1.1.22",
     "events": "^3.3.0",
+    "marked": "^17.0.1",
+    "ngx-markdown": "^21.1.0",
     "rxjs": "~7.8.2",
     "stream": "^0.0.3",
     "timers": "^0.1.1",
@@ -71,8 +73,12 @@
   },
   "overrides": {
     "@angular/build": {
-      "undici": "7.18.2"
-    }
+      "undici": "^7.18.2"
+    },
+    "@angular/cli": {
+      "@modelcontextprotocol/sdk": "^1.26.0"
+    },
+    "lodash-es": "^4.17.23"
   },
   "prettier": {
     "singleQuote": true

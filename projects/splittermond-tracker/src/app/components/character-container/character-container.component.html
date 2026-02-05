@@ -77,14 +77,33 @@
     <history [char]="char()" />
   </div>
   <div class="side-container">
-    <textarea
-      #note
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="false"
-      (change)="char().note = note.value"
-      >{{ char().note }}</textarea
-    >
+    <div>
+      <mat-button-toggle-group
+        [(ngModel)]="textMode"
+        [hideSingleSelectionIndicator]="true"
+      >
+        @for (mode of TEXT_MODES; track mode.value) {
+          <mat-button-toggle [value]="mode.value">
+            <mat-icon>{{ mode.icon }}</mat-icon>
+          </mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+    </div>
+    <div class="note-container">
+      @if (textMode() !== 'markdown') {
+        <textarea
+          #note
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          (input)="char().note.set(note.value)"
+          >{{ char().note() }}</textarea
+        >
+      }
+      @if (textMode() !== 'source') {
+        <markdown [data]="char().note()"></markdown>
+      }
+    </div>
   </div>
 </div>

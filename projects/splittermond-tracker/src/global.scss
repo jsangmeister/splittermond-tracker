@@ -65,6 +65,13 @@ $font-size-xsmall: 0.8em;
       small-hover-container-elevation-shadow: none,
     )
   );
+  @include mat.button-toggle-overrides(
+    (
+      selected-state-background-color: $primary-color,
+      selected-state-text-color: white,
+      height: 32px,
+    )
+  );
 }
 
 @mixin flex-container(

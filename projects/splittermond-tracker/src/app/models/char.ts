@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 const RACE_SIZES: Record<string, number> = {
@@ -90,7 +91,7 @@ export class Char {
   public exhausted_splinters = 0;
   public consumed_splinters = 0;
 
-  public note = '';
+  public note = signal('');
 
   // Skills - general
   private _acrobatics = 0;
