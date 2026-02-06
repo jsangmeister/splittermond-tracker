@@ -6,10 +6,10 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
 
 const CHECKBOX_WIDTH = 25; // Width of the checkbox in pixels, including margin
 

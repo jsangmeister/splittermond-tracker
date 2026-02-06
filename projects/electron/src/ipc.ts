@@ -1,9 +1,10 @@
 import { app, dialog, ipcMain } from 'electron';
-import { readFileSync, existsSync, readdirSync } from 'fs';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import path from 'path';
-import { store } from './store';
-import { StoreKey } from '../../shared/store-keys';
 import * as xml2js from 'xml2js';
+
+import { StoreKey } from '../../shared/store-keys';
+import { store } from './store';
 
 const parser = new xml2js.Parser({ explicitArray: false });
 

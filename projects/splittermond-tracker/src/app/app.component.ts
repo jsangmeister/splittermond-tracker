@@ -1,24 +1,25 @@
-import {
-  MAT_TOOLTIP_DEFAULT_OPTIONS,
-  MatTooltipDefaultOptions,
-  MatTooltipModule,
-} from '@angular/material/tooltip';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import {
   MAT_TABS_CONFIG,
   MatTabsConfig,
   MatTabsModule,
 } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+  MatTooltipDefaultOptions,
+  MatTooltipModule,
+} from '@angular/material/tooltip';
+import { firstValueFrom } from 'rxjs';
+
+import { StoreKey, StoreValueTypes } from '../../../shared/store-keys';
+import { CharacterContainerComponent } from './components/character-container/character-container.component';
+import { CharacterSelectionDialogComponent } from './components/character-selection-dialog/character-selection-dialog.component';
+import { CreditsDialogComponent } from './components/credits-dialog/credits-dialog.component';
 import { Char } from './models/char';
 import { CharacterService } from './services/character-service';
-import { CharacterContainerComponent } from './components/character-container/character-container.component';
-import { MatDialog } from '@angular/material/dialog';
-import { CreditsDialogComponent } from './components/credits-dialog/credits-dialog.component';
-import { StoreKey, StoreValueTypes } from '../../../shared/store-keys';
-import { CharacterSelectionDialogComponent } from './components/character-selection-dialog/character-selection-dialog.component';
-import { firstValueFrom } from 'rxjs';
 
 declare global {
   interface Window {

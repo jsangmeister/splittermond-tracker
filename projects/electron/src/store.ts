@@ -1,4 +1,5 @@
 import Store from 'electron-store';
+
 import { StoreValueTypes } from '../../shared/store-keys';
 
 type StoreType = StoreValueTypes & Record<string, any>;

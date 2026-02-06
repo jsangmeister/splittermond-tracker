@@ -1,7 +1,8 @@
 import { app, BrowserWindow } from 'electron';
-import path from 'path';
 import { autoUpdater } from 'electron-updater';
 import WinState from 'electron-win-state';
+import path from 'path';
+
 import { initIpc } from './ipc';
 
 let mainWindow: BrowserWindow | null;

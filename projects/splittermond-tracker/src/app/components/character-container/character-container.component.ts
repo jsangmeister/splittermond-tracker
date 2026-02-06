@@ -1,5 +1,3 @@
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   Component,
   computed,
@@ -8,14 +6,17 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { PointsTableComponent } from '../points-table/points-table.component';
-import { HistoryComponent } from '../history/history.component';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MarkdownModule } from 'ngx-markdown';
+
 import { Char } from '../../models/char';
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
-import { MarkdownModule } from 'ngx-markdown';
+import { HistoryComponent } from '../history/history.component';
+import { PointsTableComponent } from '../points-table/points-table.component';
 
 enum TextMode {
   Source = 'source',

@@ -2,6 +2,7 @@ import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import unusedImports from 'eslint-plugin-unused-imports';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default defineConfig({
   files: ['projects/**/*.ts'],
@@ -17,6 +18,7 @@ export default defineConfig({
     eslint,
     tseslint,
     'unused-imports': unusedImports,
+    'simple-import-sort': simpleImportSort,
   },
   extends: [
     'eslint/recommended',
@@ -25,6 +27,7 @@ export default defineConfig({
   ],
   rules: {
     'no-prototype-builtins': 'off',
+    'sort-imports': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-extraneous-class': 'off',
     '@typescript-eslint/no-misused-promises': [
@@ -56,6 +59,8 @@ export default defineConfig({
         allowNumber: true,
       },
     ],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [
       'warn',

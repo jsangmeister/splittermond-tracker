@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  computed,
   effect,
   ElementRef,
   inject,
   input,
   OnInit,
   signal,
-  computed,
 } from '@angular/core';
 import { Action, ChangeData, Char } from 'src/app/models/char';
 

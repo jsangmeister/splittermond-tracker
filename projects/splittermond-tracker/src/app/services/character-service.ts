@@ -5,10 +5,11 @@ import {
   linkedSignal,
   resource,
 } from '@angular/core';
-import { ChangeData, Char, USAGE_FIELDS, UsageData } from '../models/char';
 import { Subject } from 'rxjs';
 import * as xml2js from 'xml2js';
+
 import { StoreKey } from '../../../../shared/store-keys';
+import { ChangeData, Char, USAGE_FIELDS, UsageData } from '../models/char';
 
 type UsageDataWithNote = UsageData & { note?: string };
 
