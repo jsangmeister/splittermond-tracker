@@ -94,22 +94,26 @@ export class HistoryComponent implements OnInit {
   }
 
   public undo(): void {
-    const i = this.current() - 1;
-    if (i < 0) {
-      return;
+    if (this.undoPossible()) {
+      const i = this.current() - 1;
+      if (i < 0) {
+        return;
+      }
+      const entry = this.history()[i];
+      entry.data.char.update(entry.data.before, Action.HISTORY);
+      this.current.set(i);
     }
-    const entry = this.history()[i];
-    entry.data.char.update(entry.data.before, Action.HISTORY);
-    this.current.set(i);
   }
 
   public redo(): void {
-    const i = this.current();
-    if (i >= this.history().length) {
-      return;
+    if (this.redoPossible()) {
+      const i = this.current();
+      if (i >= this.history().length) {
+        return;
+      }
+      const entry = this.history()[i];
+      entry.data.char.update(entry.data.after, Action.HISTORY);
+      this.current.update((c) => c + 1);
     }
-    const entry = this.history()[i];
-    entry.data.char.update(entry.data.after, Action.HISTORY);
-    this.current.update((c) => c + 1);
   }
 }

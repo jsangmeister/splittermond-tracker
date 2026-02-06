@@ -38,6 +38,10 @@ enum TextMode {
   ],
   templateUrl: './character-container.component.html',
   styleUrl: './character-container.component.scss',
+  host: {
+    '(document:keydown.control.z)': 'historyComponent().undo()',
+    '(document:keydown.control.y)': 'historyComponent().redo()',
+  },
 })
 export class CharacterContainerComponent {
   protected historyComponent = viewChild.required(HistoryComponent);
