@@ -1,6 +1,6 @@
 # Splittermond Tracker
 
-A helper tool to track your spent focus, life & splinter points and support the management of them.
+A helper tool to track your spent focus, life & splinter points and support the in-play character handling of your [Splittermond](https://www.splittermond.de) characters.
 
 ## Installation
 
@@ -29,3 +29,7 @@ Download [splittermond-tracker-1.13.0.dmg](https://github.com/jsangmeister/split
 ## Updates
 
 The app updates automatically whenever a new version is available. Simply open it and wait a few moments until the new version is downloaded. You will receive a notification telling you to restart the application. Afterwards, you'll be using the the new version.
+
+## License
+
+GPL © Joshua Sangmeister
