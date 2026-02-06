@@ -18,11 +18,11 @@
   .character-container {
     @include global.flex-container(column);
     padding-right: global.$spacing-md;
-    border-right: 1px solid global.$border-color;
   }
 
   .side-container {
     padding-left: global.$spacing-md;
+    border-left: 1px solid global.$border-color;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -76,7 +76,7 @@
   margin-bottom: global.$spacing-sm;
   display: flex;
   color: global.$primary-color;
-  border-bottom: 1px solid global.$border-light;
+  border-bottom: 1px solid global.$border-color;
   padding-bottom: global.$spacing-xs;
   align-items: center;
   justify-content: space-between;
@@ -103,14 +103,14 @@ history {
 .note-container {
   height: 100%;
   display: flex;
-  border: 1px solid black;
+  border: 1px solid global.$border-dark;
   border-left: none;
 
   textarea,
   markdown {
     padding: 2px 5px;
     border: none;
-    border-left: 1px solid black;
+    border-left: 1px solid global.$border-dark;
   }
 
   textarea {

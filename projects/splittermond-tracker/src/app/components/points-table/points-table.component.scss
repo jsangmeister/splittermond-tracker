@@ -27,7 +27,7 @@
   .point-input {
     flex: 1;
     padding: 8px;
-    border: 1px solid global.$border-light;
+    border: 1px solid global.$border-color;
     border-radius: 4px;
     width: 120px;
     font-size: 14px;
@@ -68,7 +68,7 @@
   width: 20px;
   height: 20px;
   display: inline-block;
-  border: 1px solid global.$border-light;
+  border: 1px solid global.$border-color;
   border-radius: 3px;
   position: relative;
   cursor: pointer;
