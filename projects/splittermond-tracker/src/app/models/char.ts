@@ -1,12 +1,20 @@
 import { signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-const RACE_SIZES: Record<string, number> = {
+const RACE_SIZES = {
   gnome: 3,
   dwarf: 4,
   alben: 5,
   human: 5,
   varg: 6,
+};
+
+export const RACE_LABELS = {
+  dwarf: 'Zwerg',
+  alben: 'Alb',
+  human: 'Mensch',
+  gnome: 'Gnom',
+  varg: 'Varg',
 };
 
 export const USAGE_FIELDS = [
@@ -56,7 +64,7 @@ export class Char {
 
   // Character basic info
   public name = '';
-  public race = '';
+  public race: keyof typeof RACE_SIZES = 'human';
   public spentExp = 0;
   public totalExp = 0;
   public path = '';
@@ -144,7 +152,11 @@ export class Char {
   private _windmagic = 0;
 
   public get size_class(): number {
-    return RACE_SIZES[this.race] || 5; // Default to human size if race not found
+    return RACE_SIZES[this.race];
+  }
+
+  public get raceLabel(): string {
+    return RACE_LABELS[this.race];
   }
 
   public get level(): number {

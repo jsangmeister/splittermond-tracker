@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -60,26 +60,17 @@ declare global {
       } as MatTabsConfig,
     },
   ],
+  host: {
+    '(document:keydown.control.tab)': 'nextTab()',
+    '(document:keydown.control.shift.tab)': 'previousTab()',
+  },
 })
-export class AppComponent implements OnInit {
-  protected selectedIndex = signal(0);
-
+export class AppComponent {
   protected readonly charService = inject(CharacterService);
 
-  private readonly dialog = inject(MatDialog);
+  protected readonly selectedIndex = this.charService.selectedCharacterIndex;
 
-  public ngOnInit(): void {
-    document.addEventListener('keydown', (event) => {
-      if (event.ctrlKey && event.key === 'Tab') {
-        event.preventDefault();
-        if (event.shiftKey) {
-          this.previousTab();
-        } else {
-          this.nextTab();
-        }
-      }
-    });
-  }
+  private readonly dialog = inject(MatDialog);
 
   public close(char: Char): void {
     this.charService.closeCharacter(char);
@@ -89,7 +80,7 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(CharacterSelectionDialogComponent);
     const char = await firstValueFrom(dialogRef.afterClosed());
     if (char) {
-      this.charService.openedCharacters.update((chars) => chars.concat(char));
+      this.charService.openCharacter(char);
       this.selectedIndex.set(this.charService.openedCharacters().length - 1);
     }
   }

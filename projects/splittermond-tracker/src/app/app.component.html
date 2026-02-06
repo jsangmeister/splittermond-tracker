@@ -1,25 +1,31 @@
 <div class="main">
-  <mat-tab-group
-    mat-stretch-tabs="false"
-    mat-align-tabs="start"
-    [(selectedIndex)]="selectedIndex"
-  >
-    @for (char of charService.openedCharacters(); track char.path) {
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <div class="tab-label">{{ char.name }}</div>
-          <button
-            mat-icon-button
-            class="tab-close-button"
-            (click)="close(char)"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        </ng-template>
-        <character-container [char]="char" />
-      </mat-tab>
-    }
-  </mat-tab-group>
+  <!-- Only initialize the tab group if there are opened characters to preserve the selected index -->
+  @if (charService.openedCharacters().length > 0) {
+    <mat-tab-group
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      [(selectedIndex)]="selectedIndex"
+    >
+      @for (char of charService.openedCharacters(); track char.path) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="tab-label">{{ char.name }}</div>
+            <button
+              mat-icon-button
+              class="tab-close-button"
+              (click)="close(char)"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </ng-template>
+          <character-container [char]="char" />
+        </mat-tab>
+      }
+    </mat-tab-group>
+  } @else {
+    <!-- Otherwise, display a dummy element-->
+    <mat-tab-group />
+  }
   <div class="add-tab-button-container">
     <button mat-icon-button class="add-tab-button" (click)="open()">
       <mat-icon>add</mat-icon>

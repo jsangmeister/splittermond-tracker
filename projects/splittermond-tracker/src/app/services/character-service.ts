@@ -4,22 +4,23 @@ import {
   Injectable,
   linkedSignal,
   resource,
+  ResourceRef,
+  Signal,
+  WritableSignal,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as xml2js from 'xml2js';
 
-import { StoreKey } from '../../../../shared/store-keys';
-import { ChangeData, Char, USAGE_FIELDS, UsageData } from '../models/char';
+import { CharacterMetadata, StoreKey } from '../../../../shared/store-keys';
+import {
+  ChangeData,
+  Char,
+  RACE_LABELS,
+  USAGE_FIELDS,
+  UsageData,
+} from '../models/char';
 
 type UsageDataWithNote = UsageData & { note?: string };
-
-const RACE_LABELS = {
-  dwarf: 'Zwerg',
-  alben: 'Alb',
-  human: 'Mensch',
-  gnome: 'Gnom',
-  varg: 'Varg',
-};
 
 /**
  * Service to handle character-related operations like parsing XML character sheets
@@ -29,42 +30,14 @@ const RACE_LABELS = {
   providedIn: 'root',
 })
 export class CharacterService {
-  public readonly allCharacters = resource({
-    loader: () =>
-      window.electron
-        .getCharacters()
-        .then(async (res) =>
-          (
-            await Promise.all(
-              res.map(
-                async ({ path, content }) =>
-                  await this.loadCharacter(content, path),
-              ),
-            )
-          ).filter((c) => c !== undefined),
-        ),
-    defaultValue: [],
-  });
+  public readonly openedCharacters: Signal<Char[]>;
+  public readonly notOpenedCharacters: Signal<Char[]>;
+  public readonly selectedCharacterIndex: WritableSignal<number>;
 
-  public readonly lastOpenedCharacters = resource({
-    loader: () =>
-      window.electron.storage
-        .get(StoreKey.LAST_CHARACTERS)
-        .then((data) => data ?? []),
-    defaultValue: [],
-  });
-
-  public readonly openedCharacters = linkedSignal(() =>
-    this.allCharacters
-      .value()
-      .filter((char) => this.lastOpenedCharacters.value().includes(char.path)),
-  );
-
-  public readonly notOpenedCharacters = computed(() =>
-    this.allCharacters
-      .value()
-      .filter((char) => !this.openedCharacters().includes(char)),
-  );
+  protected readonly allCharacters: ResourceRef<Char[]>;
+  protected readonly openedCharactersMetadata: WritableSignal<
+    CharacterMetadata[]
+  >;
 
   private readonly store = window.electron.storage;
 
@@ -73,21 +46,95 @@ export class CharacterService {
   private readonly _onChange$ = new Subject<ChangeData>();
 
   public constructor() {
+    this.allCharacters = resource({
+      loader: () =>
+        window.electron
+          .getCharacters()
+          .then(async (res) =>
+            (
+              await Promise.all(
+                res.map(
+                  async ({ path, content }) =>
+                    await this.loadCharacter(content, path),
+                ),
+              )
+            ).filter((c) => c !== undefined),
+          ),
+      defaultValue: [],
+    });
+
+    const initiallyOpenedCharacters = resource({
+      loader: () =>
+        window.electron.storage
+          .get(StoreKey.LAST_CHARACTERS)
+          .then((data) => data ?? []),
+      defaultValue: [],
+    });
+
+    this.openedCharactersMetadata = linkedSignal(() =>
+      initiallyOpenedCharacters.value(),
+    );
+    this.selectedCharacterIndex = linkedSignal(() =>
+      this.openedCharactersMetadata().findIndex(
+        (metadata) => metadata.selected,
+      ),
+    );
+    this.openedCharacters = linkedSignal(() =>
+      this.allCharacters
+        .value()
+        .filter((char) =>
+          this.openedCharactersMetadata().find(
+            (metadata) => metadata.id === char.path,
+          ),
+        ),
+    );
+    this.notOpenedCharacters = computed(() =>
+      this.allCharacters
+        .value()
+        .filter((char) => !this.openedCharacters().includes(char)),
+    );
+
     effect(() => {
-      void window.electron.storage.set(
-        StoreKey.LAST_CHARACTERS,
-        this.openedCharacters().map((c) => c.path),
+      this.openedCharactersMetadata.update((chars) =>
+        chars.map((c, i) => ({
+          ...c,
+          selected: i === this.selectedCharacterIndex(),
+        })),
       );
+      this.saveCharacterMetadata(); // nested effects do not trigger
+    });
+
+    // save metadata whenever it changes
+    effect(() => {
+      this.saveCharacterMetadata();
     });
   }
 
   public reloadCharacters(): void {
-    this.lastOpenedCharacters.reload();
     this.allCharacters.reload();
   }
 
+  public openCharacter(char: Char): void {
+    this.openedCharactersMetadata.update((chars) =>
+      chars.concat({
+        type: 'character',
+        id: char.path,
+        selected: true,
+      }),
+    );
+  }
+
   public closeCharacter(char: Char): void {
-    this.openedCharacters.update((chars) => chars.filter((c) => c !== char));
+    this.openedCharactersMetadata.update((chars) =>
+      chars.filter((c) => c.id !== char.path),
+    );
+  }
+
+  private saveCharacterMetadata(): void {
+    void window.electron.storage.set(
+      StoreKey.LAST_CHARACTERS,
+      this.openedCharactersMetadata(),
+    );
   }
 
   private async loadCharacter(
@@ -116,7 +163,7 @@ export class CharacterService {
     const characterData = xml.splimochar;
 
     // Set basic properties
-    char.race = RACE_LABELS[characterData.$.race as keyof typeof RACE_LABELS];
+    char.race = characterData.$.race as keyof typeof RACE_LABELS;
     char.spentExp = parseInt(characterData.$.expinv ?? '0');
     const freeExp = parseInt(characterData.$.expfree ?? '0');
     char.totalExp = char.spentExp + freeExp;
