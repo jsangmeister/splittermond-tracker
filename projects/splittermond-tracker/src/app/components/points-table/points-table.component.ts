@@ -7,7 +7,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
 
@@ -23,7 +23,7 @@ const LABELS = {
   selector: 'points-table',
   templateUrl: './points-table.component.html',
   styleUrls: ['./points-table.component.scss'],
-  imports: [MatTooltipModule, MatButtonModule, MatIcon],
+  imports: [MatTooltipModule, MatButtonModule, MatIconModule],
 })
 export class PointsTableComponent {
   public mode = input.required<'focus' | 'lp' | 'splinters'>();
@@ -31,6 +31,13 @@ export class PointsTableComponent {
   public char = input.required<Char>();
 
   protected readonly Math = Math;
+
+  protected USAGE_TYPES = [
+    'consumed',
+    'exhausted',
+    'channeled',
+    'free',
+  ] as const;
 
   protected readonly MINUS_TOOLTIP = computed(() =>
     this.mode() === 'splinters'
@@ -55,8 +62,8 @@ export class PointsTableComponent {
 
   protected perRow = computed(() =>
     this.mode() === 'lp'
-      ? this.char().lp
-      : Math.min(10, this.char()[`max_${this.mode()}`]),
+      ? this.char().lp()
+      : Math.min(10, this.char()[`max_${this.mode()}`]()),
   );
 
   protected width = computed(
@@ -70,22 +77,6 @@ export class PointsTableComponent {
   private modeLabel = computed(() => LABELS[this.mode()]);
 
   private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
-
-  protected getClass(i: number): UsageType | null {
-    let curr = this.char()[`consumed_${this.mode()}`];
-    if (i < curr) {
-      return 'consumed';
-    }
-    curr += this.char()[`exhausted_${this.mode()}`];
-    if (i < curr) {
-      return 'exhausted';
-    }
-    curr += this.char()[`channeled_${this.mode()}`];
-    if (i < curr) {
-      return 'channeled';
-    }
-    return null;
-  }
 
   protected minus(): void {
     this.change(this.input().nativeElement.value);
@@ -114,7 +105,7 @@ export class PointsTableComponent {
         this.error.set('Invalid input.');
         return;
       }
-      value = Math.min(value, this.char()[`channeled_${this.mode()}`]);
+      value = Math.min(value, this.char()[`channeled_${this.mode()}`]());
       this.char().update(
         {
           [`channeled_${this.mode()}`]: -value,
@@ -133,11 +124,11 @@ export class PointsTableComponent {
       let total = 0;
       for (const [type, amount] of Object.entries(obj)) {
         const field = `${type as UsageType}_${this.mode()}` as const;
-        const diff = Math.max(factor * amount, -this.char()[field]);
+        const diff = Math.max(factor * amount, -this.char()[field]());
         total += diff;
-        update[field] = this.char()[field] + diff;
+        update[field] = this.char()[field]() + diff;
       }
-      if (total > this.char()[`free_${this.mode()}`]) {
+      if (total > this.char()[`free_${this.mode()}`]()) {
         throw new Error(`Nicht ausreichend ${this.modeLabel()} verfügbar.`);
       }
       const action = `${factor === 1 ? 'SPEND' : 'RESTORE'}_${this.mode().toUpperCase()}`;

@@ -32,20 +32,20 @@
       </div>
     </div>
 
-    <div class="tracker">
+    <div class="card">
       <div class="tracker-title">
         <div>
-          Splitterpunkte ({{ char().free_splinters }}/{{
-            char().max_splinters
+          Splitterpunkte ({{ char().free_splinters() }}/{{
+            char().max_splinters()
           }})
         </div>
       </div>
       <points-table class="splinters-table" [char]="char()" mode="splinters" />
     </div>
 
-    <div class="tracker">
+    <div class="card">
       <div class="tracker-title">
-        <div>Lebenspunkte ({{ char().free_lp }}/{{ char().max_lp }})</div>
+        <div>Lebenspunkte ({{ char().free_lp() }}/{{ char().max_lp() }})</div>
         <button
           matMiniFab
           (click)="longRest()"
@@ -59,9 +59,11 @@
       <points-table [char]="char()" mode="lp" />
     </div>
 
-    <div class="tracker">
+    <div class="card">
       <div class="tracker-title">
-        <div>Fokuspunkte ({{ char().free_focus }}/{{ char().max_focus }})</div>
+        <div>
+          Fokuspunkte ({{ char().free_focus() }}/{{ char().max_focus() }})
+        </div>
         <button
           matMiniFab
           (click)="shortRest()"
@@ -77,10 +79,39 @@
     <history [char]="char()" />
   </div>
 
-  <!-- <div class="side-container">
-    <h4>Allgemeine Fertigkeiten</h4>
-    <p>Alchemie: {{ char().alchemy }}</p>
-  </div> -->
+  <div class="middle-container">
+    <div class="card">
+      <div class="tracker-title">Allgemeine Fertigkeiten</div>
+      <div class="grid">
+        @for (skill of GENERAL_SKILLS; track skill) {
+          <div>{{ GENERAL_SKILLS_LABELS[skill] }}</div>
+          <div class="skill">
+            <button
+              matMiniFab
+              nz-popover
+              [nzPopoverContent]="contentTemplate"
+              nzPopoverPlacement="right"
+            >
+              {{ char()[skill]() }}
+            </button>
+            <ng-template #contentTemplate>
+              <div class="popover-content">
+                @for (part of char()[skill].parts(); track part) {
+                  <div class="label">{{ part.label }}</div>
+                  <div>{{ $first ? '' : part.modifier }}</div>
+                  <div class="value">{{ part.value() }}</div>
+                }
+                <mat-divider />
+                <div class="label">Ges.</div>
+                <div>=</div>
+                <div class="value">{{ char()[skill]() }}</div>
+              </div>
+            </ng-template>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
 
   <div class="side-container">
     <div>

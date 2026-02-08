@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../../../global.scss';
+@use '@angular/material' as mat;
 
 :host {
   display: block;
@@ -15,12 +16,31 @@
   padding: global.$spacing-lg;
   border-radius: global.$border-radius;
 
-  .character-container {
+  .character-container,
+  .middle-container {
     @include global.flex-container(column);
     padding-right: global.$spacing-md;
   }
 
-  .side-container {
+  .middle-container {
+    flex-basis: content;
+
+    @include mat.fab-overrides(
+      (
+        small-container-color: white,
+        small-hover-state-layer-opacity: 0,
+        small-focus-state-layer-opacity: 0,
+        small-foreground-color: global.$primary-color,
+      )
+    );
+
+    .skill button {
+      font-weight: bold;
+    }
+  }
+
+  .side-container,
+  .middle-container {
     padding-left: global.$spacing-md;
     border-left: 1px solid global.$border-color;
     width: 100%;
@@ -38,6 +58,14 @@
       }
     }
   }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  row-gap: 4px;
+  column-gap: 15px;
+  align-items: center;
 }
 
 .top-row {
@@ -61,7 +89,7 @@
   color: global.$text-muted;
 }
 
-.tracker {
+.card {
   padding: global.$spacing-md;
   border-radius: global.$spacing-xs;
   background-color: global.$background-color;
@@ -122,5 +150,26 @@ history {
 
   markdown {
     width: 100%;
+  }
+}
+
+::ng-deep .popover-content {
+  display: grid;
+  flex-direction: column;
+  grid-template-columns: max-content max-content max-content;
+  row-gap: 4px;
+  column-gap: 4px;
+  align-items: stretch;
+
+  .label {
+    padding-right: 4px;
+  }
+
+  .value {
+    text-align: right;
+  }
+
+  mat-divider {
+    grid-column: span 3;
   }
 }

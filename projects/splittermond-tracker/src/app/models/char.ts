@@ -1,5 +1,18 @@
-import { signal } from '@angular/core';
+import { computed, Signal, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+
+import { CHAR_SHORT_LABELS } from '../utils/char-short-labels';
+import { KeysOfValue } from '../utils/types';
+
+interface CharSignalPart {
+  label: string;
+  value: Signal<number>;
+  modifier: '+' | '-';
+}
+
+export interface CharSignal extends Signal<number> {
+  parts: Signal<CharSignalPart[]>;
+}
 
 const RACE_SIZES = {
   gnome: 3,
@@ -28,6 +41,64 @@ export const USAGE_FIELDS = [
   'exhausted_splinters',
   'consumed_splinters',
 ] as const;
+
+export const GENERAL_SKILLS = [
+  'acrobatics',
+  'alchemy',
+  'leadership',
+  'arcanelore',
+  'athletics',
+  'performance',
+  'diplomacy',
+  'clscraft',
+  'empathy',
+  'determination',
+  'dexterity',
+  'history',
+  'craftmanship',
+  'heal',
+  'stealth',
+  'hunting',
+  'countrylore',
+  'nature',
+  'eloquence',
+  'locksntraps',
+  'swim',
+  'seafaring',
+  'streetlore',
+  'animals',
+  'survival',
+  'perception',
+  'endurance',
+] as const;
+
+export const MAGIC_SCHOOLS = [
+  'antimagic',
+  'controlmagic',
+  'motionmagic',
+  'insightmagic',
+  'stonemagic',
+  'firemagic',
+  'healmagic',
+  'illusionmagic',
+  'combatmagic',
+  'lightmagic',
+  'naturemagic',
+  'shadowmagic',
+  'fatemagic',
+  'protectionmagic',
+  'enhancemagic',
+  'deathmagic',
+  'transformationmagic',
+  'watermagic',
+  'windmagic',
+] as const;
+
+export type GeneralSkillKey = (typeof GENERAL_SKILLS)[number];
+
+export type MagicSchoolKey = (typeof MAGIC_SCHOOLS)[number];
+
+export type SkillKey = GeneralSkillKey | MagicSchoolKey;
 
 export type UsageType = 'channeled' | 'exhausted' | 'consumed';
 
@@ -63,384 +134,450 @@ export class Char {
   public onChange$: Observable<ChangeData> = this._onChange$;
 
   // Character basic info
-  public name = '';
-  public race: keyof typeof RACE_SIZES = 'human';
-  public spentExp = 0;
-  public totalExp = 0;
-  public path = '';
+  public readonly name = signal('');
+  public readonly race = signal<keyof typeof RACE_SIZES>('human');
+  public readonly spentExp = signal(0);
+  public readonly totalExp = signal(0);
+  public readonly path = signal('');
 
   // Attributes
-  public charisma = 0;
-  public agility = 0;
-  public intuition = 0;
-  public constitution = 0;
-  public mystic = 0;
-  public strength = 0;
-  public mind = 0;
-  public willpower = 0;
+  public readonly charisma = signal(0);
+  public readonly agility = signal(0);
+  public readonly intuition = signal(0);
+  public readonly constitution = signal(0);
+  public readonly mystic = signal(0);
+  public readonly strength = signal(0);
+  public readonly mind = signal(0);
+  public readonly willpower = signal(0);
 
   // Additional values
-  public additional_splinters = 0;
-  public additional_lp = 0;
-  public additional_focus = 0;
-  public additional_lp_regeneration = 0;
-  public additional_focus_regeneration = 0;
+  public readonly additional_splinters = signal(0);
+  public readonly additional_lp = signal(0);
+  public readonly additional_focus = signal(0);
+  public readonly additional_lp_regeneration = signal(0);
+  public readonly additional_focus_regeneration = signal(0);
 
   // Usage tracking
-  public channeled_focus = 0;
-  public exhausted_focus = 0;
-  public consumed_focus = 0;
+  public readonly channeled_focus = signal(0);
+  public readonly exhausted_focus = signal(0);
+  public readonly consumed_focus = signal(0);
 
-  public channeled_lp = 0;
-  public exhausted_lp = 0;
-  public consumed_lp = 0;
+  public readonly channeled_lp = signal(0);
+  public readonly exhausted_lp = signal(0);
+  public readonly consumed_lp = signal(0);
 
-  public channeled_splinters = 0;
-  public exhausted_splinters = 0;
-  public consumed_splinters = 0;
+  public readonly channeled_splinters = signal(0);
+  public readonly exhausted_splinters = signal(0);
+  public readonly consumed_splinters = signal(0);
 
-  public note = signal('');
+  public readonly note = signal('');
 
   // Skills - general
-  private _acrobatics = 0;
-  private _alchemy = 0;
-  private _leadership = 0;
-  private _arcanelore = 0;
-  private _athletics = 0;
-  private _performance = 0;
-  private _diplomacy = 0;
-  private _clscraft = 0;
-  private _empathy = 0;
-  private _determination = 0;
-  private _dexterity = 0;
-  private _history = 0;
-  private _craftmanship = 0;
-  private _heal = 0;
-  private _stealth = 0;
-  private _hunting = 0;
-  private _countrylore = 0;
-  private _nature = 0;
-  private _eloquence = 0;
-  private _locksntraps = 0;
-  private _swim = 0;
-  private _seafaring = 0;
-  private _streetlore = 0;
-  private _animals = 0;
-  private _survival = 0;
-  private _perception = 0;
-  private _endurance = 0;
+  private readonly _acrobatics = signal(0);
+  private readonly _alchemy = signal(0);
+  private readonly _leadership = signal(0);
+  private readonly _arcanelore = signal(0);
+  private readonly _athletics = signal(0);
+  private readonly _performance = signal(0);
+  private readonly _diplomacy = signal(0);
+  private readonly _clscraft = signal(0);
+  private readonly _empathy = signal(0);
+  private readonly _determination = signal(0);
+  private readonly _dexterity = signal(0);
+  private readonly _history = signal(0);
+  private readonly _craftmanship = signal(0);
+  private readonly _heal = signal(0);
+  private readonly _stealth = signal(0);
+  private readonly _hunting = signal(0);
+  private readonly _countrylore = signal(0);
+  private readonly _nature = signal(0);
+  private readonly _eloquence = signal(0);
+  private readonly _locksntraps = signal(0);
+  private readonly _swim = signal(0);
+  private readonly _seafaring = signal(0);
+  private readonly _streetlore = signal(0);
+  private readonly _animals = signal(0);
+  private readonly _survival = signal(0);
+  private readonly _perception = signal(0);
+  private readonly _endurance = signal(0);
 
   // Skills - magic
-  private _antimagic = 0;
-  private _controlmagic = 0;
-  private _motionmagic = 0;
-  private _insightmagic = 0;
-  private _stonemagic = 0;
-  private _firemagic = 0;
-  private _healmagic = 0;
-  private _illusionmagic = 0;
-  private _combatmagic = 0;
-  private _lightmagic = 0;
-  private _naturemagic = 0;
-  private _shadowmagic = 0;
-  private _fatemagic = 0;
-  private _protectionmagic = 0;
-  private _enhancemagic = 0;
-  private _deathmagic = 0;
-  private _transformationmagic = 0;
-  private _watermagic = 0;
-  private _windmagic = 0;
+  private readonly _antimagic = signal(0);
+  private readonly _controlmagic = signal(0);
+  private readonly _motionmagic = signal(0);
+  private readonly _insightmagic = signal(0);
+  private readonly _stonemagic = signal(0);
+  private readonly _firemagic = signal(0);
+  private readonly _healmagic = signal(0);
+  private readonly _illusionmagic = signal(0);
+  private readonly _combatmagic = signal(0);
+  private readonly _lightmagic = signal(0);
+  private readonly _naturemagic = signal(0);
+  private readonly _shadowmagic = signal(0);
+  private readonly _fatemagic = signal(0);
+  private readonly _protectionmagic = signal(0);
+  private readonly _enhancemagic = signal(0);
+  private readonly _deathmagic = signal(0);
+  private readonly _transformationmagic = signal(0);
+  private readonly _watermagic = signal(0);
+  private readonly _windmagic = signal(0);
 
-  public get size_class(): number {
-    return RACE_SIZES[this.race];
-  }
+  public readonly size_class = computed(() => RACE_SIZES[this.race()]);
 
-  public get raceLabel(): string {
-    return RACE_LABELS[this.race];
-  }
+  public readonly stealthModifier = computed(() => 5 - this.size_class());
 
-  public get level(): number {
-    if (this.spentExp < 100) {
+  public readonly raceLabel = computed(() => RACE_LABELS[this.race()]);
+
+  public readonly level = computed(() => {
+    if (this.spentExp() < 100) {
       return 1;
-    } else if (this.spentExp < 300) {
+    } else if (this.spentExp() < 300) {
       return 2;
-    } else if (this.spentExp < 600) {
+    } else if (this.spentExp() < 600) {
       return 3;
     } else {
       return 4;
     }
-  }
+  });
 
   // BASE VALUES
-  public get speed(): number {
-    return this.size_class + this.agility;
-  }
+  public readonly speed = computed(
+    () => this.size_class() + this.agility() - this.wounded_deduction(),
+  );
 
-  public get initiative(): number {
-    return 10 - this.intuition;
-  }
+  public readonly initiative = computed(
+    () => 10 - this.intuition() + this.wounded_deduction(),
+  );
 
-  public get lp(): number {
-    return this.size_class + this.constitution + this.additional_lp;
-  }
+  public readonly lp = computed(
+    () => this.size_class() + this.constitution() + this.additional_lp(),
+  );
 
-  public get max_lp(): number {
-    return this.lp * 5;
-  }
+  public readonly max_lp = computed(() => this.lp() * 5);
 
-  public get free_lp(): number {
-    return (
-      this.max_lp - this.channeled_lp - this.exhausted_lp - this.consumed_lp
-    );
-  }
+  public readonly used_lp = computed(
+    () => this.channeled_lp() + this.exhausted_lp() + this.consumed_lp(),
+  );
 
-  public get lp_regeneration(): number {
-    return Math.max(
-      1,
-      this.constitution * (2 + this.additional_lp_regeneration),
-    );
-  }
+  public readonly free_lp = computed(() => this.max_lp() - this.used_lp());
 
-  public get max_focus(): number {
-    return 2 * (this.mystic + this.willpower) + this.additional_focus;
-  }
+  public readonly lp_regeneration = computed(() =>
+    Math.max(1, this.constitution() * (2 + this.additional_lp_regeneration())),
+  );
 
-  public get free_focus(): number {
-    return (
-      this.max_focus -
-      this.channeled_focus -
-      this.exhausted_focus -
-      this.consumed_focus
-    );
-  }
+  public readonly wounded_level = computed(() =>
+    Math.floor(this.consumed_lp() / this.lp()),
+  );
 
-  public get focus_regeneration(): number {
-    return Math.max(
-      1,
-      this.willpower * (2 + this.additional_focus_regeneration),
-    );
-  }
+  public readonly wounded_deduction = computed(() =>
+    Math.floor(Math.pow(2, this.wounded_level() - 1)),
+  );
 
-  public get max_splinters(): number {
-    return 3 + this.additional_splinters + this.level - 1;
-  }
+  public readonly max_focus = computed(
+    () => 2 * (this.mystic() + this.willpower()) + this.additional_focus(),
+  );
 
-  public get free_splinters(): number {
-    return (
-      this.max_splinters -
-      this.channeled_splinters -
-      this.exhausted_splinters -
-      this.consumed_splinters
-    );
-  }
+  public readonly used_focus = computed(
+    () =>
+      this.channeled_focus() + this.exhausted_focus() + this.consumed_focus(),
+  );
 
-  public get defense(): number {
-    return (
+  public readonly free_focus = computed(
+    () => this.max_focus() - this.used_focus(),
+  );
+
+  public readonly focus_regeneration = computed(() =>
+    Math.max(1, this.willpower() * (2 + this.additional_focus_regeneration())),
+  );
+
+  public readonly max_splinters = computed(
+    () => 3 + this.additional_splinters() + this.level() - 1,
+  );
+
+  public readonly used_splinters = computed(
+    () =>
+      this.channeled_splinters() +
+      this.exhausted_splinters() +
+      this.consumed_splinters(),
+  );
+
+  public readonly free_splinters = computed(
+    () => this.max_splinters() - this.used_splinters(),
+  );
+
+  public readonly defense = computed(
+    () =>
       12 +
-      this.agility +
-      this.strength +
-      2 * (5 - this.size_class) +
-      2 * (this.level - 1)
-    );
-  }
+      this.agility() +
+      this.strength() +
+      2 * (5 - this.size_class()) +
+      2 * (this.level() - 1),
+  );
 
-  public get mental_resistance(): number {
-    return 12 + this.mind + this.willpower + 2 * (this.level - 1);
-  }
+  public readonly mental_resistance = computed(
+    () => 12 + this.mind() + this.willpower() + 2 * (this.level() - 1),
+  );
 
-  public get physical_resistance(): number {
-    return 12 + this.constitution + this.willpower + 2 * (this.level - 1);
-  }
+  public readonly physical_resistance = computed(
+    () => 12 + this.constitution() + this.willpower() + 2 * (this.level() - 1),
+  );
 
   // SKILLS - GENERAL
-  public get acrobatics(): number {
-    return this._acrobatics + this.agility + this.strength;
-  }
+  public readonly acrobatics = this.charComputed(
+    'agility',
+    'strength',
+    '_acrobatics',
+  );
 
-  public get alchemy(): number {
-    return this._alchemy + this.mystic + this.mind;
-  }
+  public readonly alchemy = this.charComputed('mystic', 'mind', '_alchemy');
 
-  public get leadership(): number {
-    return this._leadership + this.charisma + this.willpower;
-  }
+  public readonly leadership = this.charComputed(
+    'charisma',
+    'willpower',
+    '_leadership',
+  );
 
-  public get arcanelore(): number {
-    return this._arcanelore + this.mystic + this.mind;
-  }
+  public readonly arcanelore = this.charComputed(
+    'mystic',
+    'mind',
+    '_arcanelore',
+  );
 
-  public get athletics(): number {
-    return this._athletics + this.agility + this.strength;
-  }
+  public readonly athletics = this.charComputed(
+    'agility',
+    'strength',
+    '_athletics',
+  );
 
-  public get performance(): number {
-    return this._performance + this.charisma + this.willpower;
-  }
+  public readonly performance = this.charComputed(
+    'charisma',
+    'willpower',
+    '_performance',
+  );
 
-  public get diplomacy(): number {
-    return this._diplomacy + this.charisma + this.mind;
-  }
+  public readonly diplomacy = this.charComputed(
+    'charisma',
+    'mind',
+    '_diplomacy',
+  );
 
-  public get clscraft(): number {
-    return this._clscraft + this.intuition + this.mind;
-  }
+  public readonly clscraft = this.charComputed(
+    'intuition',
+    'mind',
+    '_clscraft',
+  );
 
-  public get empathy(): number {
-    return this._empathy + this.intuition + this.mind;
-  }
+  public readonly empathy = this.charComputed('intuition', 'mind', '_empathy');
 
-  public get determination(): number {
-    return this._determination + this.charisma + this.willpower;
-  }
+  public readonly determination = this.charComputed(
+    'charisma',
+    'willpower',
+    '_determination',
+  );
 
-  public get dexterity(): number {
-    return this._dexterity + this.charisma + this.agility;
-  }
+  public readonly dexterity = this.charComputed(
+    'charisma',
+    'agility',
+    '_dexterity',
+  );
 
-  public get history(): number {
-    return this._history + this.mystic + this.mind;
-  }
+  public readonly history = this.charComputed('mystic', 'mind', '_history');
 
-  public get craftmanship(): number {
-    return this._craftmanship + this.constitution + this.mind;
-  }
+  public readonly craftmanship = this.charComputed(
+    'constitution',
+    'mind',
+    '_craftmanship',
+  );
 
-  public get heal(): number {
-    return this._heal + this.intuition + this.mind;
-  }
+  public readonly heal = this.charComputed('intuition', 'mind', '_heal');
 
-  public get stealth(): number {
-    return this._stealth + this.agility + this.intuition + 5 - this.size_class;
-  }
+  public readonly stealth = this.charComputed(
+    'agility',
+    'intuition',
+    '_stealth',
+    'stealthModifier',
+  );
 
-  public get hunting(): number {
-    return this._hunting + this.constitution + this.mind;
-  }
+  public readonly hunting = this.charComputed(
+    'constitution',
+    'mind',
+    '_hunting',
+  );
 
-  public get countrylore(): number {
-    return this._countrylore + this.intuition + this.mind;
-  }
+  public readonly countrylore = this.charComputed(
+    'intuition',
+    'mind',
+    '_countrylore',
+  );
 
-  public get nature(): number {
-    return this._nature + this.intuition + this.mind;
-  }
+  public readonly nature = this.charComputed('intuition', 'mind', '_nature');
 
-  public get eloquence(): number {
-    return this._eloquence + this.charisma + this.willpower;
-  }
+  public readonly eloquence = this.charComputed(
+    'charisma',
+    'willpower',
+    '_eloquence',
+  );
 
-  public get locksntraps(): number {
-    return this._locksntraps + this.intuition + this.agility;
-  }
+  public readonly locksntraps = this.charComputed(
+    'intuition',
+    'agility',
+    '_locksntraps',
+  );
 
-  public get swim(): number {
-    return this._swim + this.constitution + this.strength;
-  }
+  public readonly swim = this.charComputed('constitution', 'strength', '_swim');
 
-  public get seafaring(): number {
-    return this._seafaring + this.agility + this.constitution;
-  }
+  public readonly seafaring = this.charComputed(
+    'agility',
+    'constitution',
+    '_seafaring',
+  );
 
-  public get streetlore(): number {
-    return this._streetlore + this.charisma + this.intuition;
-  }
+  public readonly streetlore = this.charComputed(
+    'charisma',
+    'intuition',
+    '_streetlore',
+  );
 
-  public get animals(): number {
-    return this._animals + this.charisma + this.agility;
-  }
+  public readonly animals = this.charComputed(
+    'charisma',
+    'agility',
+    '_animals',
+  );
 
-  public get survival(): number {
-    return this._survival + this.intuition + this.constitution;
-  }
+  public readonly survival = this.charComputed(
+    'intuition',
+    'constitution',
+    '_survival',
+  );
 
-  public get perception(): number {
-    return this._perception + this.intuition + this.willpower;
-  }
+  public readonly perception = this.charComputed(
+    'intuition',
+    'willpower',
+    '_perception',
+  );
 
-  public get endurance(): number {
-    return this._endurance + this.constitution + this.willpower;
-  }
+  public readonly endurance = this.charComputed(
+    'constitution',
+    'willpower',
+    '_endurance',
+  );
 
   // SKILLS - MAGIC
-  public get antimagic(): number {
-    return this._antimagic + this.mystic + this.willpower;
-  }
+  public readonly antimagic = this.charComputed(
+    'mystic',
+    'willpower',
+    '_antimagic',
+  );
 
-  public get controlmagic(): number {
-    return this._controlmagic + this.mystic + this.willpower;
-  }
+  public readonly controlmagic = this.charComputed(
+    'mystic',
+    'willpower',
+    '_controlmagic',
+  );
 
-  public get motionmagic(): number {
-    return this._motionmagic + this.mystic + this.agility;
-  }
+  public readonly motionmagic = this.charComputed(
+    'mystic',
+    'agility',
+    '_motionmagic',
+  );
 
-  public get insightmagic(): number {
-    return this._insightmagic + this.mystic + this.mind;
-  }
+  public readonly insightmagic = this.charComputed(
+    'mystic',
+    'mind',
+    '_insightmagic',
+  );
 
-  public get stonemagic(): number {
-    return this._stonemagic + this.mystic + this.constitution;
-  }
+  public readonly stonemagic = this.charComputed(
+    'mystic',
+    'constitution',
+    '_stonemagic',
+  );
 
-  public get firemagic(): number {
-    return this._firemagic + this.mystic + this.charisma;
-  }
+  public readonly firemagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_firemagic',
+  );
 
-  public get healmagic(): number {
-    return this._healmagic + this.mystic + this.charisma;
-  }
+  public readonly healmagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_healmagic',
+  );
 
-  public get illusionmagic(): number {
-    return this._illusionmagic + this.mystic + this.charisma;
-  }
+  public readonly illusionmagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_illusionmagic',
+  );
 
-  public get combatmagic(): number {
-    return this._combatmagic + this.mystic + this.strength;
-  }
+  public readonly combatmagic = this.charComputed(
+    'mystic',
+    'strength',
+    '_combatmagic',
+  );
 
-  public get lightmagic(): number {
-    return this._lightmagic + this.mystic + this.charisma;
-  }
+  public readonly lightmagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_lightmagic',
+  );
 
-  public get naturemagic(): number {
-    return this._naturemagic + this.mystic + this.charisma;
-  }
+  public readonly naturemagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_naturemagic',
+  );
 
-  public get shadowmagic(): number {
-    return this._shadowmagic + this.mystic + this.intuition;
-  }
+  public readonly shadowmagic = this.charComputed(
+    'mystic',
+    'intuition',
+    '_shadowmagic',
+  );
 
-  public get fatemagic(): number {
-    return this._fatemagic + this.mystic + this.charisma;
-  }
+  public readonly fatemagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_fatemagic',
+  );
 
-  public get protectionmagic(): number {
-    return this._protectionmagic + this.mystic + this.charisma;
-  }
+  public readonly protectionmagic = this.charComputed(
+    'mystic',
+    'charisma',
+    '_protectionmagic',
+  );
 
-  public get enhancemagic(): number {
-    return this._enhancemagic + this.mystic + this.strength;
-  }
+  public readonly enhancemagic = this.charComputed(
+    'mystic',
+    'strength',
+    '_enhancemagic',
+  );
 
-  public get deathmagic(): number {
-    return this._deathmagic + this.mystic + this.mind;
-  }
+  public readonly deathmagic = this.charComputed(
+    'mystic',
+    'mind',
+    '_deathmagic',
+  );
 
-  public get transformationmagic(): number {
-    return this._transformationmagic + this.mystic + this.constitution;
-  }
+  public readonly transformationmagic = this.charComputed(
+    'mystic',
+    'constitution',
+    '_transformationmagic',
+  );
 
-  public get watermagic(): number {
-    return this._watermagic + this.mystic + this.intuition;
-  }
+  public readonly watermagic = this.charComputed(
+    'mystic',
+    'intuition',
+    '_watermagic',
+  );
 
-  public get windmagic(): number {
-    return this._windmagic + this.mystic + this.mind;
-  }
+  public readonly windmagic = this.charComputed('mystic', 'mind', '_windmagic');
 
   public update(update: UsageData, action: Action, info?: string): void {
     const before = this.getUsageData();
-    Object.assign(this, update);
+    for (const [field, value] of Object.entries(update)) {
+      this[field as keyof UsageData].set(value);
+    }
     if (action !== Action.HISTORY) {
       this._onChange$.next({
         char: this,
@@ -456,7 +593,7 @@ export class Char {
   public getUsageData(): FullUsageData {
     const data: UsageData = {};
     for (const field of USAGE_FIELDS) {
-      data[field] = this[field];
+      data[field] = this[field]();
     }
     return data as FullUsageData;
   }
@@ -482,9 +619,39 @@ export class Char {
     for (const type of ['lp', 'focus'] as const) {
       update[`exhausted_${type}`] = update[`channeled_${type}`] = 0;
       update[`consumed_${type}`] =
-        this[`consumed_${type}`] -
-        Math.min(this[`consumed_${type}`], this[`${type}_regeneration`]);
+        this[`consumed_${type}`]() -
+        Math.min(this[`consumed_${type}`](), this[`${type}_regeneration`]());
     }
     this.update(update, Action.LONG_REST);
+  }
+
+  private charComputed(
+    ...parts: (KeysOfValue<Char, Signal<number>> | `_${SkillKey}`)[]
+  ): CharSignal {
+    const c = computed(
+      () =>
+        parts.reduce((sum, part) => sum + this[part](), 0) -
+        this.wounded_deduction(),
+    ) as CharSignal;
+    c.parts = computed(() =>
+      parts
+        .map(
+          (part): CharSignalPart => ({
+            label:
+              CHAR_SHORT_LABELS[part.replace('_', '') as keyof Char] ??
+              'MISSING_LABEL',
+            value: this[part],
+            modifier: '+',
+          }),
+        )
+        .concat([
+          {
+            label: 'Wundabz.',
+            value: this.wounded_deduction,
+            modifier: '-',
+          },
+        ]),
+    );
+    return c;
   }
 }

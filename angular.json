@@ -22,7 +22,10 @@
             "tsConfig": "projects/splittermond-tracker/tsconfig.app.json",
             "allowedCommonJsDependencies": ["xml2js"],
             "assets": ["projects/splittermond-tracker/src/assets"],
-            "styles": ["projects/splittermond-tracker/src/styles.scss"],
+            "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "projects/splittermond-tracker/src/styles.scss"
+            ],
             "scripts": [],
             "browser": "projects/splittermond-tracker/src/main.ts"
           },

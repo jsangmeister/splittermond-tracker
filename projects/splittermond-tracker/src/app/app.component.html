@@ -6,10 +6,10 @@
       mat-align-tabs="start"
       [(selectedIndex)]="selectedIndex"
     >
-      @for (char of charService.openedCharacters(); track char.path) {
+      @for (char of charService.openedCharacters(); track char.path()) {
         <mat-tab>
           <ng-template mat-tab-label>
-            <div class="tab-label">{{ char.name }}</div>
+            <div class="tab-label">{{ char.name() }}</div>
             <button
               mat-icon-button
               class="tab-close-button"

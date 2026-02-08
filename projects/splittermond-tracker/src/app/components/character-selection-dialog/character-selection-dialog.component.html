@@ -11,16 +11,15 @@
 <mat-dialog-content>
   <mat-action-list>
     <!-- <div mat-subheader>Charaktere</div> -->
-    @for (char of charService.notOpenedCharacters(); track char.path) {
+    @for (char of charService.notOpenedCharacters(); track char.path()) {
       <button mat-list-item (click)="dialogRef.close(char)">
-        <div matListItemTitle>{{ char.name }}</div>
+        <div matListItemTitle>{{ char.name() }}</div>
         <div matListItemLine>
-          {{ char.race }} | HG {{ char.level }} | {{ char.spentExp }}/{{
-            char.totalExp
-          }}
+          {{ char.raceLabel() }} | HG {{ char.level() }} |
+          {{ char.spentExp() }}/{{ char.totalExp() }}
           EP
         </div>
-        <div matListItemLine class="rtl">{{ char.path }}</div>
+        <div matListItemLine class="rtl">{{ char.path() }}</div>
       </button>
     }
     <!-- <mat-divider></mat-divider>

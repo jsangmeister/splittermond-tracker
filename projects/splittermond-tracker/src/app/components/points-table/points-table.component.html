@@ -1,19 +1,27 @@
 <div class="points-container" [style.width.px]="width()">
-  @let total = char()[`max_${mode()}`];
+  @let total = char()[`max_${mode()}`]();
   @for (_ of [].constructor(total); let i = $index; track i) {
-    @let cls = getClass(i);
     @if (mode() === 'lp' && i % perRow() === 0) {
+      @let deduction = Math.floor(Math.pow(2, i / perRow() - 1));
       <span
         class="dmg-mod"
-        [class.active]="i > 0 && cls && !getClass(i + perRow())"
+        [class.active]="i > 0 && char().wounded_deduction() === deduction"
       >
-        {{ -Math.floor(Math.pow(2, i / perRow() - 1)) }}
+        {{ -deduction }}
       </span>
     }
     <input
       type="checkbox"
       class="point-checkbox"
-      [class]="cls"
+      [class]="
+        i < char()[`consumed_${mode()}`]()
+          ? 'consumed'
+          : i < char()[`consumed_${mode()}`]() + char()[`exhausted_${mode()}`]()
+            ? 'exhausted'
+            : i < char()[`used_${mode()}`]()
+              ? 'channeled'
+              : 'free'
+      "
       [class.margin-right]="(i % perRow()) % 5 === 4"
     />
   }
@@ -37,7 +45,7 @@
       (click)="minus()"
       (contextmenu)="minus_channeled()"
       [matTooltip]="MINUS_TOOLTIP()"
-      [disabled]="mode() === 'splinters' && char().free_splinters === 0"
+      [disabled]="mode() === 'splinters' && char().free_splinters() === 0"
     >
       @if (mode() === 'splinters') {
         <mat-icon>remove</mat-icon>
@@ -51,7 +59,8 @@
       (contextmenu)="plus_channeled()"
       [matTooltip]="PLUS_TOOLTIP()"
       [disabled]="
-        mode() === 'splinters' && char().free_splinters === char().max_splinters
+        mode() === 'splinters' &&
+        char().free_splinters() === char().max_splinters()
       "
     >
       @if (mode() === 'splinters') {
