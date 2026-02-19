@@ -112,7 +112,6 @@
     "mac": {
       "target": "dmg",
       "category": "public.app-category.utilities",
-      "icon": "img/icon.png",
       "identity": null,
       "hardenedRuntime": false
     }
