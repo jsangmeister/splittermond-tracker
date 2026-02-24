@@ -58,12 +58,12 @@
     "@angular/build": "^21.1.0",
     "@angular/cli": "^21.1.0",
     "@angular/compiler-cli": "^21.1.0",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@types/xml2js": "^0.4.14",
     "concurrently": "^9.1.2",
     "electron": "^40.0.0",
     "electron-builder": "^26.4.0",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "husky": "^9.1.7",
@@ -75,13 +75,9 @@
     "wait-on": "^9.0.3"
   },
   "overrides": {
-    "@angular/build": {
-      "undici": "^7.18.2"
-    },
-    "@angular/cli": {
-      "@modelcontextprotocol/sdk": "^1.26.0"
-    },
-    "lodash-es": "^4.17.23"
+    "undici": "^7.18.2",
+    "glob": "^13.0.6",
+    "minimatch": "^10.2.1"
   },
   "prettier": {
     "singleQuote": true

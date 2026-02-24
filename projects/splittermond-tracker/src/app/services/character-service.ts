@@ -12,6 +12,7 @@ import * as xml2js from 'xml2js';
 
 import { CharacterMetadata, StoreKey } from '../../../../shared/store-keys';
 import { Char, RACE_LABELS, USAGE_FIELDS, UsageData } from '../models/char';
+import { KeysOfValue } from '../utils/types';
 
 type UsageDataWithNote = UsageData & { note?: string };
 
@@ -236,9 +237,9 @@ export class CharacterService {
       await this.store.set(`character:${char.name()}`, data);
     } catch (error) {
       console.error('Error saving character state:', error);
-      throw new Error(
-        `Failed to save character state: ${(error as Error).message}`,
-      );
+      throw new Error(`Failed to save character state.`, {
+        cause: error,
+      });
     }
   }
 
@@ -254,9 +255,9 @@ export class CharacterService {
       >;
     } catch (error) {
       console.error('Error loading character state:', error);
-      throw new Error(
-        `Failed to load character state: ${(error as Error).message}`,
-      );
+      throw new Error(`Failed to load character state.`, {
+        cause: error,
+      });
     }
   }
 }
