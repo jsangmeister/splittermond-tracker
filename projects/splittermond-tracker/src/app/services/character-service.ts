@@ -1,7 +1,9 @@
 import {
   computed,
   effect,
+  inject,
   Injectable,
+  Injector,
   linkedSignal,
   resource,
   ResourceRef,
@@ -34,6 +36,8 @@ export class CharacterService {
   protected readonly openedCharactersMetadata: WritableSignal<
     CharacterMetadata[]
   >;
+
+  private readonly injector = inject(Injector);
 
   private readonly store = window.electron.storage;
 
@@ -216,15 +220,15 @@ export class CharacterService {
       char.note.set(data.note ?? '');
     }
 
-    const _this = this;
-    const proxy = new Proxy(char, {
-      set(target, p, newValue): boolean {
-        const res = Reflect.set(target, p, newValue);
-        void _this.saveCharacterUsage(target);
-        return res;
+    // save usage data on every update
+    effect(
+      () => {
+        void this.saveCharacterUsage(char);
       },
-    });
-    return proxy;
+      { injector: this.injector },
+    );
+
+    return char;
   }
 
   /**
