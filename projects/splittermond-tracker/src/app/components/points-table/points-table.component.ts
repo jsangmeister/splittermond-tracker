@@ -11,8 +11,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Action, Char, UsageData, UsageType } from 'src/app/models/char';
 
-const CHECKBOX_WIDTH = 25; // Width of the checkbox in pixels, including margin
-
 const LABELS = {
   focus: 'Fokus',
   lp: 'Lebenspunkte',
@@ -24,6 +22,9 @@ const LABELS = {
   templateUrl: './points-table.component.html',
   styleUrls: ['./points-table.component.scss'],
   imports: [MatTooltipModule, MatButtonModule, MatIconModule],
+  host: {
+    '[style.--number-of-columns]': 'perRow() + (mode() === "lp" ? 1 : 0)',
+  },
 })
 export class PointsTableComponent {
   public mode = input.required<'focus' | 'lp' | 'splinters'>();
@@ -64,14 +65,6 @@ export class PointsTableComponent {
     this.mode() === 'lp'
       ? this.char().lp()
       : Math.min(10, this.char()[`max_${this.mode()}`]()),
-  );
-
-  protected width = computed(
-    () =>
-      this.perRow() * CHECKBOX_WIDTH +
-      ((this.perRow() - (this.perRow() % 5)) / 5) * 10 -
-      5 +
-      (this.mode() === 'lp' ? CHECKBOX_WIDTH : 0),
   );
 
   private modeLabel = computed(() => LABELS[this.mode()]);

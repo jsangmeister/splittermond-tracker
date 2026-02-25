@@ -1,4 +1,4 @@
-<div class="points-container" [style.width.px]="width()">
+<div class="points-container">
   @let total = char()[`max_${mode()}`]();
   @for (_ of [].constructor(total); let i = $index; track i) {
     @if (mode() === 'lp' && i % perRow() === 0) {
@@ -22,7 +22,9 @@
               ? 'channeled'
               : 'free'
       "
-      [class.margin-right]="(i % perRow()) % 5 === 4"
+      [class.margin-right]="
+        (i % perRow()) % 5 === 4 && i % perRow() !== perRow() - 1
+      "
     />
   }
 </div>

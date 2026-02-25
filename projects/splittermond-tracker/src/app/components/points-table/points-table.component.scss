@@ -2,15 +2,17 @@
 @use '../../../global.scss';
 
 :host {
-  display: flex;
+  @include global.flex-container(column, wrap);
   gap: global.$spacing-sm;
-  flex-direction: column;
-  flex-wrap: wrap;
 }
 
 .points-container {
-  @include global.flex-container(row, wrap);
+  display: grid;
   gap: global.$spacing-xs;
+  grid-template-columns: repeat(
+    var(--number-of-columns),
+    min-content
+  ); // --number-of-columns is set by the component
 }
 
 .margin-right {
@@ -25,7 +27,6 @@
   @include global.flex-container(row, nowrap, flex-start, center);
 
   .point-input {
-    flex: 1;
     padding: 8px;
     border: 1px solid global.$border-color;
     border-radius: 4px;
@@ -82,7 +83,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    @include global.flex-container(row, nowrap, center, center);
+    @include global.flex-container(row, nowrap, center);
     color: black;
     font-weight: bold;
     font-size: 16px;

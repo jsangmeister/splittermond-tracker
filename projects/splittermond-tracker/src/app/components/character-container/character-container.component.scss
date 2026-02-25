@@ -34,6 +34,11 @@
       )
     );
 
+    .card {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
     .skill button {
       font-weight: bold;
     }
