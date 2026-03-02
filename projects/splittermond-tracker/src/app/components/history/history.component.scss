@@ -1,12 +1,12 @@
 @use 'sass:color';
-@use '../../../global.scss';
+@use 'global' as *;
 
 :host {
   display: block;
-  background-color: global.$background-color;
-  // border-radius: global.$spacing-xs;
-  padding: global.$spacing-xs global.$spacing-sm;
-  // border: 1px solid global.$border-color;
+  background-color: $background-color;
+  // border-radius: $spacing-xs;
+  padding: $spacing-xs $spacing-sm;
+  // border: 1px solid $border-color;
   overflow-y: scroll;
 }
 
@@ -15,5 +15,5 @@
 }
 
 .future {
-  color: global.$text-muted;
+  color: $text-muted;
 }

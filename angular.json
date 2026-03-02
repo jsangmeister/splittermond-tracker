@@ -18,7 +18,6 @@
               "browser": ""
             },
             "index": "projects/splittermond-tracker/src/index.html",
-            "polyfills": [],
             "tsConfig": "projects/splittermond-tracker/tsconfig.app.json",
             "allowedCommonJsDependencies": ["xml2js"],
             "assets": ["projects/splittermond-tracker/src/assets"],
@@ -26,7 +25,9 @@
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "projects/splittermond-tracker/src/styles/styles.scss"
             ],
-            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/splittermond-tracker/src/styles"]
+            },
             "browser": "projects/splittermond-tracker/src/main.ts"
           },
           "configurations": {

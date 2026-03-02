@@ -1,14 +1,14 @@
 @use 'sass:color';
-@use '../../../global.scss';
+@use 'global' as *;
 
 :host {
-  @include global.flex-container(column, wrap);
-  gap: global.$spacing-sm;
+  @include flex-container(column, wrap);
+  gap: $spacing-sm;
 }
 
 .points-container {
   display: grid;
-  gap: global.$spacing-xs;
+  gap: $spacing-xs;
   grid-template-columns: repeat(
     var(--number-of-columns),
     min-content
@@ -20,23 +20,23 @@
 }
 
 .controls {
-  @include global.flex-container(row, wrap, flex-start, center);
+  @include flex-container(row, wrap, flex-start, center);
 }
 
 .input-group {
-  @include global.flex-container(row, nowrap, flex-start, center);
+  @include flex-container(row, nowrap, flex-start, center);
 
   .point-input {
     padding: 8px;
-    border: 1px solid global.$border-color;
+    border: 1px solid $border-color;
     border-radius: 4px;
     width: 120px;
     font-size: 14px;
-    margin-right: global.$spacing-xs;
+    margin-right: $spacing-xs;
 
     &:focus {
-      border-color: global.$primary-color;
-      box-shadow: 0 0 0 2px rgba(global.$primary-color, 0.1);
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
     }
 
     &.hidden {
@@ -69,7 +69,7 @@
   width: 20px;
   height: 20px;
   display: inline-block;
-  border: 1px solid global.$border-color;
+  border: 1px solid $border-color;
   border-radius: 3px;
   position: relative;
   cursor: pointer;
@@ -83,7 +83,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    @include global.flex-container(row, nowrap, center, center);
+    @include flex-container(row, nowrap, center, center);
     color: black;
     font-weight: bold;
     font-size: 16px;
