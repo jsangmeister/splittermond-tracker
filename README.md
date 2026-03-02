@@ -24,7 +24,11 @@ or by double-clicking it in a file explorer.
 
 ### macOS
 
-Download [splittermond-tracker-1.16.0.dmg](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.16.0/splittermond-tracker-1.16.0.dmg) and double-click it. Confirm the following security dialog.
+Download [splittermond-tracker-1.16.0.dmg](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.16.0/splittermond-tracker-1.16.0.dmg) and drag it into the apps folder to install it as usual. The, you'll have to remove the quarantine bit, or otherwise the OS will complain that the file is broken (adjust the path, if needed):
+```
+xattr -rd com.apple.quarantine "/Applications/Splittermond Tracker.app"
+```
+Afterwards, you should be able to start the app.
 
 ## Updates
 
