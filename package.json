@@ -67,11 +67,13 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "husky": "^9.1.7",
+    "jsdom": "^28.1.0",
     "lint-staged": "^16.2.7",
     "ng-zorro-antd": "^21.1.0",
     "prettier": "^3.8.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.53.0",
+    "vitest": "^4.0.18",
     "wait-on": "^9.0.3"
   },
   "overrides": {
