@@ -24,7 +24,7 @@
             "assets": ["projects/splittermond-tracker/src/assets"],
             "styles": [
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "projects/splittermond-tracker/src/styles.scss"
+              "projects/splittermond-tracker/src/styles/styles.scss"
             ],
             "scripts": [],
             "browser": "projects/splittermond-tracker/src/main.ts"
