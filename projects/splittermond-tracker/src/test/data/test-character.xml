@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<splimochar bground="custom" edu="custom" expfree="8" expinv="7" race="alben" splinter="OMEN">
+   <name>test</name>
+   <ownBground id="custom"/>
+   <ownEdu id="custom"/>
+   <culturelores>
+      <cultloreref ref="elyrea"/>
+      <cultloreref ref="ioria"/>
+   </culturelores>
+   <languages>
+      <languageref ref="basargnomisch"/>
+      <languageref ref="antial"/>
+   </languages>
+   <powerrefs>
+      <powerref count="1" ref="attractive"/>
+      <powerref count="1" ref="goodhearing"/>
+      <powerref count="1" ref="lowlight"/>
+      <powerref count="1" ref="focusregen"/>
+      <powerref count="1" ref="liferegen"/>
+      <powerref count="1" ref="swift"/>
+      <powerref count="1" ref="asketic"/>
+   </powerrefs>
+   <resourcerefs>
+      <resourceref ref="reputation" val="4"/>
+      <resourceref ref="status" val="4"/>
+      <resourceref ref="contacts"/>
+      <resourceref ref="wealth"/>
+   </resourcerefs>
+   <attributes>
+      <attr id="CHARISMA" start="3" value="3"/>
+      <attr id="AGILITY" start="4" value="4"/>
+      <attr id="INTUITION" start="3" value="3"/>
+      <attr id="CONSTITUTION" start="2" value="2"/>
+      <attr id="MYSTIC" start="2" value="2"/>
+      <attr id="STRENGTH" start="2" value="2"/>
+      <attr id="MIND" start="2" value="2"/>
+      <attr id="WILLPOWER" start="2" value="2"/>
+   </attributes>
+   <skillvals>
+      <skillval skill="melee"/>
+      <skillval skill="slashing"/>
+      <skillval skill="chains"/>
+      <skillval skill="blades"/>
+      <skillval skill="longrange"/>
+      <skillval skill="staffs"/>
+      <skillval skill="throwing"/>
+      <skillval skill="acrobatics" val="4">
+         <masterref free="1" ref="acrobatics/feint1"/>
+         <masterref free="1" ref="acrobatics/evade1"/>
+         <masterref free="1" ref="acrobatics/balance"/>
+      </skillval>
+      <skillval skill="alchemy" val="5"/>
+      <skillval skill="leadership" val="5"/>
+      <skillval skill="arcanelore" val="4"/>
+      <skillval skill="athletics" val="4"/>
+      <skillval skill="performance" val="5"/>
+      <skillval skill="diplomacy" val="5"/>
+      <skillval skill="clscraft" val="5"/>
+      <skillval skill="empathy" val="4"/>
+      <skillval skill="determination" val="5"/>
+      <skillval skill="dexterity" val="4"/>
+      <skillval skill="history" val="5"/>
+      <skillval skill="craftmanship"/>
+      <skillval skill="heal"/>
+      <skillval skill="stealth"/>
+      <skillval skill="hunting"/>
+      <skillval skill="countrylore"/>
+      <skillval skill="nature"/>
+      <skillval skill="eloquence"/>
+      <skillval skill="locksntraps"/>
+      <skillval skill="swim"/>
+      <skillval skill="seafaring"/>
+      <skillval skill="streetlore"/>
+      <skillval skill="animals"/>
+      <skillval skill="survival"/>
+      <skillval skill="perception"/>
+      <skillval skill="endurance"/>
+      <skillval skill="antimagic"/>
+      <skillval skill="controlmagic"/>
+      <skillval skill="motionmagic"/>
+      <skillval skill="insightmagic"/>
+      <skillval skill="stonemagic"/>
+      <skillval skill="firemagic"/>
+      <skillval skill="healmagic"/>
+      <skillval skill="illusionmagic"/>
+      <skillval skill="combatmagic"/>
+      <skillval skill="lightmagic"/>
+      <skillval skill="naturemagic"/>
+      <skillval skill="shadowmagic"/>
+      <skillval skill="fatemagic"/>
+      <skillval skill="protectionmagic"/>
+      <skillval skill="enhancemagic"/>
+      <skillval skill="deathmagic"/>
+      <skillval skill="transformationmagic"/>
+      <skillval skill="watermagic"/>
+      <skillval skill="windmagic"/>
+   </skillvals>
+   <hairColor>silberweiß</hairColor>
+   <eyeColor>braun</eyeColor>
+   <furColor>test</furColor>
+   <birthPlace>test</birthPlace>
+   <size>172</size>
+   <weight>62</weight>
+   <gender>MALE</gender>
+   <carries></carries>
+   <rewards>
+      <reward date="2025-09-12T19:54:27.354+02:00" exp="15">
+         <title>Erschaffung</title>
+      </reward>
+   </rewards>
+</splimochar>
