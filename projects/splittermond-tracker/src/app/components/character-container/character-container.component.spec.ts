@@ -4,11 +4,11 @@ import { CharacterContainerComponent } from './character-container.component';
 import { describe, beforeEach, it, vi, expect } from 'vitest';
 import { By } from '@angular/platform-browser';
 import { Char } from 'src/app/models/char';
+import { inputBinding } from '@angular/core';
 
 const char = new Char();
 
 describe('CharacterContainerComponent', () => {
-  let component: CharacterContainerComponent;
   let fixture: ComponentFixture<CharacterContainerComponent>;
 
   beforeEach(async () => {
@@ -16,9 +16,9 @@ describe('CharacterContainerComponent', () => {
       imports: [CharacterContainerComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CharacterContainerComponent);
-    fixture.componentRef.setInput("char", char);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(CharacterContainerComponent, {
+      bindings: [inputBinding('char', () => char)],
+    });
     fixture.detectChanges();
   });
 
