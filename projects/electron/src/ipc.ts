@@ -67,7 +67,12 @@ export function initIpc(): void {
         await dialog.showMessageBox({
           message: `Im Verzeichnis "${basePath}" wurden keine Charakterdateien gefunden. Bitte wähle den Ordner aus, in dem sich deine Charakterdateien befinden.`,
         });
-        basePath = (await changeBaseFolder()) ?? basePath;
+        const newBasePath = await changeBaseFolder();
+        if (newBasePath) {
+          basePath = newBasePath;
+        } else {
+          return [];
+        }
       } else {
         return contents;
       }
