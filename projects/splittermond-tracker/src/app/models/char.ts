@@ -34,9 +34,11 @@ export const USAGE_FIELDS = [
   'channeled_focus',
   'exhausted_focus',
   'consumed_focus',
+  'next_rest_additional_focus_regeneration',
   'channeled_lp',
   'exhausted_lp',
   'consumed_lp',
+  'next_rest_additional_lp_regeneration',
   'channeled_splinters',
   'exhausted_splinters',
   'consumed_splinters',
@@ -161,10 +163,12 @@ export class Char {
   public readonly channeled_focus = signal(0);
   public readonly exhausted_focus = signal(0);
   public readonly consumed_focus = signal(0);
+  public readonly next_rest_additional_focus_regeneration = signal(0);
 
   public readonly channeled_lp = signal(0);
   public readonly exhausted_lp = signal(0);
   public readonly consumed_lp = signal(0);
+  public readonly next_rest_additional_lp_regeneration = signal(0);
 
   public readonly channeled_splinters = signal(0);
   public readonly exhausted_splinters = signal(0);
@@ -620,7 +624,12 @@ export class Char {
       update[`exhausted_${type}`] = update[`channeled_${type}`] = 0;
       update[`consumed_${type}`] =
         this[`consumed_${type}`]() -
-        Math.min(this[`consumed_${type}`](), this[`${type}_regeneration`]());
+        Math.min(
+          this[`consumed_${type}`](),
+          this[`${type}_regeneration`]() +
+            this[`next_rest_additional_${type}_regeneration`](),
+        );
+      update[`next_rest_additional_${type}_regeneration`] = 0;
     }
     this.update(update, Action.LONG_REST);
   }

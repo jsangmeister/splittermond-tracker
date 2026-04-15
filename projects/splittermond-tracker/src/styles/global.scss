@@ -53,6 +53,11 @@ $font-size-xsmall: 0.8em;
       focus-state-layer-opacity: 0,
     )
   );
+  @include mat.icon-button-overrides(
+    (
+      icon-color: $primary-color,
+    )
+  );
   @include mat.fab-overrides(
     (
       small-container-shape: 5px,

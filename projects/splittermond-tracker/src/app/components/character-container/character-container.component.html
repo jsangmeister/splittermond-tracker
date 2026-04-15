@@ -46,15 +46,38 @@
     <div class="card">
       <div class="tracker-title">
         <div>Lebenspunkte ({{ char().free_lp() }}/{{ char().max_lp() }})</div>
-        <button
-          matMiniFab
-          (click)="longRest()"
-          [matTooltip]="LONG_REST_TOOLTIP()"
-          matTooltipClass="multiline-tooltip wide-tooltip"
-          matTooltipPosition="above"
-        >
-          <img src="assets/sleep.png" />
-        </button>
+        <div class="lp-buttons-container">
+          <div
+            class="lp-buttons-container"
+            matTooltip="Zusätzliche Regenerierung in der nächsten Ruhephase"
+            matTooltipPosition="above"
+          >
+            <button
+              matIconButton
+              (click)="char().next_rest_additional_lp_regeneration.update((v) => v - 1)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+            <div class="additional-regen-container">
+              <span>{{ char().next_rest_additional_lp_regeneration() }}</span>
+            </div>
+            <button
+              matIconButton
+              (click)="char().next_rest_additional_lp_regeneration.update((v) => v + 1)"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <button
+            matMiniFab
+            (click)="longRest()"
+            [matTooltip]="LONG_REST_TOOLTIP()"
+            matTooltipClass="multiline-tooltip wide-tooltip"
+            matTooltipPosition="above"
+          >
+            <img src="assets/sleep.png" />
+          </button>
+        </div>
       </div>
       <points-table [char]="char()" mode="lp" />
     </div>

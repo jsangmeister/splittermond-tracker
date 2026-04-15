@@ -94,6 +94,21 @@
   color: $text-muted;
 }
 
+.lp-buttons-container {
+  display: flex;
+  align-items: center;
+}
+
+.additional-regen-container {
+  justify-content: center;
+  width: 20px;
+  height: 40px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding-top: 3.5px;
+}
+
 .card {
   padding: $spacing-md;
   border-radius: $spacing-xs;
