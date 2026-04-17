@@ -103,10 +103,10 @@
   </div>
 
   <div class="middle-container">
-    <div class="card">
-      <div class="tracker-title">Allgemeine Fertigkeiten</div>
-      <div class="grid">
-        @for (skill of GENERAL_SKILLS; track skill) {
+    <div class="card grid">
+      <div class="tracker-title skill-container">Allgemeine Fertigkeiten</div>
+      @for (skill of GENERAL_SKILLS; track skill) {
+        <div class="skill-container">
           <div>{{ GENERAL_SKILLS_LABELS[skill] }}</div>
           <div class="skill">
             <button
@@ -131,12 +131,13 @@
               </div>
             </ng-template>
           </div>
-        }
-      </div>
+        </div>
+      }
+      <div class="flex-grow"></div>
     </div>
   </div>
 
-  <div class="side-container">
+  <div class="side-container right-container">
     <div>
       <mat-button-toggle-group
         [(ngModel)]="textMode"
