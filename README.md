@@ -8,17 +8,17 @@ Simply download the correct file for your operating system from the [latest rele
 
 ### Windows
 
-Download [splittermond-tracker-1.16.0.exe](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.16.0/splittermond-tracker-1.16.0.exe) and double-click it. In the following security dialog, click on "More info" and then on "Run anyway". The app will install itself permanently on the system. To run it, open the start menu and search for "Splittermond Tracker".
+Download [splittermond-tracker-1.17.0.exe](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.17.0/splittermond-tracker-1.17.0.exe) and double-click it. In the following security dialog, click on "More info" and then on "Run anyway". The app will install itself permanently on the system. To run it, open the start menu and search for "Splittermond Tracker".
 
 ### Linux
 
-Download [splittermond-tracker-1.16.0.AppImage](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.16.0/splittermond-tracker-1.16.0.AppImage) and make it executable by opening a console in the folder of the AppImage and execute the following command:
+Download [splittermond-tracker-1.17.0.AppImage](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.17.0/splittermond-tracker-1.17.0.AppImage) and make it executable by opening a console in the folder of the AppImage and execute the following command:
 ```
-chmod +x splittermond-tracker-1.16.0.AppImage
+chmod +x splittermond-tracker-1.17.0.AppImage
 ```
 Afterwards, you can execute it via:
 ```
-./splittermond-tracker-1.16.0.AppImage
+./splittermond-tracker-1.17.0.AppImage
 ```
 or by double-clicking it in a file explorer.
 
@@ -26,7 +26,7 @@ Note: It is highly recommended to integrate AppImages under Linux with the help 
 
 ### macOS
 
-Download [splittermond-tracker-1.16.0.dmg](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.16.0/splittermond-tracker-1.16.0.dmg) and drag it into the apps folder to install it as usual. The, you'll have to remove the quarantine bit, or otherwise the OS will complain that the file is broken (adjust the path, if needed):
+Download [splittermond-tracker-1.17.0.dmg](https://github.com/jsangmeister/splittermond-tracker/releases/download/v1.17.0/splittermond-tracker-1.17.0.dmg) and drag it into the apps folder to install it as usual. The, you'll have to remove the quarantine bit, or otherwise the OS will complain that the file is broken (adjust the path, if needed):
 ```
 xattr -rd com.apple.quarantine "/Applications/Splittermond Tracker.app"
 ```
