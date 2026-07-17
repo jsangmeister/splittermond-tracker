@@ -74,6 +74,36 @@ export const GENERAL_SKILLS = [
   'endurance',
 ] as const;
 
+export const GENERAL_SKILLS_LABELS = {
+  acrobatics: 'Akrobatik',
+  alchemy: 'Alchemie',
+  leadership: 'Anführen',
+  arcanelore: 'Arkane Kunde',
+  athletics: 'Athletik',
+  performance: 'Darbietung',
+  diplomacy: 'Diplomatie',
+  clscraft: 'Edelhandwerk',
+  empathy: 'Empathie',
+  determination: 'Entschlossenheit',
+  dexterity: 'Fingerfertigkeit',
+  history: 'Geschichte & Mythen',
+  craftmanship: 'Handwerk',
+  heal: 'Heilkunde',
+  stealth: 'Heimlichkeit',
+  hunting: 'Jagdkunde',
+  countrylore: 'Länderkunde',
+  nature: 'Naturkunde',
+  eloquence: 'Redegewandtheit',
+  locksntraps: 'Schlösser & Fallen',
+  swim: 'Schwimmen',
+  seafaring: 'Seefahrt',
+  streetlore: 'Straßenkunde',
+  animals: 'Tierführung',
+  survival: 'Überleben',
+  perception: 'Wahrnehmung',
+  endurance: 'Zähigkeit',
+};
+
 export const MAGIC_SCHOOLS = [
   'antimagic',
   'controlmagic',
@@ -95,6 +125,28 @@ export const MAGIC_SCHOOLS = [
   'watermagic',
   'windmagic',
 ] as const;
+
+export const MAGIC_SCHOOLS_LABELS = {
+  antimagic: 'Bannmagie',
+  controlmagic: 'Beherrschungsmagie',
+  motionmagic: 'Bewegungsmagie',
+  insightmagic: 'Erkenntnismagie',
+  stonemagic: 'Felsmagie',
+  firemagic: 'Feuermagie',
+  healmagic: 'Heilungsmagie',
+  illusionmagic: 'Illusionsmagie',
+  combatmagic: 'Kampfmagie',
+  lightmagic: 'Lichtmagie',
+  naturemagic: 'Naturmagie',
+  shadowmagic: 'Schattenmagie',
+  fatemagic: 'Schicksalsmagie',
+  protectionmagic: 'Schutzmagie',
+  enhancemagic: 'Stärkungsmagie',
+  deathmagic: 'Todesmagie',
+  transformationmagic: 'Verwandlungsmagie',
+  watermagic: 'Wassermagie',
+  windmagic: 'Windmagie',
+} as const;
 
 export type GeneralSkillKey = (typeof GENERAL_SKILLS)[number];
 
@@ -204,6 +256,15 @@ export class Char {
   private readonly _survival = signal(0);
   private readonly _perception = signal(0);
   private readonly _endurance = signal(0);
+
+  // Skills - combat
+  private readonly _melee = signal(0);
+  private readonly _slashing = signal(0);
+  private readonly _chains = signal(0);
+  private readonly _blades = signal(0);
+  private readonly _longrange = signal(0);
+  private readonly _staffs = signal(0);
+  private readonly _throwing = signal(0);
 
   // Skills - magic
   private readonly _antimagic = signal(0);

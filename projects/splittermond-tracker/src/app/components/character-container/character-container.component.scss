@@ -24,6 +24,7 @@
 
   .middle-container {
     flex-basis: content;
+    flex-shrink: 0;
 
     @include mat.fab-overrides(
       (
@@ -78,6 +79,15 @@
     align-items: center;
     white-space: nowrap;
     column-gap: 15px;
+
+    .tracker-title {
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    &:not(:first-child) .tracker-title {
+      margin-top: 5px;
+    }
   }
 
   .flex-grow {
@@ -161,16 +171,18 @@ history {
 }
 
 .note-container {
-  height: 100%;
   display: flex;
   border: 1px solid $border-dark;
   border-left: none;
+  overflow-y: auto;
+  border-left: 1px solid $border-dark;
+  height: 100%;
 
   textarea,
   markdown {
     padding: 2px 5px;
     border: none;
-    border-left: 1px solid $border-dark;
+    overflow-y: auto;
   }
 
   textarea {
@@ -183,6 +195,10 @@ history {
   markdown {
     width: 100%;
   }
+
+  &.both markdown {
+    border-left: 1px solid $border-dark;
+  }
 }
 
 ::ng-deep .popover-content {
@@ -192,6 +208,14 @@ history {
   row-gap: 4px;
   column-gap: 4px;
   align-items: stretch;
+
+  .parts-row {
+    display: contents;
+
+    &.greyed-out {
+      color: grey;
+    }
+  }
 
   .label {
     padding-right: 4px;

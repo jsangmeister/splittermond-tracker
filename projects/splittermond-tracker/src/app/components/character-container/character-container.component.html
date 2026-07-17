@@ -104,33 +104,41 @@
 
   <div class="middle-container">
     <div class="card grid">
-      <div class="tracker-title skill-container">Allgemeine Fertigkeiten</div>
-      @for (skill of GENERAL_SKILLS; track skill) {
+      @for (skill of visibleSkills(); track skill.label) {
         <div class="skill-container">
-          <div>{{ GENERAL_SKILLS_LABELS[skill] }}</div>
-          <div class="skill">
-            <button
-              matMiniFab
-              nz-popover
-              [nzPopoverContent]="contentTemplate"
-              nzPopoverPlacement="right"
-            >
-              {{ char()[skill]() }}
-            </button>
-            <ng-template #contentTemplate>
-              <div class="popover-content">
-                @for (part of char()[skill].parts(); track part) {
-                  <div class="label">{{ part.label }}</div>
-                  <div>{{ $first ? '' : part.modifier }}</div>
-                  <div class="value">{{ part.value() }}</div>
-                }
-                <mat-divider />
-                <div class="label">Ges.</div>
-                <div>=</div>
-                <div class="value">{{ char()[skill]() }}</div>
-              </div>
-            </ng-template>
-          </div>
+          @if (skill.id) {
+            <div>{{ skill.label }}</div>
+            <div class="skill">
+              <button
+                matMiniFab
+                nz-popover
+                [nzPopoverContent]="contentTemplate"
+                nzPopoverPlacement="right"
+              >
+                {{ char()[skill.id]() }}
+              </button>
+              <ng-template #contentTemplate>
+                <div class="popover-content">
+                  @for (part of char()[skill.id].parts(); track part) {
+                    <div
+                      class="parts-row"
+                      [class.greyed-out]="part.value() === 0"
+                    >
+                      <div class="label">{{ part.label }}</div>
+                      <div>{{ $first ? '' : part.modifier }}</div>
+                      <div class="value">{{ part.value() }}</div>
+                    </div>
+                  }
+                  <mat-divider />
+                  <div class="label">Ges.</div>
+                  <div>=</div>
+                  <div class="value">{{ char()[skill.id]() }}</div>
+                </div>
+              </ng-template>
+            </div>
+          } @else {
+            <div class="tracker-title">{{ skill.label }}</div>
+          }
         </div>
       }
       <div class="flex-grow"></div>
@@ -150,7 +158,7 @@
         }
       </mat-button-toggle-group>
     </div>
-    <div class="note-container">
+    <div class="note-container" [class]="textMode()">
       @if (textMode() !== 'markdown') {
         <textarea
           #note

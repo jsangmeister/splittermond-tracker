@@ -15,7 +15,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { MarkdownModule } from 'ngx-markdown';
 
-import { Char, GENERAL_SKILLS } from '../../models/char';
+import {
+  Char,
+  GENERAL_SKILLS,
+  GENERAL_SKILLS_LABELS,
+  GeneralSkillKey,
+  MAGIC_SCHOOLS,
+  MAGIC_SCHOOLS_LABELS,
+  MagicSchoolKey,
+} from '../../models/char';
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 import { HistoryComponent } from '../history/history.component';
 import { PointsTableComponent } from '../points-table/points-table.component';
@@ -67,39 +75,21 @@ export class CharacterContainerComponent {
     },
   ];
 
-  protected readonly GENERAL_SKILLS = GENERAL_SKILLS;
-
-  protected readonly GENERAL_SKILLS_LABELS = {
-    acrobatics: 'Akrobatik',
-    alchemy: 'Alchemie',
-    leadership: 'Anführen',
-    arcanelore: 'Arkane Kunde',
-    athletics: 'Athletik',
-    performance: 'Darbietung',
-    diplomacy: 'Diplomatie',
-    clscraft: 'Edelhandwerk',
-    empathy: 'Empathie',
-    determination: 'Entschlossenheit',
-    dexterity: 'Fingerfertigkeit',
-    history: 'Geschichte & Mythen',
-    craftmanship: 'Handwerk',
-    heal: 'Heilkunde',
-    stealth: 'Heimlichkeit',
-    hunting: 'Jagdkunde',
-    countrylore: 'Länderkunde',
-    nature: 'Naturkunde',
-    eloquence: 'Redegewandtheit',
-    locksntraps: 'Schlösser & Fallen',
-    swim: 'Schwimmen',
-    seafaring: 'Seefahrt',
-    streetlore: 'Straßenkunde',
-    animals: 'Tierführung',
-    survival: 'Überleben',
-    perception: 'Wahrnehmung',
-    endurance: 'Zähigkeit',
-  };
-
   protected textMode = signal(TextMode.Source);
+
+  protected visibleSkills = computed(() => {
+    const magicSchools = MAGIC_SCHOOLS.filter(
+      (id) => this.char()[`_${id}`]() > 0,
+    ).map((id) => ({ id, label: MAGIC_SCHOOLS_LABELS[id] }));
+    const result: { id?: GeneralSkillKey | MagicSchoolKey; label: string }[] = [
+      { label: 'Allgemeine Fähigkeiten' },
+      ...GENERAL_SKILLS.map((id) => ({ id, label: GENERAL_SKILLS_LABELS[id] })),
+    ];
+    if (magicSchools.length > 0) {
+      result.push({ label: 'Magieschulen' }, ...magicSchools);
+    }
+    return result;
+  });
 
   protected SHORT_REST_TOOLTIP = computed(
     () => `

@@ -40,6 +40,27 @@ export const CHAR_SHORT_LABELS: Partial<Record<keyof Char, string>> = {
   perception: 'Wahrn.',
   endurance: 'Zäh.',
 
+  // Magic schools
+  antimagic: 'Bannm.',
+  controlmagic: 'Beherrschungsm.',
+  motionmagic: 'Bewegungsm.',
+  insightmagic: 'Erkenntnism.',
+  stonemagic: 'Felsm.',
+  firemagic: 'Feuerm.',
+  healmagic: 'Heilungsm.',
+  illusionmagic: 'Illusionsm.',
+  combatmagic: 'Kampfm.',
+  lightmagic: 'Lichtm.',
+  naturemagic: 'Naturm.',
+  shadowmagic: 'Schattenm.',
+  fatemagic: 'Schicksalsm.',
+  protectionmagic: 'Schutzm.',
+  enhancemagic: 'Stärkungsm.',
+  deathmagic: 'Todesm.',
+  transformationmagic: 'Verwandlungsm.',
+  watermagic: 'Wasserm.',
+  windmagic: 'Windm.',
+
   // Other
   stealthModifier: 'GK',
 };
