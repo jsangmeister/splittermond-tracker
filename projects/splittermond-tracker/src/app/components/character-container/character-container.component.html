@@ -167,11 +167,16 @@
           autocapitalize="off"
           spellcheck="false"
           (input)="char().note.set(note.value)"
+          (scroll)="onScroll($event)"
           >{{ char().note() }}</textarea
         >
       }
       @if (textMode() !== 'source') {
-        <markdown [data]="char().note()"></markdown>
+        <markdown
+          #markdownEl
+          [data]="char().note()"
+          (scroll)="onScroll($event)"
+        ></markdown>
       }
     </div>
   </div>

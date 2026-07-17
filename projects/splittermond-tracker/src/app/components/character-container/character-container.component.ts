@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  ElementRef,
   inject,
   input,
   signal,
@@ -60,6 +61,12 @@ export class CharacterContainerComponent {
 
   protected historyComponent = viewChild.required(HistoryComponent);
 
+  private noteTextarea = viewChild<ElementRef<HTMLTextAreaElement>>('note');
+
+  private markdownElement = viewChild('markdownEl', { read: ElementRef });
+
+  private isSyncingScroll = false;
+
   protected readonly TEXT_MODES = [
     {
       value: TextMode.Source,
@@ -75,7 +82,7 @@ export class CharacterContainerComponent {
     },
   ];
 
-  protected textMode = signal(TextMode.Source);
+  protected textMode = signal(TextMode.Both);
 
   protected visibleSkills = computed(() => {
     const magicSchools = MAGIC_SCHOOLS.filter(
@@ -124,5 +131,29 @@ Ruhepause (min. 6h):
 
   protected shortRest(): void {
     this.char().shortRest();
+  }
+
+  protected onScroll(event: Event): void {
+    if (this.isSyncingScroll) {
+      return;
+    }
+    const source = event.target as HTMLElement;
+    const textarea = this.noteTextarea()?.nativeElement;
+    const markdown = this.markdownElement()?.nativeElement;
+    const target = source === textarea ? markdown : textarea;
+    if (!target) {
+      return;
+    }
+    const sourceScrollable = source.scrollHeight - source.clientHeight;
+    if (sourceScrollable <= 0) {
+      return;
+    }
+    const percentage = source.scrollTop / sourceScrollable;
+    const targetScrollable = target.scrollHeight - target.clientHeight;
+    this.isSyncingScroll = true;
+    target.scrollTop = percentage * targetScrollable;
+    requestAnimationFrame(() => {
+      this.isSyncingScroll = false;
+    });
   }
 }
