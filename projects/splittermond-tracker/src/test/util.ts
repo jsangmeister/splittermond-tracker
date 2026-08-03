@@ -1,9 +1,26 @@
-import { vi } from "vitest";
-import { readFileSync } from "fs";
-import path from "path";
+import { readFileSync } from 'fs';
+import path from 'path';
+import { vi } from 'vitest';
 
-const TEST_CHAR_PATH = path.resolve(process.cwd(), 'projects', 'splittermond-tracker', 'src', 'test', 'data', 'test-character.xml');
+const TEST_CHAR_PATH = path.resolve(
+  process.cwd(),
+  'projects',
+  'splittermond-tracker',
+  'src',
+  'test',
+  'data',
+  'test-character.xml',
+);
 
 export function mockElectron(): void {
-  vi.stubGlobal('electron', { storage: { set: vi.fn(), get: () => Promise.resolve(null) }, getCharacters: () => Promise.resolve([{ path: '/path/to/char', content: readFileSync(TEST_CHAR_PATH, 'utf-8') }]) });
+  vi.stubGlobal('electron', {
+    storage: { set: vi.fn(), get: () => Promise.resolve(null) },
+    getCharacters: () =>
+      Promise.resolve([
+        {
+          path: '/path/to/char',
+          content: readFileSync(TEST_CHAR_PATH, 'utf-8'),
+        },
+      ]),
+  });
 }

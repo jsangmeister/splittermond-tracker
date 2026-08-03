@@ -4,7 +4,7 @@ import {
   ElementRef,
   inject,
   input,
-  signal,
+  resource,
   viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { MarkdownModule } from 'ngx-markdown';
 
+import { StoreKey } from '../../../../../shared/store-keys';
+import { TextMode } from '../../../../../shared/text-mode';
 import {
   Char,
   GENERAL_SKILLS,
@@ -28,12 +30,6 @@ import {
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 import { HistoryComponent } from '../history/history.component';
 import { PointsTableComponent } from '../points-table/points-table.component';
-
-enum TextMode {
-  Source = 'source',
-  Both = 'both',
-  Markdown = 'markdown',
-}
 
 @Component({
   selector: 'character-container',
@@ -57,13 +53,16 @@ enum TextMode {
   },
 })
 export class CharacterContainerComponent {
-  public char = input.required<Char>();
+  public readonly char = input.required<Char>();
 
-  protected historyComponent = viewChild.required(HistoryComponent);
+  protected readonly historyComponent = viewChild.required(HistoryComponent);
 
-  private noteTextarea = viewChild<ElementRef<HTMLTextAreaElement>>('note');
+  private readonly noteTextarea =
+    viewChild<ElementRef<HTMLTextAreaElement>>('note');
 
-  private markdownElement = viewChild('markdownEl', { read: ElementRef });
+  private readonly markdownElement = viewChild('markdownEl', {
+    read: ElementRef,
+  });
 
   private isSyncingScroll = false;
 
@@ -82,9 +81,15 @@ export class CharacterContainerComponent {
     },
   ];
 
-  protected textMode = signal(TextMode.Both);
+  protected readonly textMode = resource({
+    loader: () =>
+      window.electron.storage
+        .get(StoreKey.LAST_TEXT_MODE)
+        .then((data) => data ?? TextMode.Source),
+    defaultValue: TextMode.Source,
+  });
 
-  protected visibleSkills = computed(() => {
+  protected readonly visibleSkills = computed(() => {
     const magicSchools = MAGIC_SCHOOLS.filter(
       (id) => this.char()[`_${id}`]() > 0,
     ).map((id) => ({ id, label: MAGIC_SCHOOLS_LABELS[id] }));
@@ -98,13 +103,13 @@ export class CharacterContainerComponent {
     return result;
   });
 
-  protected SHORT_REST_TOOLTIP = computed(
+  protected readonly SHORT_REST_TOOLTIP = computed(
     () => `
 Verschnaufpause (min. 30min): regeneriert alle erschöpften Fokus- und Lebenspunkte
   `,
   );
 
-  protected LONG_REST_TOOLTIP = computed(
+  protected readonly LONG_REST_TOOLTIP = computed(
     () => `
 Ruhepause (min. 6h):
 - beendet alle kanalisierten Zauber
@@ -114,7 +119,7 @@ Ruhepause (min. 6h):
   `,
   );
 
-  private confirmationService = inject(ConfirmationDialogService);
+  private readonly confirmationService = inject(ConfirmationDialogService);
 
   protected async reset(): Promise<void> {
     const message =
@@ -131,6 +136,11 @@ Ruhepause (min. 6h):
 
   protected shortRest(): void {
     this.char().shortRest();
+  }
+
+  protected onTextModeChange(value: TextMode): void {
+    this.textMode.set(value);
+    void window.electron.storage.set(StoreKey.LAST_TEXT_MODE, value);
   }
 
   protected onScroll(event: Event): void {

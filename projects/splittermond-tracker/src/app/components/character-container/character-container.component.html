@@ -148,7 +148,8 @@
   <div class="side-container right-container">
     <div>
       <mat-button-toggle-group
-        [(ngModel)]="textMode"
+        [ngModel]="textMode.value()"
+        (ngModelChange)="onTextModeChange($event)"
         [hideSingleSelectionIndicator]="true"
       >
         @for (mode of TEXT_MODES; track mode.value) {
@@ -158,8 +159,8 @@
         }
       </mat-button-toggle-group>
     </div>
-    <div class="note-container" [class]="textMode()">
-      @if (textMode() !== 'markdown') {
+    <div class="note-container" [class]="textMode.value()">
+      @if (textMode.value() !== 'markdown') {
         <textarea
           #note
           autocomplete="off"
@@ -171,7 +172,7 @@
           >{{ char().note() }}</textarea
         >
       }
-      @if (textMode() !== 'source') {
+      @if (textMode.value() !== 'source') {
         <markdown
           #markdownEl
           [data]="char().note()"

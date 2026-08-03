@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { CharacterService } from './character-service';
-import { Char } from '../models/char';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { mockElectron } from 'src/test/util';
-import {toObservable} from '@angular/core/rxjs-interop';
-import { filter, firstValueFrom } from 'rxjs';
 import { Injector } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { TestBed } from '@angular/core/testing';
+import { filter, firstValueFrom } from 'rxjs';
+import { mockElectron } from 'src/test/util';
+import { beforeEach, describe, expect, it } from 'vitest';
+
+import { CharacterService } from './character-service';
 
 describe('CharacterService', () => {
   let service: CharacterService;
@@ -15,7 +15,11 @@ describe('CharacterService', () => {
     mockElectron();
     service = TestBed.inject(CharacterService);
     // wait for the characters to be loaded
-    await firstValueFrom(toObservable(service.notOpenedCharacters, { injector: TestBed.inject(Injector)}).pipe(filter(chars => chars.length > 0)));
+    await firstValueFrom(
+      toObservable(service.notOpenedCharacters, {
+        injector: TestBed.inject(Injector),
+      }).pipe(filter((chars) => chars.length > 0)),
+    );
   });
 
   it('should call window.electron.storage.set when updating the note', () => {
@@ -25,7 +29,7 @@ describe('CharacterService', () => {
     // Assert that the storage set method was called
     expect(window.electron.storage.set).toHaveBeenCalledWith(
       'character:test',
-      expect.objectContaining({ note: 'note' })
+      expect.objectContaining({ note: 'note' }),
     );
   });
 });

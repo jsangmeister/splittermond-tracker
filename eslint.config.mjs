@@ -47,6 +47,7 @@ export default defineConfig([
         'error',
         { allowConstantLoopConditions: true },
       ],
+      '@typescript-eslint/prefer-literal-enum-member': 'off',
       '@typescript-eslint/restrict-plus-operands': [
         'error',
         {
@@ -59,6 +60,7 @@ export default defineConfig([
           allowNumber: true,
         },
       ],
+      '@typescript-eslint/unbound-method': 'off',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'unused-imports/no-unused-imports': 'error',
