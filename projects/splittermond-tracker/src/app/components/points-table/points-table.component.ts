@@ -1,11 +1,11 @@
 import {
   Component,
   computed,
-  ElementRef,
   input,
+  linkedSignal,
   signal,
-  viewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -21,7 +21,7 @@ const LABELS = {
   selector: 'points-table',
   templateUrl: './points-table.component.html',
   styleUrls: ['./points-table.component.scss'],
-  imports: [MatTooltipModule, MatButtonModule, MatIconModule],
+  imports: [FormsModule, MatTooltipModule, MatButtonModule, MatIconModule],
   host: {
     '[style.--number-of-columns]': 'perRow() + (mode() === "lp" ? 1 : 0)',
   },
@@ -59,7 +59,11 @@ export class PointsTableComponent {
   protected readonly CONVERT_CHANNELED_TOOLTIP =
     'Kanalisierte Fokuspunkte\nerschöpfen (Strg+Enter)';
 
-  protected error = signal<string>('');
+  protected value = linkedSignal(() =>
+    this.mode() === 'splinters' ? '1' : '',
+  );
+
+  protected error = signal('');
 
   protected perRow = computed(() =>
     this.mode() === 'lp'
@@ -69,14 +73,13 @@ export class PointsTableComponent {
 
   private modeLabel = computed(() => LABELS[this.mode()]);
 
-  private input = viewChild.required<ElementRef<HTMLInputElement>>('input');
-
   protected minus(): void {
-    this.change(this.input().nativeElement.value);
+    console.error(`Minus called with value: ${this.value()}`);
+    this.change(this.value());
   }
 
   protected plus(): void {
-    this.change(this.input().nativeElement.value, -1);
+    this.change(this.value(), -1);
   }
 
   protected minus_channeled(): void {
@@ -93,20 +96,26 @@ export class PointsTableComponent {
 
   protected convert_channeled(): void {
     if (this.mode() === 'focus') {
-      let value = parseInt(this.input().nativeElement.value);
-      if (isNaN(value)) {
-        this.error.set('Invalid input.');
+      const inputValue = this.value();
+      const parsedValue = inputValue
+        ? parseInt(inputValue.replace(/^k/i, ''))
+        : Infinity;
+      if (isNaN(parsedValue)) {
+        this.error.set('Ungültige Eingabe.');
         return;
       }
-      value = Math.min(value, this.char()[`channeled_${this.mode()}`]());
+      const channeled = this.char()[`channeled_${this.mode()}`]();
+      const exhausted = this.char()[`exhausted_${this.mode()}`]();
+      const value = Math.min(parsedValue, channeled);
       this.char().update(
         {
-          [`channeled_${this.mode()}`]: -value,
-          [`exhausted_${this.mode()}`]: value,
+          [`channeled_${this.mode()}`]: channeled - value,
+          [`exhausted_${this.mode()}`]: exhausted + value,
         },
         Action.CONVERT_CHANNELED,
+        value.toString(),
       );
-      this.input().nativeElement.value = '';
+      this.value.set('');
     }
   }
 
@@ -127,7 +136,7 @@ export class PointsTableComponent {
       const action = `${factor === 1 ? 'SPEND' : 'RESTORE'}_${this.mode().toUpperCase()}`;
       this.char().update(update, Action[action as keyof typeof Action], input);
       if (this.mode() !== 'splinters') {
-        this.input().nativeElement.value = '';
+        this.value.set('');
       }
       this.error.set('');
     } catch (e: any) {

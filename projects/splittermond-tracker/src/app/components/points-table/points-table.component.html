@@ -36,7 +36,7 @@
       type="text"
       class="point-input"
       [class.hidden]="mode() === 'splinters'"
-      [value]="mode() === 'splinters' ? 1 : ''"
+      [(ngModel)]="value"
       (input)="error.set('')"
       (keydown.enter)="minus()"
       (keydown.shift.enter)="plus()"
