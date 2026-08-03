@@ -331,7 +331,7 @@ export class Char {
   );
 
   public readonly wounded_level = computed(() =>
-    Math.floor(this.consumed_lp() / this.lp()),
+    Math.max(0, Math.ceil(this.consumed_lp() / this.lp()) - 1),
   );
 
   public readonly wounded_deduction = computed(() =>
