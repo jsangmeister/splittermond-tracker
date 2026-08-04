@@ -1,7 +1,7 @@
 <div class="container">
   <div class="character-container">
     <div class="top-row">
-      <div class="actions-left">
+      <div class="action-container">
         <button
           matMiniFab
           (click)="historyComponent().undo()"
@@ -21,7 +21,7 @@
           <mat-icon fontSet="material-symbols">redo</mat-icon>
         </button>
       </div>
-      <div class="action-right">
+      <div class="action-container">
         <button
           matMiniFab
           (click)="reset()"
@@ -146,7 +146,7 @@
   </div>
 
   <div class="side-container right-container">
-    <div>
+    <div class="top-row">
       <mat-button-toggle-group
         [ngModel]="textMode.value()"
         (ngModelChange)="onTextModeChange($event)"
@@ -158,6 +158,7 @@
           </mat-button-toggle>
         }
       </mat-button-toggle-group>
+      <div class="credits-button" (click)="showCredits()">©</div>
     </div>
     <div class="note-container" [class]="textMode.value()">
       @if (textMode.value() !== 'markdown') {

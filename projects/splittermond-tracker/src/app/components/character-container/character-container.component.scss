@@ -13,8 +13,21 @@
   width: 100%;
   height: 100%;
   background-color: $container-bg;
-  padding: $spacing-lg;
+  padding: $spacing-md;
   border-radius: $border-radius;
+
+  .character-container .top-row {
+    padding-bottom: $spacing-sm;
+    margin-bottom: $spacing-md;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .action-container {
+      height: 32px;
+    }
+  }
 
   .character-container,
   .middle-container {
@@ -61,6 +74,22 @@
 
   .right-container {
     flex-grow: 1;
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .credits-button {
+        cursor: pointer;
+        font-size: 1.2em;
+        color: $text-muted;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
   }
 }
 
@@ -95,15 +124,6 @@
   }
 }
 
-.top-row {
-  margin-bottom: $spacing-md;
-  padding-bottom: $spacing-md;
-  border-bottom: 1px solid $border-color;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .character-name {
   font-size: 1.4em;
   font-weight: bold;
@@ -132,12 +152,12 @@
 }
 
 .card {
-  padding: $spacing-md;
+  padding: 10px 12px;
   border-radius: $spacing-xs;
   background-color: $background-color;
 
   &:not(:last-child) {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-md;
   }
 }
 
@@ -161,7 +181,6 @@
 .splinters-table {
   flex-direction: row;
   align-items: center;
-  margin-bottom: $spacing-sm;
 }
 
 history {

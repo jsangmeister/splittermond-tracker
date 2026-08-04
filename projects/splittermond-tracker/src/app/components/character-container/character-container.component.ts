@@ -10,6 +10,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -28,6 +29,7 @@ import {
   MagicSchoolKey,
 } from '../../models/char';
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
+import { CreditsDialogComponent } from '../credits-dialog/credits-dialog.component';
 import { HistoryComponent } from '../history/history.component';
 import { PointsTableComponent } from '../points-table/points-table.component';
 
@@ -56,6 +58,8 @@ export class CharacterContainerComponent {
   public readonly char = input.required<Char>();
 
   protected readonly historyComponent = viewChild.required(HistoryComponent);
+
+  private readonly dialog = inject(MatDialog);
 
   private readonly noteTextarea =
     viewChild<ElementRef<HTMLTextAreaElement>>('note');
@@ -136,6 +140,10 @@ Ruhepause (min. 6h):
 
   protected shortRest(): void {
     this.char().shortRest();
+  }
+
+  protected showCredits(): void {
+    this.dialog.open(CreditsDialogComponent);
   }
 
   protected onTextModeChange(value: TextMode): void {

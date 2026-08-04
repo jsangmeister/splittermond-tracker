@@ -17,7 +17,6 @@ import { firstValueFrom } from 'rxjs';
 import { StoreKey, StoreValueTypes } from '../../../shared/store-keys';
 import { CharacterContainerComponent } from './components/character-container/character-container.component';
 import { CharacterSelectionDialogComponent } from './components/character-selection-dialog/character-selection-dialog.component';
-import { CreditsDialogComponent } from './components/credits-dialog/credits-dialog.component';
 import { Char } from './models/char';
 import { CharacterService } from './services/character-service';
 
@@ -100,9 +99,5 @@ export class AppComponent {
         (this.selectedIndex() + offset + openedCount) % openedCount;
       this.selectedIndex.set(newIndex);
     }
-  }
-
-  public showCredits(): void {
-    this.dialog.open(CreditsDialogComponent);
   }
 }
