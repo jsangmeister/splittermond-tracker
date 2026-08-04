@@ -50,12 +50,14 @@ import { PointsTableComponent } from '../points-table/points-table.component';
   templateUrl: './character-container.component.html',
   styleUrl: './character-container.component.scss',
   host: {
-    '(document:keydown.control.z)': 'historyComponent().undo()',
-    '(document:keydown.control.y)': 'historyComponent().redo()',
+    '(document:keydown.control.z)': 'undo($event)',
+    '(document:keydown.control.y)': 'redo($event)',
   },
 })
 export class CharacterContainerComponent {
   public readonly char = input.required<Char>();
+
+  public readonly active = input.required<boolean>();
 
   protected readonly historyComponent = viewChild.required(HistoryComponent);
 
@@ -131,6 +133,18 @@ Ruhepause (min. 6h):
     const result = await this.confirmationService.confirm(message);
     if (result) {
       this.char().resetUsageData();
+    }
+  }
+
+  protected undo(event: Event): void {
+    if (this.active() && event.target !== this.noteTextarea()?.nativeElement) {
+      this.historyComponent().undo();
+    }
+  }
+
+  protected redo(event: Event): void {
+    if (this.active() && event.target !== this.noteTextarea()?.nativeElement) {
+      this.historyComponent().redo();
     }
   }
 
